@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "A_class",
+    "slug": "A_class",
+    "newArchEnabled": true,
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/3.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/3.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/3.png",
+        "backgroundColor": "#000000"
+      }
+    },
+    "web": {
+      "favicon": "./assets/3.png",
+      "bundler": "metro"
+    }
+  }
+}
