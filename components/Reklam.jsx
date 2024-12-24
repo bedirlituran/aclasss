@@ -1,35 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   ScrollView,
   StyleSheet,
   Image,
   Dimensions,
+  Text
 } from "react-native";
-import SkeletonLoader from "./SkeletonLoader";
+import MarqueeView from 'react-native-marquee-view';
 
 const { width } = Dimensions.get("window");
 
 const AdCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products?limit=7")
-      .then((res) => res.json())
-      .then((json) => {
-        const fetchedData = json.map((item) => ({
-          image: item.image,
-        }));
-        setImages(fetchedData);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Internetinizi yoxlayın: ", error);
-        setIsLoading(false);
-      });
-  }, []);
+  // Statik resimlerin listesi
+  const images = [
+  
+    require("../assets/reklam/colins.png"),
+    require("../assets/reklam/zara.png"),
+    require("../assets/reklam/papatya.png"),
+
+  ];
 
   const handleScroll = (event) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
@@ -39,6 +31,8 @@ const AdCarousel = () => {
 
   return (
     <View style={{ flex: 1 }}>
+    
+
       <ScrollView
         horizontal
         pagingEnabled
@@ -48,21 +42,26 @@ const AdCarousel = () => {
         style={styles.scrollContainer}
         contentContainerStyle={{ paddingHorizontal: 10 }}
       >
-        {isLoading
-          ? // Skeleton Loader'lar gösteriliyor
-            Array.from({ length: 5 }).map((_, index) => (
-              <View key={index} style={styles.adBox}>
-                <SkeletonLoader />
-              </View>
-            ))
-          : // Yükleme tamamlandığında görüntüler gösteriliyor
-            images.map((image, index) => (
-              <View key={index} style={styles.adBox}>
-                <Image source={{ uri: image.image }} style={styles.image} />
-              </View>
-            ))}
+        {images.map((image, index) => (
+          <View key={index} style={styles.adBox}>
+            <Image source={image} style={styles.image} />
+         
+          </View>
+          
+        ))}
+        
       </ScrollView>
-
+      <MarqueeView 
+      autoPlay={true}
+      playing={true}
+      speed={0.2}
+	style={{
+		width: '100%',
+	}}>
+	<View>
+		<Text className="font-bold">Burada sizin reklamınız ola bilər</Text>
+	</View>
+</MarqueeView>
       {/* Çizgiler */}
       <View style={styles.indicatorContainer}>
         {images.map((_, index) => (
@@ -81,7 +80,7 @@ const AdCarousel = () => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    marginTop: 80,
+    marginTop: 20,
     paddingHorizontal: 10,
     paddingVertical: 10,
   },

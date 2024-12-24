@@ -1,4 +1,5 @@
 import * as React from "react";
+import { TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Profile from "../sehifeler/Profile";
 import SearchScreen from "../sehifeler/SearchScreen";
@@ -14,13 +15,40 @@ import UrunDetay from "../sehifeler/UrunDetay";
 import FavoriteScreen from "../sehifeler/FavoriteScreen";
 import { FavoriteProvider } from "../FavoriteContext";
 import Sekil from "../components/Sekil";
+import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   return (
     <FavoriteProvider>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center", // Tüm başlıkları ortaya hizalar
+        }}
+      >
+       <Stack.Screen
+          name="Sebetim"
+          component={Sebetim}
+          options={{
+            headerTitle: "Səbətim",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 18,
+            },
+            headerRight: () => (
+              <TouchableOpacity>
+                <Ionicons
+                  name="trash"
+                  size={23}
+                  color="#54342b"
+               
+                />
+              </TouchableOpacity>
+            ),
+     
+        }}
+        />
         <Stack.Screen
           name="Sekil"
           component={Sekil}
@@ -40,13 +68,21 @@ const Navigation = () => {
         <Stack.Screen name="Qadin" component={Qadin} />
         <Stack.Screen name="Usaq" component={Usaq} />
         <Stack.Screen name="Kisi" component={Kisi} />
-        <Stack.Screen name="Sebetim" component={Sebetim} />
+
+      
+
+
         <Stack.Screen
           name="UrunDetay"
           component={UrunDetay}
           options={{ title: "Məhsul haqqında" }}
         />
-        <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
+
+        <Stack.Screen
+          name="FavoriteScreen"
+          component={FavoriteScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </FavoriteProvider>
   );

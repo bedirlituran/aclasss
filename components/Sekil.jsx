@@ -12,69 +12,60 @@ import {
   Share,
   Dimensions,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import SkeletonLoader from "../components/SkeletonLoader";
 import StarAnmimation from "./StarAnmimation";
 import BasketAnimation from "./BasketAnimation";
 import WhatsAppButton from "./WhatsAppButton";
 import { useFavorites } from "../FavoriteContext";
-import Ionicons from "@expo/vector-icons/Ionicons"; // Kalp ikonu için
+import Ionicons from "@expo/vector-icons/Ionicons";
 import Reklam from "../components/Reklam";
 import Header from "../components/Header";
-
-
-const { height } = Dimensions.get("window");
-const { width } = Dimensions.get("window");
+import axios from "axios";
+const { height, width } = Dimensions.get("window");
 
 const Sekil = () => {
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [scrollY, setScrollY] = useState(0); // Scroll pozisyonunu takip eden state
-  const [isFirstClick, setIsFirstClick] = useState(false); // İlk tıklama durumu
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
   const navigation = useNavigation();
   const scrollViewRef = useRef(null); // FlatList referansı
   const [page, setPage] = useState(0);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-  const loadMore = async () => {
-    if (isFetchingMore) return;
-    setIsFetchingMore(true);
+  // const loadMore = async () => {
+  //   if (isFetchingMore) return;
+  //   setIsFetchingMore(true);
+  //   try {
+  //     setPage((prevPage) => prevPage + 1); // Sayfa numarasını artırıyoruz
+  //     await fetchData();
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setIsFetchingMore(false);
+  //   }
+  // };
+
+  // Verileri çekip karıştırma işlemi
+  const fetchData = async () => {
+    setIsLoading(true);
     try {
-      setPage((prevPage) => prevPage + 1);
-      await fetchData();
+      const res = await axios.get(`https://fakestoreapi.com/products?&page=${page}`);
+      
+      // Verileri karıştırma (rastgele sıralama)
+      const shuffledData = res.data.sort(() => Math.random() - 0.5);
+      
+      setData((prevData) => [...prevData, ...shuffledData]); // Yeni verileri mevcut verilere ekliyoruz
     } catch (error) {
-      console.error(error);
+      console.error("API isteği sırasında hata:", error);
+      Alert.alert("Hata", "Veriler yüklenirken bir sorun oluştu.");
     } finally {
-      setIsFetchingMore(false);
+      setIsLoading(false);
     }
   };
 
-
-
-  const handleScroll = (event) => {
-    const contentOffsetY = event.nativeEvent.contentOffset.y;
-    setScrollY(contentOffsetY);
-    if (contentOffsetY === 0) {
-      setIsFirstClick(true);
-    }
-  };
-
-  const scrollToTop = () => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollToOffset({ offset: 0, animated: true });
-    }
-  };
-
-  const handleHomeButtonClick = () => {
-    if (isFirstClick) {
-      scrollToTop();
-      setIsFirstClick(false);
-    } else {
-      fetchData();
-      setIsFirstClick(true); 
-    }
-  };
+  // useEffect(() => {
+  //   fetchData();
+  // }, [page]);
 
   if (isLoading) {
     return (
@@ -86,30 +77,9 @@ const Sekil = () => {
     );
   }
 
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      // const res = await fetch(`http://192.168.1.72:8080/api/productItem/getAll?page=0&size=10`);
-      const res = await fetch(`https://api.escuelajs.co/api/v1/products`); 
-      const data = await res.json();
-      setData((prevData) => [...prevData, ...data]);
-      console.log("API'den gelen veri:", data[0]); // API yanıtını burada konsola yazdırın
-    }catch (error) {
-      console.error("API isteği sırasında hata:", error);
-      Alert.alert("Hata", "Veriler yüklenirken bir sorun oluştu.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, [Data]);
-
-
   return (
     <View style={styles.container}>
       <Header />
-
       <FlatList
         ref={scrollViewRef}
         data={Data}
@@ -126,21 +96,12 @@ const Sekil = () => {
             }
           />
         )}
-        keyExtractor={(item) => item.id} 
+        keyExtractor={(item, index) => `${item.description}-${index}`}
         showsVerticalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        ListHeaderComponent={<Reklam />}
-        onEndReached={loadMore}
+        // onEndReached={loadMore}
         onEndReachedThreshold={0.5}
+        ListHeaderComponent={<Reklam />}
       />
-
-      {/* BottomLink kısmı */}
-      <View style={styles.bottomLinkContainer}>
-        <TouchableOpacity onPress={handleHomeButtonClick}>
-          <Text style={styles.homeButtonText}>Home</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -149,6 +110,9 @@ const Card = ({ item, onDetailPress }) => {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const [isShared, setIsShared] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
+  const longText = item.category;
+  const maxLength = 18;
+  const navigation = useNavigation();
 
   const handleFavoriteToggle = () => {
     if (isFavorite(item)) {
@@ -177,14 +141,18 @@ const Card = ({ item, onDetailPress }) => {
     }).catch((error) => Alert.alert("Paylaşım Hatası", error.message));
   };
 
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
+
   return (
-    <View style={styles.card}>
+  <View className="flex items-center justify-center">
+      <View style={styles.card}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Image source={{  uri: item.images[0] }} style={styles.avatar} />
-          <Text className="font-semibold">Aclass</Text>
+          <Image source={{ uri: item.image }} style={styles.avatar} />
+          <Text className="font-semibold">{truncateText(longText, maxLength)}</Text>
         </View>
-
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.ion}>
             <Ionicons name="navigate-circle" size={35} color="#54342b" />
@@ -199,17 +167,15 @@ const Card = ({ item, onDetailPress }) => {
       </View>
 
       <TouchableOpacity onPress={onDetailPress}>
-        {/* <Image source={{ uri: 'data:image/jpeg;base64,'+item.images[0] }} style={styles.image} /> */}
-        <Image source={{ uri: item.images[0] }} style={styles.image} />
-
+        <Image source={{ uri: item.image }} style={styles.image} />
       </TouchableOpacity>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.title}> {item.title}</Text>
+        <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.description}>{item.description}</Text>
         <View style={styles.footer}>
           <Text style={styles.price}>{item.price} ₼</Text>
-          <TouchableOpacity style={styles.addToCartButton}>
+          <TouchableOpacity style={styles.addToCartButton}  onPress={() => navigation.navigate('Sebetim')}>
             <Text style={styles.addToCartText}>Səbətə yüklə</Text>
           </TouchableOpacity>
         </View>
@@ -231,15 +197,12 @@ const Card = ({ item, onDetailPress }) => {
         <BasketAnimation />
         <TouchableOpacity onPress={handleShare} style={{ padding: 10 }}>
           <Animated.View style={{ transform: [{ rotate: shareRotate }] }}>
-            <Feather
-              name={isShared ? "share" : "share-2"}
-              size={24}
-              color="black"
-            />
+            <Ionicons name="share-social-outline" size={30} color="black" />
           </Animated.View>
         </TouchableOpacity>
       </View>
     </View>
+  </View>
   );
 };
 
@@ -247,14 +210,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+  
   },
   skeletonContainer: {
     width: "100%",
     alignItems: "center",
     paddingVertical: 20,
+   
   },
   card: {
-    width: "100%",
+    width: "95%",
     marginBottom: 20,
     borderRadius: 15,
     backgroundColor: "#fff",
@@ -264,14 +229,16 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 5,
     overflow: "hidden",
-    marginTop: 20, // Daha uygun bir başlangıç noktası
-    paddingBottom: 20, // Kartın alt kısmına padding ekledim
+    marginTop: 60,
+   
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10,
+    paddingHorizontal: 10,
+    margingBottom:10,
     backgroundColor: "#f8f9f9",
+    padding:10,
   },
   headerLeft: {
     flexDirection: "row",
@@ -301,6 +268,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: height * 0.3,
     resizeMode: "contain",
+    marginTop:20,
   },
   infoContainer: {
     padding: 10,
@@ -342,12 +310,10 @@ const styles = StyleSheet.create({
   animations: {
     flexDirection: "row",
     justifyContent: "space-around",
-    padding: 10,
     backgroundColor: "#f1f1f1",
   },
   bottomLinkContainer: {
     position: "absolute",
-    bottom: 10,
     left: "50%",
     transform: [{ translateX: -width * 0.5 }],
     backgroundColor: "#fff",
@@ -358,6 +324,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#00f",
+  },
+  ion: {
+    marginRight: 5,
   },
 });
 

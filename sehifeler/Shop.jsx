@@ -1,6 +1,5 @@
 import React from 'react';
 import { View,StyleSheet} from 'react-native';
-import Bottomlink from '../components/Bottomlink';
 
 
 const Shop = () => {
@@ -9,7 +8,6 @@ const Shop = () => {
   return (
     <View style={styles.container}>
      
-      <Bottomlink />
     </View>
   );
 };

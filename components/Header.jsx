@@ -1,55 +1,61 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Search2 from "./Search2";
 
 const Header = () => {
   return (
-    <View style={{ alignItems: "center", flex: 1 }}>
-      <View
-        style={{
-          alignItems: "center",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          paddingHorizontal: 15,
-          height: 50,
-          borderBottomColor: "gray",
-          borderWidth: 0.5,
-          borderColor: "#ffecfb",
-          borderBottomLeftRadius: 20,
-          borderBottomRightRadius: 20,
-          backgroundColor: "#fffbfb",
-          zIndex: 1000,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 4, 
-          },
-          shadowOpacity: 0.3, 
-          shadowRadius: 4.65, 
-          elevation: 8, 
-        }}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ fontSize: 20, fontWeight: "bold", color: "orange" }}>
-            Aclass
-          </Text>
-        </View>
-
-        <TouchableOpacity>
-          <Search2 />
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Ionicons name="notifications-circle" size={30} color="black" />
-        </TouchableOpacity>
+    <View style={styles.headerContainer}>
+      {/* Logo Section */}
+      <View style={styles.logoContainer}>
+        <Text style={styles.logoText}>Aclass</Text>
       </View>
+
+      {/* Search Section */}
+      <View style={styles.searchWrapper}>
+        <Search2 />
+      </View>
+
+      {/* Notification Section */}
+      <TouchableOpacity>
+        <Ionicons name="notifications-circle" size={30} />
+      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 15,
+    height: 60,
+    backgroundColor: "#fff",
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    borderWidth: 0.5,
+    borderColor: "#f5f5f5",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 8,
+    zIndex: 1000,
+  },
+  logoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  logoText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    
+  },
+  searchWrapper: {
+    flex: 1,
+    marginHorizontal: 10,
+  },
+});
 
 export default Header;

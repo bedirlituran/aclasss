@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/3.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "blue"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,7 +21,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/3.png",
-        "backgroundColor": "#000000"
+        "backgroundColor": "blue"
       }
     },
     "web": {

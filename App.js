@@ -20,7 +20,6 @@ const App = () => {
           />
           <NavigationContainer>
             <Navigation />
-          <Bottomlink/>
 
           </NavigationContainer>
         </SafeAreaView>

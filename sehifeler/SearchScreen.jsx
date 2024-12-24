@@ -11,7 +11,6 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import Bottomlink from "../components/Bottomlink";
 
 const images = {
   Kişi: "https://images.pexels.com/photos/3147528/pexels-photo-3147528.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
@@ -199,7 +198,6 @@ const SearchScreen = () => {
       />
 
       <Tabs data={data} scrollX={scrollX} onİtemPress={onİtemPress} />
-      <Bottomlink />
     </View>
   );
 };

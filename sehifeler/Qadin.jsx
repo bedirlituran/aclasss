@@ -10,7 +10,6 @@ import {
   Dimensions,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import Bottomlink from "../components/Bottomlink";
 export default function Qadin() {
   const windowWidth = Dimensions.get("window").width;
   const itemWidth = windowWidth * 0.8;
@@ -267,7 +266,6 @@ export default function Qadin() {
         </View>
       </ScrollView>
 
-      <Bottomlink />
     </View>
   );
 }

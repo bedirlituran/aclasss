@@ -6,11 +6,13 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+
 } from "react-native";
 import { useFavorites } from "../FavoriteContext";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
+
 
 
 const FavoriteScreen = () => {
@@ -45,31 +47,32 @@ const FavoriteScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Favorilerim</Text>
+       <View style={styles.container}>
+      <Text style={styles.header}>Bəyəndiyim məhsullar</Text>
       {favorites.length === 0 ? (
-        <Text style={styles.emptyText}>Henüz favorilere eklenmiş ürün yok.</Text>
+        <Text style={styles.emptyText}>Hələki seçdiyiniz məhsul yoxdur.</Text>
       ) : (
         <FlatList
           data={favorites}
           renderItem={renderFavoriteItem}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>
+   
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9f9f9",
     padding: 10,
   },
   header: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "600",
     marginBottom: 20,
     textAlign: "center",
   },
@@ -83,6 +86,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: "hidden",
     shadowColor: "#000",
+    padding:10,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -92,12 +96,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: "contain",
-    backgroundColor: "#f2f2f2",
   },
   info: {
     flex: 1,
     padding: 10,
     justifyContent: "space-between",
+    
   },
   title: {
     fontSize: 16,

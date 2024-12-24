@@ -1,67 +1,64 @@
-import React,{useState,useRef} from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-
+import { useNavigation,useNavigationState } from "@react-navigation/native";
 const Bottomlink = ({ scrollY, isFirstClick, scrollToTop }) => {
   const navigation = useNavigation();
-  const [isFirstClickB, setIsFirstClick] = useState(isFirstClick);
-  const handlePress = () => {
-    if (isFirstClickB) {
+  const [selectedTab, setSelectedTab] = useState('Sekil');  // Başlangıçta 'Sekil' seçili
 
+  const handlePress = (screenName) => {
+    if (isFirstClick) {
       navigation.reset({ index: 0, routes: [{ name: 'Sekil' }] });
-      setIsFirstClick(false);
+    } else if (scrollY > 0) { // scrollY'nin 0'dan büyük olup olmadığını kontrol et
+      scrollToTop();
     } else {
-      if (scrollY > 0) {
-     
-        scrollToTop();
-      } else {
-       
-        navigation.navigate('Sekil'); 
-      }
-
-      setIsFirstClick(true); 
+      navigation.navigate(screenName);
     }
+    
+    setSelectedTab(screenName);  // Tıklanan tab'ı seçili hale getir
+  };
+  
+  
+  // Sekme için stil belirleme
+  const getTabStyle = (tabName) => {
+    return selectedTab === tabName ? styles.selectedTab : styles.defaultTab;
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={handlePress}>
-        <Ionicons name="home" size={25} color="#54342b" />
-        <Text style={styles.label}>Ana Səhifə</Text>
-      </TouchableOpacity>
-      
       <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("SearchScreen")}
+        style={[styles.button, getTabStyle('Sekil')]}
+        onPress={() => handlePress('Sekil')}
       >
-        <FontAwesome name="search" size={25} color="#54342b" />
-        <Text style={styles.label}>Axtar</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("FavoriteScreen")}
-      >
-        <FontAwesome name="heartbeat" size={24} color="#54342b"
-         />
-        <Text style={styles.label}>Bəyənilər</Text>
+        <Ionicons name="home" size={25} color={selectedTab === 'Sekil' ? '#fb5607' : '#54342b'} />
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Sebetim")}
+        style={[styles.button, getTabStyle('SearchScreen')]}
+        onPress={() => handlePress('SearchScreen')}
       >
-        <Ionicons name="cart" size={30} color="#54342b" />
-        <Text style={styles.label}>Səbətim</Text>
+        <FontAwesome name="search" size={25} color={selectedTab === 'SearchScreen' ? '#fb5607' : '#54342b'}/>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Profile")}
+        style={[styles.button, getTabStyle('FavoriteScreen')]}
+        onPress={() => handlePress('FavoriteScreen')}
       >
-        <Ionicons name="person" size={25} color="#54342b" />
-        <Text style={styles.label}>Profil</Text>
+        <FontAwesome name="heartbeat" size={24} color={selectedTab === 'FavoriteScreen' ? '#fb5607' : '#54342b'} />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.button, getTabStyle('Sebetim')]}
+        onPress={() => handlePress('Sebetim')}
+      >
+        <Ionicons name="cart" size={30} color={selectedTab === 'Sebetim' ? '#fb5607' : '#54342b'} />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.button, getTabStyle('Profile')]}
+        onPress={() => handlePress('Profile')}
+      >
+        <Ionicons name="person" size={25} color={selectedTab === 'Profile' ? '#fb5607' : '#54342b'} />
       </TouchableOpacity>
     </View>
   );
@@ -88,11 +85,11 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 4, 
+      height: 4,
     },
-    shadowOpacity: 0.3, 
-    shadowRadius: 4.65, 
-    elevation: 8, 
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
   button: {
     flexDirection: "column",
@@ -102,6 +99,14 @@ const styles = StyleSheet.create({
     marginTop: 1,
     fontSize: 12,
     color: "black",
+  },
+  selectedTab: {
+    opacity: 1,  // Seçilen butonun opaklık değeri
+    transform: [{ scale: 1.2 }], // Seçilen buton biraz daha büyük olacak
+   
+  },
+  defaultTab: {
+    backgroundColor: "transparent", // Varsayılan tabda arka plan yok
   },
 });
 

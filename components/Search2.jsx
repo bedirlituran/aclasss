@@ -1,20 +1,22 @@
 import React, { useState, useRef } from 'react';
 import { View, TextInput, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Arama ikonu için
+import { Ionicons } from '@expo/vector-icons';
 
 const Search2 = () => {
   const [isFocused, setIsFocused] = useState(false);
-  const inputWidth = useRef(new Animated.Value(100)).current; // İlk genişlik küçük
+  const inputWidth = useRef(new Animated.Value(100)).current; // İlk genişlik ayarı
 
+  // Genişleme animasyonu için
   const handleFocus = () => {
     setIsFocused(true);
     Animated.timing(inputWidth, {
-      toValue: 180, // Tıklandığında genişleyeceği alan
+      toValue: 180, // Tıklandığında genişleyecek alan
       duration: 300,
       useNativeDriver: false,
     }).start();
   };
 
+  // Daralma animasyonu için
   const handleBlur = () => {
     setIsFocused(false);
     Animated.timing(inputWidth, {
@@ -24,6 +26,7 @@ const Search2 = () => {
     }).start();
   };
 
+  // Input dışında bir yere tıklandığında
   const handleOutsidePress = () => {
     if (isFocused) {
       handleBlur();
@@ -33,17 +36,19 @@ const Search2 = () => {
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
-        <TouchableWithoutFeedback onPress={handleFocus}>
-          <Animated.View style={[styles.searchContainer, { width: inputWidth }]}>
-            <Ionicons name="search" size={20} color="#54342b" style={styles.icon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Axtar"
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-            />
-          </Animated.View>
-        </TouchableWithoutFeedback>
+        <Animated.View style={[styles.searchContainer, { width: inputWidth }]}>
+        
+          <TextInput
+            style={styles.input}
+            placeholder="Axtar..."
+            placeholderTextColor="#999"
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+            {/* Arama ikonu */}
+            <Ionicons name="search" size={18} color="#54342b" style={styles.icon} />
+          {/* TextInput alanı */}
+        </Animated.View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -51,27 +56,24 @@ const Search2 = () => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
   },
   searchContainer: {
     flexDirection: 'row',
-    height: 40,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 20,
     alignItems: 'center',
-    paddingHorizontal:10,
-    justifyContent: 'center',
+    height: 40,
+    borderRadius: 20,
+    borderBottomColor:"black",
+    borderBottomWidth: 1,
   },
   input: {
     flex: 1,
     fontSize: 16,
-    marginLeft: 5, // İkonla input arasında boşluk
+    color: '#333', // Giriş metni rengi
+    marginLeft: 8, // İkonla boşluk
   },
-  icon: {
-    marginRight: 5,
-  },
+  
 });
 
 export default Search2;
