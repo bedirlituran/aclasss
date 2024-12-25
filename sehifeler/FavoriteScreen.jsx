@@ -9,7 +9,6 @@ import {
   TouchableWithoutFeedback,
 
 } from "react-native";
-import { useFavorites } from "../FavoriteContext";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 

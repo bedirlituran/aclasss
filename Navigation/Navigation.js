@@ -13,42 +13,19 @@ import Esasgiris from "../sehifeler/Esasgiris";
 import Sebetim from "../sehifeler/Sebetim";
 import UrunDetay from "../sehifeler/UrunDetay";
 import FavoriteScreen from "../sehifeler/FavoriteScreen";
-import { FavoriteProvider } from "../FavoriteContext";
 import Sekil from "../components/Sekil";
-import { Ionicons } from "@expo/vector-icons";
-
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
+
+  
   return (
-    <FavoriteProvider>
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center", // Tüm başlıkları ortaya hizalar
         }}
       >
-       <Stack.Screen
-          name="Sebetim"
-          component={Sebetim}
-          options={{
-            headerTitle: "Səbətim",
-            headerTitleStyle: {
-              fontWeight: "bold",
-              fontSize: 18,
-            },
-            headerRight: () => (
-              <TouchableOpacity>
-                <Ionicons
-                  name="trash"
-                  size={23}
-                  color="#54342b"
-               
-                />
-              </TouchableOpacity>
-            ),
      
-        }}
-        />
         <Stack.Screen
           name="Sekil"
           component={Sekil}
@@ -70,7 +47,18 @@ const Navigation = () => {
         <Stack.Screen name="Kisi" component={Kisi} />
 
       
-
+        <Stack.Screen
+          name="Sebetim"
+          component={Sebetim}
+          options={{
+            headerTitle: "Səbətim",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 18,
+            },
+       
+        }}
+        />
 
         <Stack.Screen
           name="UrunDetay"
@@ -84,7 +72,6 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-    </FavoriteProvider>
   );
 };
 

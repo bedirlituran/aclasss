@@ -4,7 +4,7 @@ import Navigation from "./Navigation/Navigation";
 import { StatusBar, StyleSheet } from "react-native";
 import { SafeAreaProvider,SafeAreaView } from 'react-native-safe-area-context';
 import { Provider } from "react-redux";
-import Store from "../fuad/redux/Store";
+import Store from "./store/index";
 import "./global.css";
 import Bottomlink from "./components/Bottomlink";
 
@@ -20,8 +20,9 @@ const App = () => {
           />
           <NavigationContainer>
             <Navigation />
-
+            <Bottomlink />
           </NavigationContainer>
+          
         </SafeAreaView>
       </SafeAreaProvider>
     </Provider>

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet} from "react-native";
 import ProfileDetails from "../components/ProfileDetails";
+import Bottomlink from "../components/Bottomlink";
 
 const Profile = () => {
   return (
@@ -8,6 +9,7 @@ const Profile = () => {
       <View style={{flex:9}}>
       <ProfileDetails />
       </View>
+      <Bottomlink/>
     </View>
   );
 };
