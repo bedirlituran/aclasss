@@ -1,5 +1,4 @@
 import * as React from "react";
-import { TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Profile from "../sehifeler/Profile";
 import SearchScreen from "../sehifeler/SearchScreen";
@@ -29,7 +28,7 @@ const Navigation = () => {
         <Stack.Screen
           name="Sekil"
           component={Sekil}
-          options={{ headerShown: false }}
+          options={{ headerShown: false ,}}
         />
         <Stack.Screen
           name="Profile"
@@ -69,7 +68,12 @@ const Navigation = () => {
         <Stack.Screen
           name="FavoriteScreen"
           component={FavoriteScreen}
-          options={{ headerShown: false }}
+          options={{  headerTitle: "Bəyənilənlər",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 18, 
+            }}
+          }
         />
       </Stack.Navigator>
   );

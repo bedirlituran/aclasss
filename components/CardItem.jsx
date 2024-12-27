@@ -23,7 +23,7 @@ const CardItem = ({ item }) => {
   };
 
   return (
-    <View style={{ width: '100%' }}> {/* Tam ekran genişliği için */}
+    <View style={{ width: '100%' }}> 
       <View
         style={{
           width: '100%', // Kartın genişliğini tam ekran yapıyoruz
@@ -64,7 +64,6 @@ const CardItem = ({ item }) => {
           </View>
         </View>
 
-        {/* Miktar Kontrol */}
         <View
           style={{
             flexDirection: 'row',

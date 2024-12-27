@@ -11,11 +11,16 @@ import {
 } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
+import { useSelector,useDispatch } from "react-redux";
+import { addToCart, removeFromCart } from "../store/cartSlice";
+import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice"; // Beğeni slice'tan fonksiyonlar
+
 
 
 
 const FavoriteScreen = () => {
-  const { favorites, removeFromFavorites } = useFavorites();
+  const favorites = useSelector((state) => state.favorites.items);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const onDetailPress = (item) => {
     navigation.navigate("UrunDetay", {
@@ -26,6 +31,25 @@ const FavoriteScreen = () => {
     });
   };
 
+
+
+
+  const handleToggleFavorite = (product) => {
+  
+      dispatch(removeFromFavorites(product)); 
+   
+  };
+
+   // Sepete ürün ekleme fonksiyonu
+    const handleAddToCart = (product) => {
+      dispatch(addToCart(product)); // Sepete ürün ekleme
+    };
+  
+    // Sepetten ürün çıkarma fonksiyonu
+    const handleRemoveFromCart = (product) => {
+      dispatch(removeFromCart(product)); // Sepetten ürün çıkarma
+    };
+
   const renderFavoriteItem = ({ item }) => (
     <View style={styles.card}>
       <TouchableWithoutFeedback onPress={()=>{onDetailPress(item)}}>
@@ -35,7 +59,7 @@ const FavoriteScreen = () => {
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.price}>{item.price} ₼</Text>
         <TouchableOpacity
-          onPress={() => removeFromFavorites(item)}
+          onPress={() => handleToggleFavorite(item)}
           style={styles.removeButton}
         >
           <Ionicons name="trash" size={20} color="#fff" />
@@ -47,9 +71,8 @@ const FavoriteScreen = () => {
 
   return (
        <View style={styles.container}>
-      <Text style={styles.header}>Bəyəndiyim məhsullar</Text>
       {favorites.length === 0 ? (
-        <Text style={styles.emptyText}>Hələki seçdiyiniz məhsul yoxdur.</Text>
+        <Text style={styles.emptyText}>Hələki bəyəndiyiniz məhsul yoxdur.</Text>
       ) : (
         <FlatList
           data={favorites}
@@ -134,3 +157,6 @@ const styles = StyleSheet.create({
 });
 
 export default FavoriteScreen;
+
+
+

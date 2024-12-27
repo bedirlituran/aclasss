@@ -1,59 +1,50 @@
-import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet,Image } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { addReview } from '../store/reviewActions';
 
 const UrunDetay = ({ route }) => {
-  const { image, title, description, price } = route.params;
-  const [inputValue, setInputValue] = useState(""); // inputValue sadece bir yorum alacak
-  const [reviews, setReviews] = useState([]); // yorumları tutacak
-  const [loading, setLoading] = useState(false); // Yorum gönderme sırasında loader
+  const { title, description, price,image } = route.params;
+  const [inputValue, setInputValue] = useState(''); // Kullanıcının gireceği yorum
+  const reviews = useSelector((state) => state.reviews.reviews); // Redux store'dan yorumları alıyoruz
+  const dispatch = useDispatch(); // Dispatch fonksiyonunu alıyoruz
 
   const handleInputChange = (text) => {
-    setInputValue(text); // Kullanıcının girdiği değeri güncelliyoruz
+    setInputValue(text); // Yorum inputu güncelleniyor
   };
 
   const handleSubmit = () => {
     if (inputValue.trim()) {
-      setLoading(true); // Yorum eklenmeden önce loader'ı göster
-      setTimeout(() => {
-        // Yorum eklenmesi simülasyonu için timeout
-        const newReview = {
-          comment: inputValue,
-          date: new Date().toLocaleString(), // Yorumun tarihini ekliyoruz
-        };
-        setReviews((prevReviews) => [...prevReviews, newReview]); // Yorum ekleyip array'i güncelliyoruz
-        setInputValue(""); // Yorum ekledikten sonra inputu temizle
-        setLoading(false); // Yorum ekleme tamamlandığında loader'ı kaldır
-      }, 1000); // 1 saniyelik gecikme simülasyonu
+      const newReview = {
+        comment: inputValue,
+        date: new Date().toLocaleString(), // Yorum tarihi
+      };
+      dispatch(addReview(newReview)); // Redux store'a yeni yorumu ekliyoruz
+      setInputValue(''); // Yorum ekledikten sonra inputu sıfırlıyoruz
     } else {
-      console.log("Error", "Please enter a value.");
+      console.log('Error: Lütfen geçerli bir yorum girin.');
     }
   };
 
   return (
     <ScrollView style={styles.container}>
-      <Image source={{ uri: image }} style={styles.image} />
+      <Image source={{ uri: image }} style={styles.image}/>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.text}>{description}</Text>
       <Text style={styles.price}>{price}</Text>
-      <Text style={styles.subtitle}>Şərhlər</Text>
-      
+
       <TextInput
         style={styles.input}
         placeholder="Yorumunuzu girin"
         value={inputValue}
-        onChangeText={handleInputChange} // Kullanıcı girişini handle et
-        onSubmitEditing={handleSubmit} // "Enter" tuşuna basıldığında form gönderilsin
-        returnKeyType="done" // Klavye üzerinde "Done" tuşu görünsün
+        onChangeText={handleInputChange}
+        returnKeyType="done"
       />
-      
+
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        {loading ? (
-          <ActivityIndicator size="small" color="#fff" /> // Yükleme animasyonu
-        ) : (
-          <Text style={styles.buttonText}>Yorum Gönder</Text>
-        )}
+        <Text style={styles.buttonText}>Yorum Gönder</Text>
       </TouchableOpacity>
-      
+
       <View style={styles.reviewsContainer}>
         {reviews.length > 0 ? (
           reviews.map((review, index) => (
@@ -67,15 +58,16 @@ const UrunDetay = ({ route }) => {
         )}
       </View>
     </ScrollView>
-);};
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
-  image: {
+   image: {
     width: "70%",
     height: 240,
     borderRadius: 10,
@@ -84,7 +76,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginVertical: 10,
   },
   text: {
@@ -93,27 +85,22 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "green",
+    fontWeight: 'bold',
+    color: 'green',
     marginVertical: 10,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 10,
     padding: 10,
     marginVertical: 10,
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 20,
   },
   reviewsContainer: {
     marginTop: 20,
   },
   review: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: '#f9f9f9',
     padding: 10,
     borderRadius: 10,
     marginVertical: 5,
@@ -124,24 +111,24 @@ const styles = StyleSheet.create({
   },
   reviewDate: {
     fontSize: 12,
-    color: "#888",
+    color: '#888',
     marginVertical: 2,
   },
   noReview: {
-    fontStyle: "italic",
-    textAlign: "center",
+    fontStyle: 'italic',
+    textAlign: 'center',
     marginTop: 10,
-    color: "#888",
+    color: '#888',
   },
   button: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: '#4CAF50',
     padding: 10,
     borderRadius: 10,
     marginVertical: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   buttonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
   },
 });

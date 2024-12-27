@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { useNavigation,useNavigationState } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
+
 const Bottomlink = ({ scrollY, isFirstClick, scrollToTop }) => {
   const navigation = useNavigation();
-  const [selectedTab, setSelectedTab] = useState('Sekil');  // Başlangıçta 'Sekil' seçili
+  const currentRoute = useNavigationState(state => state?.routes[state?.index]?.name); // Safe access
+  const [lastTabPress, setLastTabPress] = useState(null); // Son tıklanan sekme bilgisi
 
   const handlePress = (screenName) => {
-    if (isFirstClick) {
-      navigation.reset({ index: 0, routes: [{ name: 'Sekil' }] });
-    } else if (scrollY > 0) { // scrollY'nin 0'dan büyük olup olmadığını kontrol et
-      scrollToTop();
+    if (currentRoute === screenName) {
+      // Eğer şu anda aynı sayfadaysak
+      if (lastTabPress === screenName) {
+        navigation.reset({ index: 0, routes: [{ name: screenName }] }); // Sayfayı yenile
+      }
     } else {
+      // Başka bir sekmeden geliyorsak yalnızca yönlendir
       navigation.navigate(screenName);
     }
-    
-    setSelectedTab(screenName);  // Tıklanan tab'ı seçili hale getir
+
+    setLastTabPress(screenName); // Son tıklanan sekme güncellenir
   };
-  
-  
+
   // Sekme için stil belirleme
   const getTabStyle = (tabName) => {
-    return selectedTab === tabName ? styles.selectedTab : styles.defaultTab;
+    return currentRoute === tabName ? styles.selectedTab : styles.defaultTab;
   };
 
   return (
@@ -30,35 +33,35 @@ const Bottomlink = ({ scrollY, isFirstClick, scrollToTop }) => {
         style={[styles.button, getTabStyle('Sekil')]}
         onPress={() => handlePress('Sekil')}
       >
-        <Ionicons name="home" size={25} color={selectedTab === 'Sekil' ? '#fb5607' : '#54342b'} />
+        <Ionicons name="home" size={25} color={currentRoute === 'Sekil' ? '#fb5607' : '#54342b'} />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.button, getTabStyle('SearchScreen')]}
         onPress={() => handlePress('SearchScreen')}
       >
-        <FontAwesome name="search" size={25} color={selectedTab === 'SearchScreen' ? '#fb5607' : '#54342b'}/>
+        <FontAwesome name="search" size={25} color={currentRoute === 'SearchScreen' ? '#fb5607' : '#54342b'} />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.button, getTabStyle('FavoriteScreen')]}
         onPress={() => handlePress('FavoriteScreen')}
       >
-        <FontAwesome name="heartbeat" size={24} color={selectedTab === 'FavoriteScreen' ? '#fb5607' : '#54342b'} />
+        <FontAwesome name="heartbeat" size={24} color={currentRoute === 'FavoriteScreen' ? '#fb5607' : '#54342b'} />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.button, getTabStyle('Sebetim')]}
         onPress={() => handlePress('Sebetim')}
       >
-        <Ionicons name="cart" size={30} color={selectedTab === 'Sebetim' ? '#fb5607' : '#54342b'} />
+        <Ionicons name="cart" size={30} color={currentRoute === 'Sebetim' ? '#fb5607' : '#54342b'} />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.button, getTabStyle('Profile')]}
         onPress={() => handlePress('Profile')}
       >
-        <Ionicons name="person" size={25} color={selectedTab === 'Profile' ? '#fb5607' : '#54342b'} />
+        <Ionicons name="person" size={25} color={currentRoute === 'Profile' ? '#fb5607' : '#54342b'} />
       </TouchableOpacity>
     </View>
   );
@@ -95,18 +98,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
   },
-  label: {
-    marginTop: 1,
-    fontSize: 12,
-    color: "black",
-  },
   selectedTab: {
-    opacity: 1,  // Seçilen butonun opaklık değeri
+    opacity: 1,
     transform: [{ scale: 1.2 }], // Seçilen buton biraz daha büyük olacak
-   
   },
   defaultTab: {
-    backgroundColor: "transparent", // Varsayılan tabda arka plan yok
+    backgroundColor: "transparent",
   },
 });
 

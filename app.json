@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "A_class",
+    "scheme":"aclass",
     "slug": "A_class",
     "newArchEnabled": true,
     "version": "1.0.0",

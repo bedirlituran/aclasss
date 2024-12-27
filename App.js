@@ -7,8 +7,21 @@ import { Provider } from "react-redux";
 import Store from "./store/index";
 import "./global.css";
 import Bottomlink from "./components/Bottomlink";
+import * as Linking from 'expo-linking'
+
+const prefix  = Linking.createURL('/')
 
 const App = () => {
+  const linking = {
+    prefixes: [prefix],
+    config:{
+      screens: {
+        Sekil: {
+          path:'Sekil'
+        },
+      }
+    }
+  }
   return (
     <Provider store={Store}>
       <SafeAreaProvider>
@@ -18,7 +31,7 @@ const App = () => {
             translucent={false} // Şeffaflığı kapatır
             backgroundColor="#ffffff" // Arka plan rengini beyaz yapar
           />
-          <NavigationContainer>
+          <NavigationContainer  linking={linking}>
             <Navigation />
             <Bottomlink />
           </NavigationContainer>

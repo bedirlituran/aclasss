@@ -21,20 +21,20 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Reklam from "../components/Reklam";
 import Header from "../components/Header";
 import axios from "axios";
-import { useDispatch } from 'react-redux'; // Redux dispatch'i kullanmak için ekledik
-import { addToCart } from '../store/cartSlice'; // Sepete ekleme işlemi için action
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../store/cartSlice";
+import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 const { height, width } = Dimensions.get("window");
 
 const Sekil = () => {
   const [Data, setData] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const navigation = useNavigation();
-  const scrollViewRef = useRef(null); // FlatList referansı
+  const scrollViewRef = useRef(null);
   const [page, setPage] = useState(0);
-  const dispatch = useDispatch(); // Redux dispatch hook'unu kullanıyoruz
+  const dispatch = useDispatch();
 
   const loadMore = async () => {
     if (isFetchingMore || page >= maxPage) return; // maxPage sınırını kontrol edin
@@ -45,25 +45,18 @@ const Sekil = () => {
       setIsFetchingMore(false);
     }
   };
-  
 
-  // Verileri çekip karıştırma işlemi
   const fetchData = async () => {
-    // setIsLoading(true);
+    setIsLoading(true);
     try {
-      const res = await axios.get(
-        `https://fakestoreapi.com/products`
-      );
-
-      // Verileri karıştırma (rastgele sıralama)
+      const res = await axios.get(`https://fakestoreapi.com/products`);
       const shuffledData = res.data.sort(() => Math.random() - 0.5);
-
-      setData((prevData) => [...prevData, ...shuffledData]); // Yeni verileri mevcut verilere ekliyoruz
+      setData((prevData) => [...prevData, ...shuffledData]);
     } catch (error) {
       console.error("API isteği sırasında hata:", error);
       Alert.alert("Hata", "Veriler yüklenirken bir sorun oluştu.");
     } finally {
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -71,20 +64,20 @@ const Sekil = () => {
     fetchData();
   }, [page]);
 
-  // if (isLoading) {
-  //   return (
-  //     <View style={styles.skeletonContainer}>
-  //       {[...Array(3)].map((_, index) => (
-  //         <SkeletonLoader key={index} />
-  //       ))}
-  //     </View>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <View style={styles.skeletonContainer}>
+        {[...Array(3)].map((_, index) => (
+          <SkeletonLoader key={index} />
+        ))}
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <Header />
-
+      {/* VirtualizedList kullanımı */}
       <FlatList
         ref={scrollViewRef}
         data={Data}
@@ -99,27 +92,40 @@ const Sekil = () => {
                 price: item.price,
               })
             }
-            onAddToCart={() => dispatch(addToCart(item))} // Sepete ekleme işlemi
+            onAddToCart={() => dispatch(addToCart(item))}
           />
         )}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
+        initialNumToRender={5}
+        maxToRenderPerBatch={10}
+        windowSize={5}
+        removeClippedSubviews={true}
         ListHeaderComponent={<Reklam />}
       />
     </View>
   );
 };
 
-const Card = ({ item,onDetailPress, onAddToCart}) => {
+const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   const [isShared, setIsShared] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
   const longText = item.category;
   const maxLength = 18;
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites.items);
 
- 
+  const isFavorited = favorites.some((favItem) => favItem.id === item.id);
+
+  const handleToggleFavorite = (product) => {
+    if (isFavorited) {
+      dispatch(removeFromFavorites(product));
+    } else {
+      dispatch(addToFavorites(product));
+    }
+  };
 
   const shareRotate = animation.interpolate({
     inputRange: [0, 1],
@@ -141,12 +147,8 @@ const Card = ({ item,onDetailPress, onAddToCart}) => {
   };
 
   const truncateText = (text, maxLength) => {
-    return text.length > maxLength
-      ? text.substring(0, maxLength) + "..."
-      : text;
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
-
-
 
   return (
     <View className="flex items-center justify-center">
@@ -172,7 +174,10 @@ const Card = ({ item,onDetailPress, onAddToCart}) => {
         </View>
 
         <TouchableOpacity onPress={onDetailPress}>
-          <Image source={{ uri: item.image }} style={styles.image} />
+          <Image
+            source={{ uri: item.image || "https://via.placeholder.com/150" }}
+            style={styles.image}
+          />
         </TouchableOpacity>
 
         <View style={styles.infoContainer}>
@@ -180,7 +185,7 @@ const Card = ({ item,onDetailPress, onAddToCart}) => {
           <Text style={styles.description}>{item.description}</Text>
           <View style={styles.footer}>
             <Text style={styles.price}>{item.price} ₼</Text>
-           
+
             <TouchableOpacity
               style={styles.addToCartButton}
               onPress={onAddToCart}
@@ -192,15 +197,12 @@ const Card = ({ item,onDetailPress, onAddToCart}) => {
         </View>
 
         <View style={styles.animations}>
-          <TouchableOpacity
-            // onPress={handleFavoriteToggle}
-            className="flex items-center justify-center"
-          >
-            {/* <Ionicons
-              name={isFavorite(item) ? "heart" : "heart-outline"}
-              size={30}
-              color={isFavorite(item) ? "#fb5607" : "black"}
-            /> */}
+          <TouchableOpacity onPress={() => handleToggleFavorite(item)}>
+            <MaterialCommunityIcons
+              name={isFavorited ? "heart" : "heart-plus-outline"}
+              size={24}
+              color={isFavorited ? "#fb5607" : "black"}
+            />
           </TouchableOpacity>
           <StarAnmimation />
           <BasketAnimation />
@@ -213,7 +215,7 @@ const Card = ({ item,onDetailPress, onAddToCart}) => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -317,6 +319,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     backgroundColor: "#f1f1f1",
+    alignItems: "center",
   },
   bottomLinkContainer: {
     position: "absolute",
@@ -335,7 +338,5 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
 });
-
-
 
 export default Sekil;
