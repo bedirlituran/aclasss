@@ -1,33 +1,40 @@
 {
   "expo": {
     "name": "A_class",
-    "scheme":"aclass",
+    "scheme": "aclass",
     "slug": "A_class",
     "newArchEnabled": true,
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/3.png",
+    "icon": "./assets/3.webp",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/3.png",
+      "image": "./assets/3.webp",
       "resizeMode": "contain",
-      "backgroundColor": "blue"
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bedirlituran.Aclass"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/3.png",
-        "backgroundColor": "blue"
-      }
+        "foregroundImage": "./assets/3.webp",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.bedirlituran.A_class"
     },
     "web": {
-      "favicon": "./assets/3.png",
+      "favicon": "./assets/3.webp",
       "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6296b4a9-0cc4-4ab0-ad4c-47c73dd76092"
+      }
     }
   }
 }

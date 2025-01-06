@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
     alignSelf: "flex-start",
+    paddingHorizontal: 20
   },
   removeText: {
     color: "#fff",

@@ -83,11 +83,11 @@ export default function Kisi() {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Image
+              {/* <Image
                 source={require("../assets/kisi/cins.png")}
                 resizeMode="cover"
                 style={{ borderRadius: 20, width: "120%", height: "150%" }}
-              />
+              /> */}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 16, fontWeight: "800", color: "black" }}>
@@ -111,11 +111,11 @@ export default function Kisi() {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Image
-                source={require("../assets/kisi/klassik.png")}
+              {/* <Image
+                source={require("../assets/kisi/cins.png")}
                 resizeMode="cover"
                 style={{ borderRadius: 20, width: "120%", height: "150%" }}
-              />
+              /> */}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 16, fontWeight: "800", color: "black" }}>
@@ -139,11 +139,11 @@ export default function Kisi() {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Image
-                source={require("../assets/kisi/koynek.png")}
+              {/* <Image
+                source={require("../assets/kisi/cins.png")}
                 resizeMode="cover"
                 style={{ borderRadius: 20, width: "120%", height: "150%" }}
-              />
+              /> */}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 16, fontWeight: "800", color: "black" }}>
@@ -167,11 +167,11 @@ export default function Kisi() {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Image
+              {/* <Image
                 source={require("../assets/kisi/ayaqqabi.png")}
                 resizeMode="cover"
                 style={{ borderRadius: 20, width: "120%", height: "150%" }}
-              />
+              /> */}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 14, fontWeight: "800", color: "black" }}>
@@ -195,11 +195,11 @@ export default function Kisi() {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Image
+              {/* <Image
                 source={require("../assets/kisi/sport.png")}
                 resizeMode="cover"
                 style={{ borderRadius: 20, width: "120%", height: "150%" }}
-              />
+              /> */}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 16, fontWeight: "800", color: "black" }}>
@@ -223,11 +223,11 @@ export default function Kisi() {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Image
-                source={require("../assets/kisi/alt.png")}
+              {/* <Image
+                source={require("../assets/kisi/cins.png")}
                 resizeMode="cover"
                 style={{ borderRadius: 20, width: "120%", height: "150%" }}
-              />
+              /> */}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 16, fontWeight: "800", color: "black" }}>
@@ -251,11 +251,11 @@ export default function Kisi() {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Image
+              {/* <Image
                 source={require("../assets/kisi/kurtka.png")}
                 resizeMode="cover"
                 style={{ borderRadius: 20, width: "120%", height: "150%" }}
-              />
+              /> */}
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 16, fontWeight: "800", color: "black" }}>

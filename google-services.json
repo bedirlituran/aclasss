@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "535658267294",
+    "project_id": "aclass-6d497",
+    "storage_bucket": "aclass-6d497.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535658267294:android:80cb5e89baca49d896318f",
+        "android_client_info": {
+          "package_name": "com.bedirlituran.Aclass"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1LZQLliGNkYhuqE8d2gcmPCRyNDmAdfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

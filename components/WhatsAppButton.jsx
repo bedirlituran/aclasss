@@ -25,7 +25,7 @@ const WhatsAppButton = ({ phoneNumber, message }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={openWhatsApp}>
-        <Ionicons name="logo-whatsapp" size={24} color="#fff" />
+        <Ionicons name="logo-whatsapp" size={24} color="black" style={styles.iconStyle}/>
       </TouchableOpacity>
     </View>
   );
@@ -38,13 +38,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
   },
+  iconStyle:{
+    backgroundColor:'#f8f9f9',
+    shadowColor:'black',
+    shadowOffset:{width:0, height:0},
+    shadowOpacity:0.5,
+    shadowRadius:2,
+    elevation:3,
+    borderRadius:20,
+    padding:4
+  },
   button: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#25D366", // WhatsApp'ın yeşil tonu
     paddingVertical: 3,
     paddingHorizontal: 3,
     borderRadius: 25,
+    
  
   },
 

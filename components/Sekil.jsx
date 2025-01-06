@@ -62,7 +62,7 @@ const Sekil = () => {
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -77,7 +77,6 @@ const Sekil = () => {
   return (
     <View style={styles.container}>
       <Header />
-      {/* VirtualizedList kullanımı */}
       <FlatList
         ref={scrollViewRef}
         data={Data}
@@ -95,7 +94,7 @@ const Sekil = () => {
             onAddToCart={() => dispatch(addToCart(item))}
           />
         )}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => `${item.id}-${item.price}`} 
         showsVerticalScrollIndicator={false}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
@@ -162,13 +161,13 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
           </View>
           <View style={styles.headerRight}>
             <TouchableOpacity style={styles.ion}>
-              <Ionicons name="navigate-circle" size={35} color="#54342b" />
+            <Ionicons name="navigate-circle-outline" size={27} color="black" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.whatsAppButton}>
+            <TouchableOpacity style={styles.kolge}>
               <WhatsAppButton />
             </TouchableOpacity>
             <TouchableOpacity style={styles.followButton}>
-              <Text style={styles.followText}>Izlə</Text>
+              <Text style={styles.followText}>izlə +</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -261,16 +260,27 @@ const styles = StyleSheet.create({
   headerRight: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent:'center'
   },
   followButton: {
-    backgroundColor: "#e0e0e0",
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
     marginLeft: 8,
+    borderColor:'lightgray',
+    borderWidth:0.4,
+    shadowColor:'black',
+    shadowOffset:{width:0, height:2},
+    shadowOpacity:0.5,
+    shadowRadius:2,
+    elevation:2,
+    overflow: "hidden",
+    backgroundColor:'white'
   },
   followText: {
     fontWeight: "bold",
+    color: "black",
+  
   },
   image: {
     width: "100%",
@@ -299,9 +309,10 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "green",
   },
   addToCartButton: {
-    backgroundColor: "#ff6347",
+    backgroundColor: "#fb5607",
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5,
@@ -313,7 +324,7 @@ const styles = StyleSheet.create({
   stock: {
     marginTop: 10,
     fontSize: 14,
-    color: "green",
+    color: "blue",
   },
   animations: {
     flexDirection: "row",
@@ -336,6 +347,14 @@ const styles = StyleSheet.create({
   },
   ion: {
     marginRight: 5,
+    backgroundColor:'#f8f9f9',
+    shadowColor:'black',
+    shadowOffset:{width:0, height:0},
+    shadowOpacity:0.5,
+    shadowRadius:2,
+    elevation:3,
+    borderRadius:20,
+    padding:3
   },
 });
 

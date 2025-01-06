@@ -11,17 +11,18 @@ const ProfileDetails = () => {
         }}
       >
         <Image
-          source={require("../assets/3.png")}
-          style={{ width: 100, height: 100, borderRadius: 50,marginBottom:10 }}
+          source={{uri:('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3N5jeFH2PTk7tx5nUsWNOzB_IuUxd67m8hw&s')}}
+          style={{ width: 100, height: 100, borderRadius: 50,marginBottom:10,borderWidth:1,borderColor:'green',shadowRadius:0.5,shadowOpacity:10 }}
+          resizeMode="contain"
         />
-      <Text style={{ fontSize: 24, fontWeight: "bold", color: "black",margin:20,marginBottom:30 }}>Profil adi</Text>
+      <Text style={{ fontSize: 24, fontWeight: "bold", color: "black",margin:20,marginBottom:30 }}>Colins</Text>
 
       </View>
-      <Text>React Native Developer</Text>
-      <Text>Insagram clone</Text>
+      <Text className="font-bold text-lg">Hər növ geyimlər</Text>
+      <Text>Məkan:Binəqədi 8mkr Cəfər Xəndan kwcəsi</Text>
       <Text style={{ color: "black",fontSize: 16,fontWeight: "bold" }}>See transactions</Text>
         <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 15,marginHorizontal: 10 }}>
-          <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", gap: 5,justifyContent: "center" }}>
+          {/* <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", gap: 5,justifyContent: "center" }}>
               <Text style={{
                 backgroundColor:"black",
                 width: "75%",
@@ -31,8 +32,8 @@ const ProfileDetails = () => {
                 borderRadius: 5,
                 textAlign: "center",
                 color: "white",
-              }}>Edit Profile</Text>
-          </TouchableOpacity>
+              }}> Profile</Text>
+          </TouchableOpacity> */}
           
         </View>
     </View>

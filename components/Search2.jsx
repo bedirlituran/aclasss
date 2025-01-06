@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Search2 = () => {
   const [isFocused, setIsFocused] = useState(false);
-  const inputWidth = useRef(new Animated.Value(100)).current; // İlk genişlik ayarı
+  const inputWidth = useRef(new Animated.Value(50)).current; // İlk genişlik ayarı
 
   // Genişleme animasyonu için
   const handleFocus = () => {
@@ -40,10 +40,10 @@ const Search2 = () => {
         
           <TextInput
             style={styles.input}
-            placeholder="Axtar..."
             placeholderTextColor="#999"
             onFocus={handleFocus}
             onBlur={handleBlur}
+            placeholder='axtar...'
           />
             {/* Arama ikonu */}
             <Ionicons name="search" size={18} color="#54342b" style={styles.icon} />
@@ -58,14 +58,15 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-between',
     alignItems: 'center',
+    width:'10px'
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 40,
+    height: 'auto',
     borderRadius: 20,
     borderBottomColor:"black",
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
   },
   input: {
     flex: 1,

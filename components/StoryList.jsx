@@ -3,12 +3,12 @@ import { ScrollView, View, Text, FlatList, StyleSheet, Image } from "react-nativ
 
 const StoryList = () => {
   const categories = [
-    { id: "1", name: "Qadın", image: require("../assets/womens_clothing.png") },
-    { id: "2", name: "Kishi ", image: require("../assets/mens_clothing.png") },
-    { id: "3", name: "Ushaq ", image: require("../assets/childrens_clothing.png") },
-    { id: "4", name: "Ayaqqabı", image: require("../assets/shoes.png") },
-    { id: "5", name: "Iç Geyim", image: require("../assets/icgeyim.png") },
-    // Diğer kategorileri ekleyebilirsiniz
+    // { id: "1", name: "Qadın", image: require("../assets/womens_clothing.png") },
+    // { id: "2", name: "Kishi ", image: require("../assets/mens_clothing.png") },
+    // { id: "3", name: "Ushaq ", image: require("../assets/childrens_clothing.png") },
+    // { id: "4", name: "Ayaqqabı", image: require("../assets/shoes.png") },
+    // { id: "5", name: "Iç Geyim", image: require("../assets/icgeyim.png") },
+    // // Diğer kategorileri ekleyebilirsiniz
   ];
 
   const renderItem = ({ item }) => (

@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
-const CardItem = ({ item }) => {
+const CardItem = ({ item ,id}) => {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
@@ -14,12 +14,12 @@ const CardItem = ({ item }) => {
     dispatch(removeFromCart(product)); // Sepetten ürün çıkarma
   };
 
-  const handleIncrement = (product) => {
-    dispatch(incrementQuantity(product)); // Miktarı artırma
+  const handleIncrement = (id) => {
+    dispatch(incrementQuantity({id})); // Miktarı artırma
   };
 
-  const handleDecrement = (product) => {
-    dispatch(decrementQuantity(product)); // Miktarı azaltma
+  const handleDecrement = (id) => {
+    dispatch(decrementQuantity({id})); // Miktarı azaltma
   };
 
   return (
@@ -79,7 +79,7 @@ const CardItem = ({ item }) => {
         >
           <TouchableOpacity
             style={{ flex: 1, alignItems: "center", borderWidth: 0.5, borderColor: 'lightgray' }}
-            onPress={() => handleDecrement(item)}
+            onPress={() => handleDecrement(item.id) } title="Decrease"
           >
             <Text style={{ fontWeight: '600', fontSize: 20 }}>-</Text>
           </TouchableOpacity>
@@ -90,13 +90,13 @@ const CardItem = ({ item }) => {
 
           <TouchableOpacity
             style={{ flex: 1, alignItems: "center", borderWidth: 0.5, borderColor: 'lightgray' }}
-            onPress={() => handleIncrement(item)}
+            onPress={() => handleIncrement(item.id)} title="Increase"
           >
             <Text style={{ fontWeight: '600', fontSize: 20 }}>+</Text>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={() => handleRemoveFromCart(item)}>
+        <TouchableOpacity onPress={() => handleRemoveFromCart(item)} title="Remove">
           <Ionicons name="trash" size={23} color="#54342b" />
         </TouchableOpacity>
       </View>

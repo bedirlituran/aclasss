@@ -7,29 +7,22 @@ import {
   Dimensions, 
 } from "react-native";
 import CardItem from "../components/CardItem"; 
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../store/cartSlice";
+import { useSelector } from "react-redux";
 
 const { height } = Dimensions.get("window");
 
-const Sebetim = () => {
+const Sebetim = ({removeFromCart, incrementQuantity, decrementQuantity }) => {
   const cartItems = useSelector((state) => state.cart.items);
-  const dispatch = useDispatch();
-
-  const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
-  };
-
-  const handleRemoveFromCart = (product) => {
-    dispatch(removeFromCart(product)); 
-  };
 
   return (
     <View style={styles.container}>
       <FlatList
         data={cartItems} 
-        keyExtractor={(item) => item.id.toString()} 
-        renderItem={({ item }) => <CardItem item={item} />}
+        keyExtractor={(item) => `${item.id}-${item.price}`} 
+        renderItem={({ item }) => <CardItem item={item}
+        removeFromCart={removeFromCart} 
+        incrementQuantity={incrementQuantity} 
+        decrementQuantity={decrementQuantity}/>}
       />
       <View style={styles.view}>
         {cartItems.length === 0 ? (
@@ -48,7 +41,7 @@ const Sebetim = () => {
                 {cartItems.reduce(
                   (acc, item) => acc + item.price * item.quantity,
                   0
-                )}
+                ).toFixed(2)}
                 <Text>₼</Text>
                 
               </Text>

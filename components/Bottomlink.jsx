@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet,Text } from 'react-native';
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { useSelector } from "react-redux"; // Redux state yönetimi için hook
 
 const Bottomlink = ({ scrollY, isFirstClick, scrollToTop }) => {
   const navigation = useNavigation();
   const currentRoute = useNavigationState(state => state?.routes[state?.index]?.name); // Safe access
   const [lastTabPress, setLastTabPress] = useState(null); // Son tıklanan sekme bilgisi
-
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity); // Redux'tan toplam ürün sayısını al
   const handlePress = (screenName) => {
     if (currentRoute === screenName) {
       // Eğer şu anda aynı sayfadaysak
@@ -51,11 +52,46 @@ const Bottomlink = ({ scrollY, isFirstClick, scrollToTop }) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, getTabStyle('Sebetim')]}
-        onPress={() => handlePress('Sebetim')}
+  style={[styles.button, getTabStyle('Sebetim')]}
+  onPress={() => handlePress('Sebetim')}
+>
+  <View style={{ position: 'relative' }}>
+    <Ionicons
+      name="cart"
+      size={30}
+      color={currentRoute === 'Sebetim' ? '#fb5607' : '#54342b'}
+    />
+    
+    {totalQuantity > 0 && (
+      <View
+        style={{
+          position: 'absolute', // Üst üste gelecek
+          top: -10, // Yükseklik için ayar
+          right: -14, // Sağ tarafa yerleştirmek için
+          width: 20, // Küçük boyut
+          height: 20, // Küçük boyut
+          backgroundColor: '#fb5607', // Arkaplan rengi
+          borderRadius: 10, // Yuvarlak yapmak için
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding:1,
+        }}
       >
-        <Ionicons name="cart" size={30} color={currentRoute === 'Sebetim' ? '#fb5607' : '#54342b'} />
-      </TouchableOpacity>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            textAlign: 'center',
+            color: 'white',
+            fontSize: 9,
+          }}
+        >
+           {parseInt(totalQuantity)}
+        </Text>
+      </View>
+    )}
+  </View>
+</TouchableOpacity>
+
 
       <TouchableOpacity
         style={[styles.button, getTabStyle('Profile')]}

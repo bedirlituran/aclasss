@@ -15,7 +15,7 @@ import { Buffer } from 'buffer';
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
-const logo = require("../assets/3.png");
+// const logo = require("../assets/3.webp");
 
 // contact me :)
 // instagram: must_ait6
@@ -54,7 +54,7 @@ export default function Giris() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={logo} style={styles.image} resizeMode="contain" />
+      {/* <Image source={logo} style={styles.image} resizeMode="contain" /> */}
       <Text style={styles.title}>Giriş</Text>
       <View style={styles.inputView}>
         <TextInput
