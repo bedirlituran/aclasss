@@ -8,12 +8,13 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addReview } from "../store/reviewActions";
 import { addToCart } from "../store/cartSlice"; // addToCart importu
 
-const {width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 const UrunDetay = ({ route }) => {
   const { title, description, price, image } = route.params; // Parametreleri alıyoruz
@@ -54,8 +55,7 @@ const UrunDetay = ({ route }) => {
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.text}>{description}</Text>
       <View
-        className="flex-row items-center justify-between py-2 px-1"
-        style={{ width: width * 0.89 }}
+        style={{ width: width * 0.89, flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10 }}
       >
         <Text style={styles.price}>{price} {'\u20BC'}</Text>
         <TouchableOpacity
@@ -69,14 +69,14 @@ const UrunDetay = ({ route }) => {
 
       <TextInput
         style={styles.input}
-        placeholder="Yorumunuzu girin"
+        placeholder="Fikir bildir..."
         value={inputValue}
         onChangeText={handleInputChange}
         returnKeyType="done"
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Yorum Gönder</Text>
+        <Text style={styles.buttonText}>Göndər</Text>
       </TouchableOpacity>
 
       <View style={styles.reviewsContainer}>
@@ -88,7 +88,7 @@ const UrunDetay = ({ route }) => {
             </View>
           ))
         ) : (
-          <Text style={styles.noReview}>Henüz yorum yapılmadı</Text>
+          <Text style={styles.noReview}>Şərh yoxdur...</Text>
         )}
       </View>
     </ScrollView>
@@ -101,8 +101,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#fff",
     width: width,
-    paddingVertical: -60,
-    paddingHorizontal:20
   },
   addToCartText: {
     color: "#fff",
@@ -112,26 +110,31 @@ const styles = StyleSheet.create({
     backgroundColor: "#fb5607",
     borderRadius: 5,
     paddingVertical: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
-    width: "70%",
-    height: 240,
+    width: "80%", // Genişliği %80 yaparak her cihazda uyumlu olacak şekilde ayarladık
+    height: 250,
     borderRadius: 10,
     alignSelf: "center",
-    objectFit: "contain",
+    resizeMode: "contain", // Görüntü boyutunun orantılı olmasını sağlar
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     marginVertical: 10,
+    textAlign: "center", // Başlık ortalanacak şekilde
   },
   text: {
     fontSize: 14,
     marginVertical: 10,
+    textAlign: "center", // Açıklama da ortalanabilir
+    color: "#333",
   },
   price: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "green",
     marginVertical: 10,
@@ -140,11 +143,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
-    padding: 10,
+    padding: 12,
     marginVertical: 10,
   },
   reviewsContainer: {
     marginTop: 20,
+    paddingBottom: 30,
   },
   review: {
     backgroundColor: "#f9f9f9",

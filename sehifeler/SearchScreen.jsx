@@ -1,205 +1,161 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Animated,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+const data = [
+  {
+    id: 1,
+    titles: 'Tövsiyyə olunan',
+    desc: ['Öneri 1', 'Öneri 2'],
+    images: [
+ 
+    ],
+  },
+  {
+    id: 2,
+    titles: 'Kişi',
+    desc: ['Kostyum', 'Sport', 'Klassik Ayaqqabılar', 'Polo Futbolkalar','Klassik Köynək','Parça Şalvarlar','Cins Şalvarlar','Dəri Gödəkçələr','Palto','İdman Ayaqqabıları','Futbolkalar','Klassik Gödəkçələr'],
+    images: [
+      { uri: 'https://safe-vision.com/wp-content/uploads/2020/06/jpg_q50-kostyum-kkkkkkkkkkk-1.jpg' },
+      { uri: 'https://www.life-sport.az/storage/products/big/246.jpg' },
+      { uri: 'https://altimod.az/wp-content/uploads/2024/04/3004-06-4.jpg' },
+      { uri: 'https://safeseason.az/admin/uploads/10c72fc120cab48fa6bf66c0315517ed-202204181650279544.webp' },
+      { uri: 'https://richmen.az/images/detailed/3/IMG_6518.jpg' },
+      { uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAo5zBPU1WYnBbyQ7Hn_m_UcNkX51PvVDnKA&s' },
+      { uri: 'https://richmen.az/images/detailed/5/IMG_9534.jpg' },
+      { uri: 'https://e-bay.az/products/793582395601729256103.jpg?v=1507911359' },
+      { uri: 'https://strgimgr.umico.az/sized/840/512014-791c1f7a3cc8d7fc7370fc518b3bac0c.jpg' },
+      { uri: 'https://cdn.globalso.com/walksun/WS029-2.jpg' },
+      { uri: 'https://volkssport.az/1204-home_default/reebok-gp-unisex-longer-te-dj-1890.jpg' },
+      { uri: 'https://richmen.az/images/detailed/4/IMG_8126.jpg' },
+    ],
+  },
+  {
+    id: 4,
+    titles: 'Qadın',
+    desc: ['Moda', 'Şık', 'Estetik'],
+    images: [
+      { uri: 'https://via.placeholder.com/150?text=Usaq1' },
+      { uri: 'https://via.placeholder.com/150?text=Usaq2' },
+    ],
+  },
+  {
+    id: 5,
+    titles: 'Uşaq',
+    desc: ['Eğlenceli', 'Konforlu'],
+    images: [
+      { uri: 'https://via.placeholder.com/150?text=Elektronika1' },
+      { uri: 'https://via.placeholder.com/150?text=Elektronika2' },
+    ],
+  },
+  {
+    id: 6,
+    titles: 'Elektronika',
+    desc: ['Yüksek Teknoloji', 'Kullanışlı'],
+    images: [
+      { uri: 'https://via.placeholder.com/150?text=Etriyyat1' },
+      { uri: 'https://via.placeholder.com/150?text=Etriyyat2' },
+    ],
+  },
+];
 
-const images = {
-  Kişi: "https://images.pexels.com/photos/3147528/pexels-photo-3147528.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-  Qadın:
-    "https://images.pexels.com/photos/2552130/pexels-photo-2552130.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-  Uşaq: "https://images.pexels.com/photos/1619801/pexels-photo-1619801.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1cd",
-};
-const data = Object.keys(images).map((i) => ({
-  key: i,
-  title: i,
-  image: images[i],
-  ref: React.createRef(),
-}));
+const SearchScreen = () => {
+  const [selectedItem, setSelectedItem] = useState(null);
 
-const { width, height } = Dimensions.get("screen");
-
-const Tab = React.forwardRef(({ item, onİtemPress }, ref) => {
-  const navigation = useNavigation();
-  const navigateToPage = () => {
-    switch (item.title) {
-      case "Kişi":
-        navigation.navigate("Kisi");
-        break;
-      case "Qadın":
-        navigation.navigate("Qadin");
-        break;
-      case "Uşaq":
-        navigation.navigate("Usaq");
-        break;
-     
-      default:
-        break;
-    }
+  const handlePress = (item) => {
+    setSelectedItem(selectedItem?.id === item.id ? null : item);
   };
 
   return (
-    <TouchableOpacity onPress={() => onİtemPress(item.key)} 
-
-    onPressOut={() => {
-      setTimeout(() => {
-        navigateToPage(); // 1 saniye sonra navigateToPage fonksiyonunu çağırır
-      }, 500);
-    }}
-    >
-
-      <View ref={ref}>
-        <Text
-          style={{
-            color: "white",
-            fontSize: 65 / data.length,
-            fontWeight: 800,
-            textTransform: "uppercase",
-          }}
-        >
-          {item.title}
-        </Text>
-        
+    <View>
+      <View style={styles.container}>
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.id.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.item} onPress={() => handlePress(item)}>
+              <Text style={styles.titles}>{item.titles}</Text>
+            </TouchableOpacity>
+          )}
+        />
       </View>
-     
-    </TouchableOpacity>
-  );
-});
-
-const Tabs = ({ data, scrollX, onİtemPress }) => {
-  const [measures, setMeasures] = React.useState([]);
-  const containerRef = React.useRef();
-  React.useEffect(() => {
-    let m = [];
-    data.forEach((item) => {
-      item.ref.current.measureLayout(
-        containerRef.current,
-        (x, y, width, height) => {
-          m.push({
-            x,
-            y,
-            width,
-            height,
-          });
-          if (m.length === data.length) {
-            setMeasures(m);
-          }
-        }
-      );
-    });
-  }, []);
-  return (
-    <View style={{ position: "absolute", top: 100, width }}>
-      <View
-        ref={containerRef}
-        style={{
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          flexDirection: "row",
-        }}
-      >
-        {data.map((item, index) => {
-          return (
-            <Tab
-              key={item.key}
-              item={item}
-              ref={item.ref}
-              onİtemPress={() => {
-                onİtemPress(index);
-              }}
-            />
-          );
-        })}
+      <View>
+        {selectedItem && selectedItem.desc && selectedItem.images && (
+          <FlatList
+            data={selectedItem.images}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns={3}  // Set number of columns to 3
+            contentContainerStyle={styles.imagesContainer}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity style={styles.imageTextContainer}>
+                <Image source={item} style={styles.image} />
+                <Text style={styles.title}>{selectedItem.desc[index]}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        )}
       </View>
-      {measures.length > 0 && (
-        <Indicator measures={measures} scrollX={scrollX} />
-      )}
-    </View>
-  );
-};
-
-const Indicator = ({ measures, scrollX }) => {
-  const inputRange = data.map((_, i) => i * width);
-  const indicatorWidth = scrollX.interpolate({
-    inputRange,
-    outputRange: measures.map((measure) => measure.width),
-  });
-  const translateX = scrollX.interpolate({
-    inputRange,
-    outputRange: measures.map((measure) => measure.x),
-  });
-  return (
-    <Animated.View
-      style={{
-        position: "absolute",
-        width: indicatorWidth,
-        height: 4,
-        backgroundColor: "white",
-        bottom: -10,
-        left: 0,
-        transform: [{ translateX }],
-      }}
-    />
-  );
-};
-
-const SearchScreen = () => {
-  const scrollX = React.useRef(new Animated.Value(0)).current;
-  const ref = React.useRef();
-  const onİtemPress = React.useCallback((itemİndex) => {
-    ref?.current?.scrollToOffset({
-      offset: itemİndex * width,
-    });
-  });
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <StatusBar hidden />
-      <Animated.FlatList
-        ref={ref}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: false }
-        )}
-        bounces={false}
-        data={data}
-        keyExtractor={(item) => item.key}
-        renderItem={({ item }) => (
-          <View style={{ width, height }}>
-            <Image
-              source={{ uri: item.image }}
-              style={{ flex: 1, resizeMode: "cover" }}
-            />
-            <View
-              style={[
-                StyleSheet.absoluteFillObject,
-                { backgroundColor: "rgba(0,0,0,0.3)" },
-              ]}
-            />
-          </View>
-        )}
-      />
-
-      <Tabs data={data} scrollX={scrollX} onİtemPress={onİtemPress} />
     </View>
   );
 };
 
 export default SearchScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 12,
+    backgroundColor: '#f9f9f9',
+
+  },
+  item: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 8,
+    paddingHorizontal: 8,
+    borderRadius: 9,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#f9f9f9',
+    paddingVertical: 8,
+  },
+  imagesContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center', // Center items horizontally
+    alignItems: 'center', // Center items vertically
+    padding: 24,
+    flexWrap: 'wrap', 
+    backgroundColor:'#fff' ,
+    // Allow items to wrap to multiple lines
+  },
+  imageTextContainer: {
+    alignItems: 'center',
+    marginBottom: 16,
+    padding: 6,
+   
+  },
+  title: {
+    fontSize: 11,
+    textAlign: 'center',
+    marginTop: 5,
+    width:100
+  },
+  image: {
+    width: 85,  // Reduced size for three items per row
+    height: 85,
+    borderRadius: 8,
+    marginBottom: 5,
+    resizeMode: 'cover', 
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  titles: {
+    fontSize: 14,
+    textAlign: 'center',
+  },
+});

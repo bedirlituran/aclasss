@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, Image, ScrollView, TextInput, Dimensions, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  ScrollView,
+  TextInput,
+  Dimensions,
+  TouchableOpacity,
+  ActivityIndicator,
+ Platform, 
+} from "react-native";
 import ProfileDetails from "../components/ProfileDetails";
-import Bottomlink from "../components/Bottomlink";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
@@ -42,9 +52,8 @@ const Profile = () => {
   };
 
   const handleImageUpload = () => {
-    fetchProducts();  // Resim yükleme işlemi tamamlandığında ürünleri güncelle
+    fetchProducts(); // Resim yükleme işlemi tamamlandığında ürünleri güncelle
   };
-
 
   useEffect(() => {
     handleImageUpload();
@@ -74,8 +83,8 @@ const Profile = () => {
       <View style={styles.profileDetailsContainer}>
         <ProfileDetails />
       </View>
-      
-      <ScrollView 
+
+      <ScrollView
         contentContainerStyle={styles.scrollView}
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true}
@@ -87,7 +96,7 @@ const Profile = () => {
             onChangeText={(text) => setSearch(text)}
             value={search}
           />
-          
+
           {loading ? (
             <View style={styles.loaderContainer}>
               <ActivityIndicator size="large" color="#fb5607" />
@@ -95,28 +104,32 @@ const Profile = () => {
           ) : (
             <View style={styles.grid}>
               {searchProduct.map((product) => {
-                const isFavorited = favorites.some((favItem) => favItem.id === product.id);
+                const isFavorited = favorites.some(
+                  (favItem) => favItem.id === product.id
+                );
                 return (
                   <View style={styles.card} key={product.id}>
+      <TouchableOpacity 
+  style={styles.image} 
+  onPress={() => navigation.navigate('UrunDetay', {
+    title: product.title,
+    description: product.description,
+    price: product.price,
+    image: product.image
+  })}
+>
+  <Image
+    style={styles.image}
+    source={{ uri: product.image }}
+    resizeMode="center"
+  />
+</TouchableOpacity>
+
+
                     <TouchableOpacity
-                      style={styles.image}
-                      onPress={() =>
-                        navigation.navigate("UrunDetay", {
-                          image: product.image,
-                          title: product.title,
-                          description: product.description,
-                          price: product.price,
-                        })
-                      }
+                      onPress={() => handleToggleFavorite(product)}
+                      style={styles.like}
                     >
-                      <Image
-                        style={styles.image}
-                        source={{ uri: product.image }}
-                        resizeMode="contain"
-                      />
-                    </TouchableOpacity>
-                  
-                    <TouchableOpacity onPress={() => handleToggleFavorite(product)} style={styles.like}>
                       <MaterialCommunityIcons
                         name={isFavorited ? "heart" : "heart-plus-outline"}
                         size={24}
@@ -132,8 +145,12 @@ const Profile = () => {
                         {Truncate(product.description, 55)}
                       </Text>
                       <View style={styles.cardPriceContainer}>
-                        <Text style={styles.cardPrice}>{product.price} {'\u20BC'} </Text>
-                        <Text style={styles.cardDetail}>Stok: {product.rating.count}</Text>
+                        <Text style={styles.cardPrice}>
+                          {product.price} {"\u20BC"}{" "}
+                        </Text>
+                        <Text style={styles.cardDetail}>
+                          Stok: {product.rating.count}
+                        </Text>
                       </View>
                     </View>
                   </View>
@@ -143,7 +160,6 @@ const Profile = () => {
           )}
         </View>
       </ScrollView>
-      <Bottomlink />
     </View>
   );
 };
@@ -154,29 +170,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   cardPriceContainer: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 12,
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    flexDirection: "row",
+    gap: Platform.OS === "ios" ? 8 : 12, // iOS ve Android'de farklı boşluklar
   },
   like: {
-    position: 'absolute',
-    top: 5,
-    right: 2,
+    position: "absolute",
+    top: Platform.OS === "ios" ? 10 : 5, // Platforma göre pozisyon
+    right: 10,
     zIndex: 9999,
-    backgroundColor: 'lightgreen',
+    backgroundColor: Platform.OS === "ios" ? "lightblue" : "lightgreen", // Farklı renkler
     borderRadius: 20,
-    padding: 2,
-  },
-  profileDetailsContainer: {
     padding: 5,
-  },
-  scrollView: {
-    flexGrow: 1,
-  },
-  productContainer: {
-    padding: 10,
   },
   input: {
     height: 40,
@@ -185,21 +192,25 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 10,
     paddingHorizontal: 8,
+    paddingVertical: Platform.OS === "ios" ? 6 : 8, // Platforma göre padding
   },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    position: 'relative',
-    paddingHorizontal: 2,
+    paddingHorizontal: Platform.OS === "ios" ? 4 : 2, // iOS'ta daha fazla boşluk
     paddingBottom: 40,
   },
   card: {
-    width: (width / 2) - 20,
+    width: width / 2 - 20,
     backgroundColor: "#f4f3ee",
     borderRadius: 8,
-    marginBottom: 15,
+    marginBottom: Platform.OS === "ios" ? 20 : 15, // iOS'ta daha fazla margin
     alignItems: "center",
+    shadowColor: Platform.OS === "ios" ? "#000" : "transparent", // iOS'ta gölge
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: Platform.OS === "ios" ? 0.1 : 0, // Android'de gölge yok
+    elevation: Platform.OS === "android" ? 3 : 0, // Android'de elevation
   },
   image: {
     width: "100%",
@@ -210,7 +221,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cardTitle: {
-    fontSize: 13,
+    fontSize: Platform.OS === "ios" ? 14 : 13, // iOS'ta daha büyük font
     fontWeight: "bold",
     textAlign: "center",
   },
@@ -236,5 +247,4 @@ const styles = StyleSheet.create({
     height: 200,
   },
 });
-
 export default Profile;

@@ -25,9 +25,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
 const { height, width } = Dimensions.get("window");
 
-const Sekil = () => {
+const Ev = () => {
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
@@ -37,10 +38,11 @@ const Sekil = () => {
   const dispatch = useDispatch();
 
   const loadMore = async () => {
-    if (isFetchingMore || page >= maxPage) return; // maxPage sınırını kontrol edin
+    if (isFetchingMore) return;
     setIsFetchingMore(true);
     try {
       setPage((prevPage) => prevPage + 1);
+      fetchData();
     } finally {
       setIsFetchingMore(false);
     }
@@ -94,7 +96,7 @@ const Sekil = () => {
             onAddToCart={() => dispatch(addToCart(item))}
           />
         )}
-        keyExtractor={(item) => `${item.id}-${item.price}`} 
+        keyExtractor={(item) => `${item.id}-${item.price}`}
         showsVerticalScrollIndicator={false}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
@@ -150,67 +152,61 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   };
 
   return (
-    <View className="flex items-center justify-center">
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <Image source={{ uri: item.image }} style={styles.avatar} />
-            <Text className="font-semibold">
-              {truncateText(longText, maxLength)}
-            </Text>
-          </View>
-          <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.ion}>
-            <Ionicons name="navigate-circle-outline" size={27} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.kolge}>
-              <WhatsAppButton />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.followButton}>
-              <Text style={styles.followText}>izlə +</Text>
-            </TouchableOpacity>
-          </View>
+    <View style={styles.card}>
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <Image source={{ uri: item.image }} style={styles.avatar} />
+          <Text style={styles.categoryText}>
+            {truncateText(longText, maxLength)}
+          </Text>
         </View>
+        <View style={styles.headerRight}>
+          <TouchableOpacity style={styles.iconButton}>
+            <Ionicons name="navigate-circle-outline" size={27} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.kolge}>
+            <WhatsAppButton />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.followButton}>
+            <Text style={styles.followText}>İzlə +</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
-        <TouchableOpacity onPress={onDetailPress}>
-          <Image
-            source={{ uri: item.image || "https://via.placeholder.com/150" }}
-            style={styles.image}
+      <TouchableOpacity onPress={onDetailPress}>
+        <Image source={{ uri: item.image }} style={styles.image} />
+      </TouchableOpacity>
+
+      <View style={styles.infoContainer}>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.description}>{item.description}</Text>
+        <View style={styles.footer}>
+          <Text style={styles.price}>{item.price} ₼</Text>
+          <TouchableOpacity
+            style={styles.addToCartButton}
+            onPress={onAddToCart}
+          >
+            <Text style={styles.addToCartText}>Səbətə yüklə</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.stock}>Stokda: Var</Text>
+      </View>
+
+      <View style={styles.animations}>
+        <TouchableOpacity onPress={() => handleToggleFavorite(item)}>
+          <MaterialCommunityIcons
+            name={isFavorited ? "heart" : "heart-plus-outline"}
+            size={24}
+            color={isFavorited ? "#fb5607" : "black"}
           />
         </TouchableOpacity>
-
-        <View style={styles.infoContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.description}>{item.description}</Text>
-          <View style={styles.footer}>
-            <Text style={styles.price}>{item.price} ₼</Text>
-
-            <TouchableOpacity
-              style={styles.addToCartButton}
-              onPress={onAddToCart}
-            >
-              <Text style={styles.addToCartText}>Səbətə yüklə</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.stock}>Stokda: Var</Text>
-        </View>
-
-        <View style={styles.animations}>
-          <TouchableOpacity onPress={() => handleToggleFavorite(item)}>
-            <MaterialCommunityIcons
-              name={isFavorited ? "heart" : "heart-plus-outline"}
-              size={24}
-              color={isFavorited ? "#fb5607" : "black"}
-            />
-          </TouchableOpacity>
-          <StarAnmimation />
-          <BasketAnimation />
-          <TouchableOpacity onPress={handleShare} style={{ padding: 10 }}>
-            <Animated.View style={{ transform: [{ rotate: shareRotate }] }}>
-              <Ionicons name="share-social-outline" size={30} color="black" />
-            </Animated.View>
-          </TouchableOpacity>
-        </View>
+        <StarAnmimation />
+        <BasketAnimation />
+        <TouchableOpacity onPress={handleShare} style={styles.shareButton}>
+          <Animated.View style={{ transform: [{ rotate: shareRotate }] }}>
+            <Ionicons name="share-social-outline" size={30} color="black" />
+          </Animated.View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -220,14 +216,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+    justifyContent: "center", // Vertically center content
+    alignItems: "center", // Horizontally center content
   },
   skeletonContainer: {
-    width: "100%",
+    width: width,
     alignItems: "center",
     paddingVertical: 20,
   },
   card: {
-    width: "95%",
+    width: width * 0.92, // Make the card take full width
+    maxWidth: width * 0.95, // Set a max width for larger screens (optional)
     marginBottom: 20,
     borderRadius: 15,
     backgroundColor: "#fff",
@@ -237,15 +236,15 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 5,
     overflow: "hidden",
-    marginTop: 60,
+    marginTop: 30,
+    alignSelf: "center", // Center the card horizontally
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    margingBottom: 10,
     backgroundColor: "#f8f9f9",
-    padding: 10,
+    paddingVertical: 10,
   },
   headerLeft: {
     flexDirection: "row",
@@ -260,27 +259,40 @@ const styles = StyleSheet.create({
   headerRight: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent:'center'
+  },
+  categoryText: {
+    fontSize: 14,
+    color: "#555",
+  },
+  iconButton: {
+    marginRight: 5,
+    backgroundColor: "#f8f9f9",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 3,
+    borderRadius: 20,
+    padding: 3,
   },
   followButton: {
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
     marginLeft: 8,
-    borderColor:'lightgray',
-    borderWidth:0.4,
-    shadowColor:'black',
-    shadowOffset:{width:0, height:2},
-    shadowOpacity:0.5,
-    shadowRadius:2,
-    elevation:2,
+    borderColor: "lightgray",
+    borderWidth: 0.4,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 2,
     overflow: "hidden",
-    backgroundColor:'white'
+    backgroundColor: "white",
   },
   followText: {
     fontWeight: "bold",
     color: "black",
-  
   },
   image: {
     width: "100%",
@@ -328,34 +340,14 @@ const styles = StyleSheet.create({
   },
   animations: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    backgroundColor: "#f1f1f1",
+    justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 10,
+    marginTop: 10,
   },
-  bottomLinkContainer: {
-    position: "absolute",
-    left: "50%",
-    transform: [{ translateX: -width * 0.5 }],
-    backgroundColor: "#fff",
-    borderRadius: 50,
-    padding: 10,
-  },
-  homeButtonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#00f",
-  },
-  ion: {
-    marginRight: 5,
-    backgroundColor:'#f8f9f9',
-    shadowColor:'black',
-    shadowOffset:{width:0, height:0},
-    shadowOpacity:0.5,
-    shadowRadius:2,
-    elevation:3,
-    borderRadius:20,
-    padding:3
+  shareButton: {
+    padding: 5,
   },
 });
 
-export default Sekil;
+export default Ev;

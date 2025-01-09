@@ -1,99 +1,188 @@
 import * as React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StyleSheet, View, Text,TouchableOpacity,TextInput } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Ionicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 import Profile from "../sehifeler/Profile";
 import SearchScreen from "../sehifeler/SearchScreen";
-import Shop from "../sehifeler/Shop";
 import Qadin from "../sehifeler/Qadin";
 import Usaq from "../sehifeler/Usaq";
 import Kisi from "../sehifeler/Kisi";
-import Qeydiyyat from "../sehifeler/Qeydiyyat";
-import Giris from "../sehifeler/Giris";
-import Esasgiris from "../sehifeler/Esasgiris";
 import Sebetim from "../sehifeler/Sebetim";
 import UrunDetay from "../sehifeler/UrunDetay";
 import FavoriteScreen from "../sehifeler/FavoriteScreen";
-import Sekil from "../components/Sekil";
-import { Ionicons } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
+import Ev from "../components/Ev";
+import ProductDetailsScreen from "../sehifeler/ProductDetailsScreen";
+import { useNavigation } from '@react-navigation/native';
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
-const Stack = createNativeStackNavigator();
+const Evstack = () => (
+  <Stack.Navigator initialRouteName="EvHome">
+    <Stack.Screen
+      name="EvHome"  // Ekran ismini benzersiz yapıyoruz
+      component={Ev}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="UrunDetay"
+      component={UrunDetay}
+      options={{
+        headerShown: true,
+        headerTitle: "Məhsul haqqında",
+        headerTitleAlign: "center",
+        headerStyle: { height: 50 },
+      }}
+    />
+  
+    <Stack.Screen
+      name="Qadin"
+      component={Qadin}
+      options={{ headerShown: true, headerTitle: "Qadın" }}
+    />
+    <Stack.Screen
+      name="Usaq"
+      component={Usaq}
+      options={{ headerShown: true, headerTitle: "Uşaq" }}
+    />
+    <Stack.Screen
+      name="Kisi"
+      component={Kisi}
+      options={{ headerShown: true, headerTitle: "Kişi" }}
+    />
+      <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
+
+  </Stack.Navigator>
+);
+
+const getIconName = (routeName, focused) => {
+  switch (routeName) {
+    case "Profil":
+      return focused ? "person" : "person-outline";
+    case "Kataloq":
+      return focused ? "search" : "search-outline";
+    case "Shop":
+      return focused ? "cart" : "cart-outline";
+    case "Bəyənilər":
+      return focused ? "heart" : "heart-outline";
+    case "Səbət":
+      return focused ? "basket" : "basket-outline";
+    case "Ev":
+      return focused ? "home" : "home-outline";
+    default:
+      return "help-outline";
+  }
+};
 
 const Navigation = () => {
   const cartItems = useSelector((state) => state.cart.items);
-
+  const navigation = useNavigation();
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerTitleAlign: "center", // Tüm başlıkları ortaya hizalar
-      }}
+    <Tab.Navigator
+      initialRouteName="Ev"  // Ev ekranını buradaki tabda tanımlıyoruz
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          const iconName = getIconName(route.name, focused);
+          return (
+            <Ionicons
+              name={iconName}
+              size={size}
+              color={color}
+              style={{ marginBottom: -3 }}
+            />
+          );
+        },
+        tabBarActiveTintColor: "#fb5607",
+        tabBarInactiveTintColor: "gray",
+        tabBarBadge: route.name === "Səbət" && cartItems.length > 0 ? cartItems.length : null,
+      })}
     >
-         <Stack.Screen
-        name="Profile"
+      <Tab.Screen
+        name="Ev"
+        component={Evstack}  // Ev ekranını stack içinde tanımladık
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Profil"
         component={Profile}
-        options={{ headerShown: false,
-          unmountOnBlur: false
-         }}
-      />
-      <Stack.Screen
-        name="Sekil"
-        component={Sekil}
         options={{ headerShown: false }}
       />
-   
-      <Stack.Screen
-        name="SearchScreen"
-        component={SearchScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="Shop" component={Shop} />
-      <Stack.Screen name="Qadin" component={Qadin} />
-      <Stack.Screen name="Usaq" component={Usaq} />
-      <Stack.Screen name="Kisi" component={Kisi} />
-
-      <Stack.Screen
-        name="Sebetim"
-        component={Sebetim}
-        options={{
-          headerTitle: "Səbətim",
-          headerTitleStyle: {
-            fontWeight: "bold",
-            fontSize: 18,
-          },
-        }}
-      />
-
-   <Stack.Screen
-  name="UrunDetay"
-  component={UrunDetay}
+    <Tab.Screen
+      name="Kataloq"
+      component={SearchScreen}
+      options={{
+        headerShown: true,
+        headerTitle: "",
+        headerStyle: {
+          height: 50,
+        },
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => navigation.goBack()} // Geri dönme işlevi
+            style={{ marginLeft: 10 }}
+          >
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
+        ),
+        headerRight: () => (
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="İstediğiniz məhsulu axtarın . . ."
+              placeholderTextColor="#888"
+            />
+            <View style={styles.iconsContainer}>
+              <TouchableOpacity onPress={() => alert('Mesajlar')}>
+                <Ionicons name="chatbubble" size={24} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => alert('Bildirimler')}>
+                <Ionicons name="notifications" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        ),
+      }}
+    />
+<Tab.Screen
+  name="Səbət"
+  component={Sebetim} // Component'e SebetimScreen'i kullanıyoruz
   options={{
-    title: "Məhsul",
-    headerRight: () => (
-      <TouchableOpacity style={styles.iconWrapperBasket}>
-        <Ionicons name="basket-sharp" size={22} color="#fb5607" />
-        <Text style={styles.iconWrapperBasketText}>
-          {cartItems
-            .reduce((acc, item) => acc + item.price * item.quantity, 0)
-            .toFixed(2)}{" "}
-          {"\u20BC"}
-        </Text>
+    headerShown: true,
+    headerTitle: "Məhsul haqqında",
+    headerTitleAlign: "center",
+    headerStyle: {
+      height: 50,
+    },
+    headerLeft: () => (
+      <TouchableOpacity
+        onPress={() => navigation.goBack()} // Geri dönme işlevini burada kullanıyoruz
+        style={{ marginLeft: 10 }}>
+        <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
     ),
   }}
 />
-
-      <Stack.Screen
-        name="FavoriteScreen"
+      <Tab.Screen
+        name="Bəyənilər"
         component={FavoriteScreen}
         options={{
-          headerTitle: "Bəyənilənlər",
-          headerTitleStyle: {
-            fontWeight: "bold",
-            fontSize: 18,
+          headerShown: true,
+          headerTitle: "Bəyənilər",
+          headerTitleAlign: "center",
+          headerStyle: {
+            height: 50,
           },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()} // Geri dönme işlevini burada kullanıyoruz
+              style={{ marginLeft: 10 }}>
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+          ),
         }}
       />
-    </Stack.Navigator>
+    </Tab.Navigator>
   );
 };
 
@@ -122,4 +211,36 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 3,
   },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems:'center',
+    justifyContent: 'space-around  ',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingRight: 5,
+    paddingLeft: 5,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 15,
+    paddingLeft: 15,
+    fontSize: 14,
+    backgroundColor: '#f1f1f1',
+
+  },
+  iconsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around middle',
+    paddingHorizontal: 20,
+    width: 80,
+    gap:8
+  },
+  
 });

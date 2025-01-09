@@ -45,9 +45,7 @@ const Search2 = () => {
             onBlur={handleBlur}
             placeholder='axtar...'
           />
-            {/* Arama ikonu */}
             <Ionicons name="search" size={18} color="#54342b" style={styles.icon} />
-          {/* TextInput alanı */}
         </Animated.View>
       </View>
     </TouchableWithoutFeedback>

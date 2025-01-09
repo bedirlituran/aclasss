@@ -92,12 +92,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     backgroundColor: "#fff",
- 
+  
   },
 
   adBox: {
-    width: width - 160,
-    height: 100,
+    width: width - 200,
+    height: 90,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 35,
@@ -110,15 +110,13 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 7,
     overflow: "hidden",
+    borderWidth:2,
+    borderColor: "lightgrey",
   },
   image: {
     height:height,
     width: width - 160,
-    backgroundColor: "#f2f2f2",
-    overflow: "hidden",
-    borderRadius: 10,
-    padding: 10,
-    resizeMode: "contain",
+    resizeMode: "center",
   },
   indicatorContainer: {
     flexDirection: "row",

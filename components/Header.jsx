@@ -20,20 +20,16 @@ const Header = () => {
   const cartItems = useSelector((state) => state.cart.items);
   return (
     <View style={styles.headerContainer}>
-      {/* Logo Section */}
       <View style={styles.logoContainer}>
         <Text style={styles.logoText}>Aclass</Text>
 
       </View>
 
-          {/* Notification Icon  */}
       <TouchableOpacity style={styles.iconWrapper}>
           <Ionicons name="notifications-circle" size={28} color="#fb5607" />
         </TouchableOpacity> 
-      {/* Notification and Cart Section */}\
 
 
-      {/* Cart Icon */}
       <TouchableOpacity style={styles.iconWrapperBasket} onPress={() => navigation.navigate("Sebetim")}>
   <Ionicons name="basket-sharp" size={22} color="#fb5607" />
   <Text style={styles.iconWrapperBasketText}>
@@ -75,9 +71,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logoText: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color:'black'
+    fontSize: 20,
+    fontWeight: "semibold",
+    color:'green'
   },
 
   

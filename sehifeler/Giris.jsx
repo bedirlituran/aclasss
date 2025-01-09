@@ -103,7 +103,6 @@ export default function Giris() {
           style={styles.signup}
           onPress={() => navigation.navigate("Qeydiyyat")}
         >
-          {" "}
           Qeydiyyat
         </Text>
       </Text>

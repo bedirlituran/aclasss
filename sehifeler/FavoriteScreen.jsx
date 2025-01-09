@@ -7,21 +7,20 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableWithoutFeedback,
-
+  Platform,Dimensions
 } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { addToCart, removeFromCart } from "../store/cartSlice";
-import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice"; // Beğeni slice'tan fonksiyonlar
+import {removeFromFavorites } from "../store/favoritesSlice"; // Beğeni slice'tan fonksiyonlar
 
-
-
-
+const { width } = Dimensions.get("window");
 const FavoriteScreen = () => {
   const favorites = useSelector((state) => state.favorites.items);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
   const onDetailPress = (item) => {
     navigation.navigate("UrunDetay", {
       image: item.image,
@@ -31,28 +30,21 @@ const FavoriteScreen = () => {
     });
   };
 
-
-
-
   const handleToggleFavorite = (product) => {
-  
-      dispatch(removeFromFavorites(product)); 
-   
+    dispatch(removeFromFavorites(product));
   };
 
-   // Sepete ürün ekleme fonksiyonu
-    const handleAddToCart = (product) => {
-      dispatch(addToCart(product)); // Sepete ürün ekleme
-    };
-  
-    // Sepetten ürün çıkarma fonksiyonu
-    const handleRemoveFromCart = (product) => {
-      dispatch(removeFromCart(product)); // Sepetten ürün çıkarma
-    };
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product)); // Sepete ürün ekleme
+  };
+
+  const handleRemoveFromCart = (product) => {
+    dispatch(removeFromCart(product)); // Sepetten ürün çıkarma
+  };
 
   const renderFavoriteItem = ({ item }) => (
     <View style={styles.card}>
-      <TouchableWithoutFeedback onPress={()=>{onDetailPress(item)}}>
+      <TouchableWithoutFeedback onPress={() => { onDetailPress(item) }}>
         <Image source={{ uri: item.image }} style={styles.image} />
       </TouchableWithoutFeedback>
       <View style={styles.info}>
@@ -62,7 +54,7 @@ const FavoriteScreen = () => {
           onPress={() => handleToggleFavorite(item)}
           style={styles.removeButton}
         >
-          <Ionicons name="trash" size={20} color="#fff" />
+          <Ionicons name="trash" size={22} color="#fff" />
           <Text style={styles.removeText}>Sil</Text>
         </TouchableOpacity>
       </View>
@@ -70,7 +62,7 @@ const FavoriteScreen = () => {
   );
 
   return (
-       <View style={styles.container}>
+    <View style={styles.container}>
       {favorites.length === 0 ? (
         <Text style={styles.emptyText}>Hələki bəyəndiyiniz məhsul yoxdur.</Text>
       ) : (
@@ -83,20 +75,14 @@ const FavoriteScreen = () => {
         />
       )}
     </View>
-   
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-  },
-  header: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 20,
-    textAlign: "center",
+    padding: 15,
+    backgroundColor: "#f4f4f4",
   },
   list: {
     paddingBottom: 20,
@@ -105,59 +91,63 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#fff",
     marginBottom: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     overflow: "hidden",
     shadowColor: "#000",
-    padding:10,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 6, // Android için gölge
+    marginHorizontal: 10,
+    paddingVertical: Platform.OS === "ios" ? 12 : 8,
+    paddingHorizontal: Platform.OS === "ios" ? 15 : 10,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 90,
+    height: 90,
     resizeMode: "contain",
+    borderRadius: 10,
   },
   info: {
     flex: 1,
-    padding: 10,
+    paddingLeft: 15,
     justifyContent: "space-between",
-    
+    flexDirection: "column",
   },
   title: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "#333",
+    marginBottom: 5,
   },
   price: {
     fontSize: 14,
-    color: "#333",
-    marginTop: 5,
+    color: "#1a8f00",
+    fontWeight: "600",
   },
   removeButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ff6347",
-    padding: 5,
-    borderRadius: 5,
+    backgroundColor: "#ff4d4d",
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    marginTop: 10,
     alignSelf: "flex-start",
-    paddingHorizontal: 20
   },
   removeText: {
     color: "#fff",
     fontSize: 14,
-    fontWeight: "bold",
-    marginLeft: 5,
+    fontWeight: "600",
+    marginLeft: 8,
   },
   emptyText: {
-    fontSize: 16,
-    color: "#777",
+    fontSize: 18,
+    color: "#888",
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 30,
+    fontStyle: "italic",
   },
 });
 
 export default FavoriteScreen;
-
-
-

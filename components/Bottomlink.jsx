@@ -31,10 +31,10 @@ const Bottomlink = ({ scrollY, isFirstClick, scrollToTop }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={[styles.button, getTabStyle('Sekil')]}
-        onPress={() => handlePress('Sekil')}
+        style={[styles.button, getTabStyle('Ev')]}
+        onPress={() => handlePress('Ev')}
       >
-        <Ionicons name="home" size={25} color={currentRoute === 'Sekil' ? '#fb5607' : '#54342b'} />
+        <Ionicons name="home" size={25} color={currentRoute === 'Ev' ? '#fb5607' : '#54342b'} />
       </TouchableOpacity>
 
       <TouchableOpacity

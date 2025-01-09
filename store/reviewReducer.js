@@ -12,7 +12,7 @@ const initialState = {
       case 'ADD_REVIEW':
         return {
           ...state,
-          reviews: [...state.reviews, action.payload], // Yeni yorumu ekliyoruz
+          reviews: [...state.reviews, action.payload],
         };
       default:
         return state;

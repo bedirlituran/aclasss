@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-export default function Kisi() {
+const Kisi=()=> {
   const windowWidth = Dimensions.get("window").width;
   const itemWidth = windowWidth * 0.8;
   return (
@@ -278,3 +278,6 @@ const styles = StyleSheet.create({
     position: "relative",
   },
 });
+
+
+export default Kisi
