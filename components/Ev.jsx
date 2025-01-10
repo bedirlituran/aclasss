@@ -117,7 +117,6 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   const maxLength = 18;
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
-
   const isFavorited = favorites.some((favItem) => favItem.id === item.id);
 
   const handleToggleFavorite = (product) => {
@@ -151,6 +150,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -167,7 +167,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
           <TouchableOpacity style={styles.kolge}>
             <WhatsAppButton />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.followButton}>
+          <TouchableOpacity style={styles.followButton} >
             <Text style={styles.followText}>İzlə +</Text>
           </TouchableOpacity>
         </View>

@@ -9,7 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
- Platform, 
+  Platform,
 } from "react-native";
 import ProfileDetails from "../components/ProfileDetails";
 import axios from "axios";
@@ -109,22 +109,23 @@ const Profile = () => {
                 );
                 return (
                   <View style={styles.card} key={product.id}>
-      <TouchableOpacity 
-  style={styles.image} 
-  onPress={() => navigation.navigate('UrunDetay', {
-    title: product.title,
-    description: product.description,
-    price: product.price,
-    image: product.image
-  })}
->
-  <Image
-    style={styles.image}
-    source={{ uri: product.image }}
-    resizeMode="center"
-  />
-</TouchableOpacity>
-
+                    <TouchableOpacity
+                      style={styles.image}
+                      onPress={() =>
+                        navigation.navigate("UrunDetay", {
+                          title: product.title,
+                          description: product.description,
+                          price: product.price,
+                          image: product.image,
+                        })
+                      }
+                    >
+                      <Image
+                        style={styles.image}
+                        source={{ uri: product.image }}
+                        resizeMode="center"
+                      />
+                    </TouchableOpacity>
 
                     <TouchableOpacity
                       onPress={() => handleToggleFavorite(product)}
@@ -197,20 +198,21 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     paddingHorizontal: Platform.OS === "ios" ? 4 : 2, // iOS'ta daha fazla boşluk
     paddingBottom: 40,
   },
   card: {
     width: width / 2 - 20,
-    backgroundColor: "#f4f3ee",
+    backgroundColor: "#fff",
     borderRadius: 8,
-    marginBottom: Platform.OS === "ios" ? 20 : 15, // iOS'ta daha fazla margin
+    marginBottom: Platform.OS === "ios" ? 20 : 15,
     alignItems: "center",
-    shadowColor: Platform.OS === "ios" ? "#000" : "transparent", // iOS'ta gölge
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: Platform.OS === "ios" ? 0.1 : 0, // Android'de gölge yok
-    elevation: Platform.OS === "android" ? 3 : 0, // Android'de elevation
+    shadowColor: "#000", // Siyah gölge rengi
+    shadowOffset: { width: 0, height: 4 }, // Gölgenin ofseti
+    shadowOpacity: 0.3, // Gölgenin opaklığı
+    shadowRadius: 5, // Gölgenin blur radius'u
+    elevation: 6, // Android'de gölge yüksekliği
   },
   image: {
     width: "100%",
