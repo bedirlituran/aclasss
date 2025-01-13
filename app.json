@@ -18,14 +18,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.bedirlituran.Aclass"
+      "bundleIdentifier": "com.bedirliProductDetailScreen.Aclass"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/3.webp",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.bedirlituran.A_class"
+      "package": "com.bedirliProductDetailScreen.A_class"
     },
     "web": {
       "favicon": "./assets/3.webp",

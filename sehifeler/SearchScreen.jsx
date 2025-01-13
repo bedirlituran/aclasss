@@ -89,21 +89,35 @@ const data = [
 ];
 
 const SearchScreen = () => {
+  const navigation = useNavigation()
+
   const [selectedItem, setSelectedItem] = useState(null);
-  const navigation = useNavigation();
+
   const handlePress = (item) => {
-    setSelectedItem(selectedItem?.id === item.id ? null : item);
-  };
+  if (!item || !item.desc) {
+    console.warn("Item does not have a valid description.");
+    return;
+  }
+
+  setSelectedItem(selectedItem?.id === item.id ? null : item);
+};
 
 
-  const goToProductDetails = (item, index) => {
-    if (!selectedItem) {
-      return;
-    }
-    navigation.navigate('ProductDetailsScreen', { 
-      categoryTitle: selectedItem.desc[index], 
-    });
-  };
+
+const goToProductDetails = (item, index) => {
+  if (!selectedItem || !selectedItem.desc || !selectedItem.desc[index]) {
+    console.warn("Selected item or description is not valid.");
+    return;
+  }
+  
+  const description = selectedItem.desc[index];  // Burada geçerli bir değeri aldığınızdan emin olun
+  navigation.navigate('ProductDetailsScreen', {
+    categoryTitle: description,
+  });
+};
+
+  
+  
   
   return (
     <View>

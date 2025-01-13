@@ -1,38 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "react-native",
-    "noEmit": true,
-    "allowJs": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    },
-    "typeRoots": [
-      "./node_modules/@types",
-      "./typings"
-    ]
-  },
-  "include": [
-    "src",
-    "index.ts",
-    "index.tsx",
-    "nativewind-env.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js"
-  ],
+  "compilerOptions": {},
   "extends": "expo/tsconfig.base"
 }

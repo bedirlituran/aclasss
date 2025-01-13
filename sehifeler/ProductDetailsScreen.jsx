@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, FlatList, Image, ActivityIndicator,Dimensions,S
 import { useDispatch, useSelector } from "react-redux";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useNavigation } from '@react-navigation/native';
 const {width} =Dimensions.get('window')
-
 
 
 
@@ -15,7 +15,7 @@ const ProductDetailsScreen = ({ route }) => {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
-
+const navigation = useNavigation()
   useEffect(() => {
     fetch('https://fakestoreapi.com/products')
       .then((response) => response.json())

@@ -364,7 +364,7 @@ kohne axtaris bolmesi
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, ActivityIndicator } from 'react-native';
 
-const ProductDetailsScreen = ({ route }) => {
+const ProductDetailScreen = ({ route }) => {
   const { categoryTitle } = route.params; // Get category title passed from SearchScreen
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -457,4 +457,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductDetailsScreen;
+export default ProductDetailScreen;

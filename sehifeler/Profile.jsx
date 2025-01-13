@@ -5,7 +5,6 @@ import {
   Text,
   Image,
   ScrollView,
-  TextInput,
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
@@ -22,7 +21,6 @@ const { width } = Dimensions.get("window");
 
 const Profile = () => {
   const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true); // State for loading
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
@@ -59,15 +57,7 @@ const Profile = () => {
     handleImageUpload();
   }, []);
 
-  const searchProduct = products.filter((product) => {
-    return Object.keys(product).some((key) =>
-      product[key]
-        .toString()
-        .toLowerCase()
-        .includes(search.toString().toLowerCase())
-    );
-  });
-
+ 
   const Truncate = (string, number) => {
     if (!string) {
       return null;
@@ -90,12 +80,7 @@ const Profile = () => {
         removeClippedSubviews={true}
       >
         <View style={styles.productContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Axtar..."
-            onChangeText={(text) => setSearch(text)}
-            value={search}
-          />
+        
 
           {loading ? (
             <View style={styles.loaderContainer}>
@@ -103,7 +88,7 @@ const Profile = () => {
             </View>
           ) : (
             <View style={styles.grid}>
-              {searchProduct.map((product) => {
+              {products.map((product) => {
                 const isFavorited = favorites.some(
                   (favItem) => favItem.id === product.id
                 );
@@ -175,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     flexDirection: "row",
-    gap: Platform.OS === "ios" ? 8 : 12, // iOS ve Android'de farklı boşluklar
+    gap: Platform.OS === "ios" ? 10 : 14, // iOS ve Android'de farklı boşluklar
   },
   like: {
     position: "absolute",

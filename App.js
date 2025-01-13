@@ -6,7 +6,11 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Provider } from "react-redux";
 import Store from "./store/index";
 
+
+
+
 const App = () => {
+
   return (
     <Provider store={Store}>
       <SafeAreaProvider>
