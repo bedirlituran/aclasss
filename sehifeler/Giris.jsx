@@ -9,28 +9,24 @@ import {
   Text,
   TextInput,
   View,
-  
 } from "react-native";
 import { Buffer } from 'buffer';
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import Icon from 'react-native-vector-icons/Ionicons'; // Icon kütüphanesi
 
-const logo = require("../assets/3.webp");
-
-// contact me :)
-// instagram: must_ait6
-// email : mustapha.aitigunaoun@gmail.com
+const logo = require("../assets/3.png");
 
 export default function Giris() {
   const [click, setClick] = useState(false);
-  const { username, setUsername } = useState("");
-  const { password, setPassword } = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [secureText, setSecureText] = useState(true); // Parola gizleme durumu
   const navigation = useNavigation();
 
   const generateBasicToken = (username, password) => {
     return `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`;
   };
-  
 
   const handleSubmit = async () => {
     const token = generateBasicToken(username, password);
@@ -44,39 +40,39 @@ export default function Giris() {
       });
   
       console.log("Login successful:", response.data);
-      return response.data; // API'den dönen veri
+      return response.data;
     } catch (error) {
       console.error("Login failed:", error.response ? error.response.data : error);
-      throw error; // Hata fırlatılırsa yakalayabilirsiniz
+      throw error;
     }
   };
-  
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Image source={logo} style={styles.image} resizeMode="contain" /> */}
-      {/* <Text style={styles.title}>Giriş</Text> */}
-      <Image source={logo} style={styles.image}/>
-
-
+      <Image source={logo} style={styles.image} />
       <View style={styles.inputView}>
         <TextInput
-          style={styles.input}
+          style={styles.inputs}
           placeholder="İSTİFADƏÇİ ADI"
           value={username}
           onChangeText={setUsername}
           autoCorrect={false}
           autoCapitalize="none"
         />
-        <TextInput
-          style={styles.input}
-          placeholder="ŞİFRƏ"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-          autoCorrect={false}
-          autoCapitalize="none"
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={[styles.input, styles.passwordInput]}
+            placeholder="ŞİFRƏ"
+            secureTextEntry={secureText}
+            value={password}
+            onChangeText={setPassword}
+            autoCorrect={false}
+            autoCapitalize="none"
+          />
+          <Pressable onPress={() => setSecureText(!secureText)}>
+            <Icon name={secureText ? "eye-off" : "eye"} size={20} color="gray" />
+          </Pressable>
+        </View>
       </View>
       <View style={styles.rememberView}>
         <View style={styles.switch}>
@@ -122,21 +118,12 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
-    flex:1
+    flex: 1,
   },
   image: {
     height: 160,
     width: 160,
     resizeMode: 'contain',
-    
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    textAlign: "center",
-    paddingVertical: 40,
-    color: "red",
   },
   inputView: {
     gap: 15,
@@ -146,10 +133,21 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    paddingHorizontal: 20,
+    paddingHorizontal: 8,
     borderColor: "red",
-    borderWidth: 1,
     borderRadius: 7,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'red',
+    borderRadius: 7,
+    paddingHorizontal: 10,
+  },
+  passwordInput: {
+    flex: 1,
+    height: 50,
   },
   rememberView: {
     width: "100%",
@@ -190,24 +188,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 50,
   },
-  optionsText: {
-    textAlign: "center",
-    paddingVertical: 10,
-    color: "gray",
-    fontSize: 13,
-    marginBottom: 6,
-  },
-  mediaIcons: {
-    flexDirection: "row",
-    gap: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 23,
-  },
-  icons: {
-    width: 40,
-    height: 40,
-  },
   footerText: {
     textAlign: "center",
     color: "gray",
@@ -217,5 +197,12 @@ const styles = StyleSheet.create({
     color: "blue",
     fontSize: 13,
     fontWeight: "bold",
+  },
+  inputs: {
+    height: 50,
+    paddingHorizontal: 20,
+    borderColor: "red",
+    borderRadius: 7,
+    borderWidth:1
   },
 });

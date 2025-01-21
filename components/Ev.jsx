@@ -27,6 +27,7 @@ import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from '@expo/vector-icons/Feather';
+import { useFonts, Poppins_400Regular_Italic } from '@expo-google-fonts/poppins';
 
 const { height, width } = Dimensions.get("window");
 
@@ -148,11 +149,14 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   const [isShared, setIsShared] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
   const longText = item.category;
-  const maxLength = 18;
+  const longText2  =  item.description
+  const maxLength = 200;
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorited = favorites.some((favItem) => favItem.id === item.id);
-
+  const [fontsLoaded] = useFonts({
+    Poppins_400Regular_Italic, // Poppins fontunu ekledik
+  });
   const handleToggleFavorite = (product) => {
     if (isFavorited) {
       dispatch(removeFromFavorites(product));
@@ -218,7 +222,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
 
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.description}>{truncateText(longText2, maxLength)}</Text>
         <View style={styles.footer}>
           <Text style={styles.price}>{item.price} ₼</Text>
           <TouchableOpacity
@@ -275,7 +279,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 5,
     overflow: "hidden",
-    marginTop: 30,
+    marginTop: 50,
     alignSelf: "center", // Center the card horizontally
   },
   header: {
@@ -302,6 +306,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 14,
     color: "#555",
+    fontFamily:'Poppins_400Regular_Italic'
   },
   iconButton: {
     marginRight: 10,
@@ -324,10 +329,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: "white",
   },
-  followText: {
-    fontWeight: "bold",
-    color: "black",
-  },
+
   image: {
     width: "100%",
     height: height * 0.3,
@@ -340,11 +342,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
+    fontFamily:'Poppins_400Regular_Italic'
+
   },
   description: {
     marginTop: 10,
     fontSize: 14,
     color: "#555",
+    fontFamily:'Poppins_400Regular_Italic'
+
   },
   footer: {
     flexDirection: "row",
@@ -356,6 +362,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "green",
+    fontFamily:'Poppins_400Regular_Italic'
+
   },
   addToCartButton: {
     backgroundColor: "#fb5607",
@@ -366,11 +374,15 @@ const styles = StyleSheet.create({
   addToCartText: {
     color: "#fff",
     fontWeight: "bold",
+    fontFamily:'Poppins_400Regular_Italic'
+
   },
   stock: {
     marginTop: 10,
     fontSize: 14,
     color: "blue",
+    fontFamily:'Poppins_400Regular_Italic'
+
   },
   animations: {
     flexDirection: "row",

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-const logo = require("../assets/3.webp");
+const logo = require("../assets/3.png");
 
 // contact me :)
 // instagram: must_ait6
