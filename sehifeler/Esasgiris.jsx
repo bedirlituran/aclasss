@@ -12,7 +12,6 @@ import {
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import Ev from "../components/Ev";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -220,7 +219,7 @@ export default function Esasgiris() {
             padding: 10,
           }}
 
-          onPress={() => navigation.navigate("Ev")}
+          onPress={() => navigation.navigate('Main')}
         >
          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Giriş</Text>
 

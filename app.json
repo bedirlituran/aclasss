@@ -9,8 +9,8 @@
     "icon": "./assets/3.webp",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/3.webp",
-      "resizeMode": "contain",
+      "image": "./assets/logo2048.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [

@@ -9,6 +9,9 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { useFonts, Poppins_400Regular_Italic } from '@expo-google-fonts/poppins';
+
+
 
 
 // import Search2 from "./Search2";
@@ -16,13 +19,16 @@ import { useNavigation } from "@react-navigation/native";
 const { width } = Dimensions.get("window");
 
 const Header = () => {
+
+  const [fontsLoaded] = useFonts({
+    Poppins_400Regular_Italic, // Poppins fontunu ekledik
+  });
   const navigation = useNavigation()
   const cartItems = useSelector((state) => state.cart.items);
   return (
     <View style={styles.headerContainer}>
       <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>Aclass</Text>
-
+        <Text style={styles.logoText}>AClass</Text>
       </View>
 
       <TouchableOpacity style={styles.iconWrapper}>
@@ -73,7 +79,8 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 20,
     fontWeight: "semibold",
-    color:'green'
+    color:'green',
+    fontFamily: 'Poppins_400Regular_Italic',
   },
 
   

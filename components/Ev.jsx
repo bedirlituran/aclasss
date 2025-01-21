@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -11,8 +11,9 @@ import {
   Alert,
   Share,
   Dimensions,
+  RefreshControl,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useIsFocused  } from "@react-navigation/native";
 import SkeletonLoader from "../components/SkeletonLoader";
 import StarAnmimation from "./StarAnmimation";
 import BasketAnimation from "./BasketAnimation";
@@ -25,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Feather from '@expo/vector-icons/Feather';
 
 const { height, width } = Dimensions.get("window");
 
@@ -36,6 +38,29 @@ const Ev = () => {
   const scrollViewRef = useRef(null);
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', e => {
+      if (isFocused) {
+        onRefresh();
+      }
+    });
+
+    const unsubscribeLong = navigation.addListener('tabLongPress', e => {
+      if (isFocused && scrollViewRef.current) {
+        scrollViewRef.current.scrollToOffset({ offset: 0, animated: true });
+      }
+    });
+
+    return () => {
+      unsubscribe();
+      unsubscribeLong();
+    };
+  }, [navigation, isFocused]);
+
+  // ... rest of your component code
 
   const loadMore = async () => {
     if (isFetchingMore) return;
@@ -62,11 +87,17 @@ const Ev = () => {
     }
   };
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setPage(0);
+    setData([]);
+    fetchData().then(() => setRefreshing(false));
+  }, []);
   useEffect(() => {
     fetchData();
   }, []);
 
-  if (isLoading) {
+  if (isLoading && !refreshing) {
     return (
       <View style={styles.skeletonContainer}>
         {[...Array(3)].map((_, index) => (
@@ -105,6 +136,9 @@ const Ev = () => {
         windowSize={5}
         removeClippedSubviews={true}
         ListHeaderComponent={<Reklam />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </View>
   );
@@ -147,9 +181,10 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   };
 
   const truncateText = (text, maxLength) => {
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
   };
-
 
   return (
     <View style={styles.card}>
@@ -162,14 +197,18 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="navigate-circle-outline" size={27} color="black" />
+            <Ionicons name="navigate-circle-outline" size={23} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.kolge}>
+          <TouchableOpacity style={styles.iconButton}>
             <WhatsAppButton />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.followButton} >
-            <Text style={styles.followText}>İzlə +</Text>
+          <TouchableOpacity style={styles.iconButton}>
+          <Feather name="phone-call" size={20} color="black" />
           </TouchableOpacity>
+          {/* <TouchableOpacity style={styles.followButton} >
+    <Entypo name="phone" size={20} color="black" />
+
+          </TouchableOpacity> */}
         </View>
       </View>
 
@@ -265,14 +304,9 @@ const styles = StyleSheet.create({
     color: "#555",
   },
   iconButton: {
-    marginRight: 5,
+    marginRight: 10,
     backgroundColor: "#f8f9f9",
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-    borderRadius: 20,
+
     padding: 3,
   },
   followButton: {

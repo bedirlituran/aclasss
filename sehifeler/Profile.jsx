@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+ 
   cardPriceContainer: {
     display: "flex",
     justifyContent: "space-around",
@@ -232,6 +233,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 200,
+  },
+  scrollView:{
+padding:10
   },
 });
 export default Profile;

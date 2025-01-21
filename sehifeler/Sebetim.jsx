@@ -9,24 +9,38 @@ import {
 } from "react-native";
 import CardItem from "../components/CardItem"; 
 import { useSelector } from "react-redux";
-
+import { useNavigation } from "@react-navigation/native";
 const { height } = Dimensions.get("window");
 
-const Sebetim = ({ removeFromCart, incrementQuantity, decrementQuantity }) => {
+const Sebetim = ({ removeFromCart, incrementQuantity, decrementQuantity,product }) => {
   const cartItems = useSelector((state) => state.cart.items);
-
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <FlatList
         data={cartItems} 
         keyExtractor={(item) => `${item.id}-${item.price}`} 
+        style={styles.flat}
         renderItem={({ item }) => (
-          <CardItem 
+          <TouchableOpacity  
+          onPress={() =>
+            navigation.navigate("UrunDetay", {
+              title: item.title,
+              description: item.description,
+              price: item.price,
+              image: item.image,
+            })
+          }
+          
+          >
+              <CardItem 
             item={item}
             removeFromCart={removeFromCart} 
             incrementQuantity={incrementQuantity} 
             decrementQuantity={decrementQuantity}
           />
+          </TouchableOpacity>
+        
         )}
       />
       <View style={styles.view}>
@@ -62,7 +76,8 @@ export default Sebetim;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f4f4f4",
+    
   },
   removeText: {
     color: "white",
@@ -110,9 +125,12 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   emptyCart: {
-    textAlign: "center", 
     fontSize: 18,
-    marginTop: 20, 
+    color: "#888",
+    textAlign: "center",
+    marginTop: 30,
+    fontStyle: "italic",
+    paddingHorizontal: 10,
   },
   removeButton: {
     backgroundColor: "#f53d3d", 
@@ -127,4 +145,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  flat:{
+    marginBottom: 10,
+    paddingHorizontal: "2%",
+    paddingVertical: 10,
+
+  }
 });

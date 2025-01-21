@@ -1,12 +1,12 @@
 import { View, Text, Image, TouchableOpacity,Dimensions } from "react-native";
 import React from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import Entypo from '@expo/vector-icons/Entypo';
+import Feather from '@expo/vector-icons/Feather';
 import WhatsAppButton from './WhatsAppButton'
 const {height, width}= Dimensions.get('window')
 const ProfileDetails = () => {
   return (
-    <View style={{ padding: 15, borderBottomWidth: 0.5, borderBottomColor: 'lightgray' }}>
+    <View style={{ padding: 9, borderBottomWidth: 0.5, borderBottomColor: 'lightgray', }}>
       
       <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 15 }}>
         <Image
@@ -28,27 +28,42 @@ const ProfileDetails = () => {
         <Text style={{ fontSize: 24, fontWeight: "bold", color: "black" }}>Colins</Text>
       </View>
 
-      <View style={{width:width }}>
-        <Text style={{ fontWeight: "bold", fontSize: 16, color: "#333",textAlign:'start' }}>Hər növ geyimlər</Text>
-        
-        <View style={{ flexDirection: "row",marginTop: 5 ,width:width,gap:2}}>
-          <Ionicons name="navigate-sharp" size={20} color="black" />
-          <Text style={{ marginLeft: 5, fontSize: 14, color: "gray",textAlign:'left',fontWeight:'semibold'  }}>- Binəqədi 8mkr , C.Xendan kucesi</Text>
-        </View>
-        <View style={{ flexDirection: "row",marginTop: 5 ,width:width,gap:2}}>
-        <Entypo name="phone" size={20} color="black" />
-          <Text style={{ marginLeft: 5, fontSize: 14, color: "gray",textAlign:'left',fontWeight:'semibold'   }}> - (055) 808 08 01</Text>
-        </View>
+      <View style={{display: 'flex',padding:5}}>
+  <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#333', textAlign: 'start' }}>Hər növ geyimlər</Text>
 
-        <TouchableOpacity>
-          <Text style={{
-            color: "#fb5607",
-            fontSize: 16,
-            fontWeight: "bold",
-            marginTop: 5
-          }}>See transactions</Text>
-        </TouchableOpacity>
-      </View>
+  <TouchableOpacity style={{ flexDirection: 'row', marginTop: 5, width: width, gap: 2,marginBottom:8 }}>
+  <Ionicons name="navigate-circle-outline" size={20} color="black" />
+    <Text style={{ marginLeft: 5, fontSize: 14, color: 'gray', textAlign: 'left', fontWeight: 'semibold' }}>
+      - Binəqədi 8mkr , C.Xendan kucesi
+    </Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity style={{ flexDirection: 'row', marginTop: 5, width: width, gap: 2,marginBottom:8 }}>
+  <Feather name="phone-call" size={20} color="black" />
+    <Text style={{ marginLeft: 5, fontSize: 14, color: 'gray', textAlign: 'left', fontWeight: 'semibold' }}>
+      - (055) 808 08 01
+    </Text>
+  </TouchableOpacity>
+
+  {/* WhatsApp Section */}
+  <TouchableOpacity style={{ flexDirection: 'row', marginTop: 5, width: width, gap: 4, alignItems: 'center',marginBottom:12}}>
+    <View style={{paddingVerticalL:30}}>
+    <WhatsAppButton />
+
+    </View>
+    <Text style={{ fontSize: 14, color: 'gray', fontWeight: 'semibold' }}>- (055) 808 08 01</Text>
+  </TouchableOpacity>
+
+  {/* <TouchableOpacity>
+    <Text style={{
+      color: '#fb5607',
+      fontSize: 16,
+      fontWeight: 'bold',
+    }}>Reklam bölməsi</Text>
+  </TouchableOpacity>
+  */}
+</View> 
+
 
       {/* Profil Butonu */}
       {/* <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 15 }}>

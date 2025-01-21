@@ -15,7 +15,7 @@ import { Buffer } from 'buffer';
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
-// const logo = require("../assets/3.webp");
+const logo = require("../assets/3.webp");
 
 // contact me :)
 // instagram: must_ait6
@@ -55,7 +55,10 @@ export default function Giris() {
   return (
     <SafeAreaView style={styles.container}>
       {/* <Image source={logo} style={styles.image} resizeMode="contain" /> */}
-      <Text style={styles.title}>Giriş</Text>
+      {/* <Text style={styles.title}>Giriş</Text> */}
+      <Image source={logo} style={styles.image}/>
+
+
       <View style={styles.inputView}>
         <TextInput
           style={styles.input}
@@ -114,12 +117,18 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     paddingTop: 100,
+    backgroundColor: "white",
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    flex:1
   },
   image: {
     height: 160,
     width: 160,
-    marginBottom: 20,
-    borderRadius: 80,
+    resizeMode: 'contain',
+    
   },
   title: {
     fontSize: 30,
@@ -164,7 +173,7 @@ const styles = StyleSheet.create({
     color: "red",
   },
   button: {
-    backgroundColor: "black",
+    backgroundColor: "red",
     height: 45,
     borderColor: "gray",
     borderWidth: 1,
@@ -173,9 +182,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   buttonView: {
     width: "100%",
