@@ -12,6 +12,7 @@ import {
   Share,
   Dimensions,
   RefreshControl,
+  Platform
 } from "react-native";
 import { useNavigation,useIsFocused  } from "@react-navigation/native";
 import SkeletonLoader from "../components/SkeletonLoader";
@@ -268,19 +269,19 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   card: {
-    width: width * 0.92, // Make the card take full width
-    maxWidth: width * 0.95, // Set a max width for larger screens (optional)
+    width: width * 0.92,
+    maxWidth: width * 0.95,
     marginBottom: 20,
     borderRadius: 15,
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 5,
+    shadowOpacity: Platform.OS === 'ios' ? 0.2 : 0, // iOS'ta gölge opaklığını ekler
+    shadowRadius: Platform.OS === 'ios' ? 6 : 0,    // iOS'ta gölge yarıçapını ekler
+    elevation: Platform.OS === 'android' ? 5 : 0,   // Android'de elevation kullanılır
     overflow: "hidden",
     marginTop: 50,
-    alignSelf: "center", // Center the card horizontally
+    alignSelf: "center", 
   },
   header: {
     flexDirection: "row",

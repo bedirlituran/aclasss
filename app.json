@@ -9,9 +9,9 @@
     "icon": "./assets/3.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/3.png",
+      "image": "./assets/indir.jpg",
       "resizeMode": "cover",
-      "backgroundColor": "#e0f7fa" 
+      "backgroundColor": "#4cc9f0"
     },
     "assetBundlePatterns": [
       "**/*"

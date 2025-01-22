@@ -132,7 +132,7 @@ const Navigation = () => {
       <Stack.Screen name="Giris" component={Giris} options={{
           header: () => (
             <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <TouchableOpacity style={{ marginLeft: 15 }}  onPress={() => navigation.goBack()}>
+              <TouchableOpacity style={{ marginLeft: 15,padding: 10 }}  onPress={() => navigation.goBack()}>
                 <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
               </TouchableOpacity>
               <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Giriş et</Text>
@@ -145,7 +145,7 @@ const Navigation = () => {
       <Stack.Screen name="Qeydiyyat" component={Qeydiyyat} options={{
           header: () => (
             <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <TouchableOpacity style={{ marginLeft: 15 }}  onPress={() => navigation.goBack()}>
+              <TouchableOpacity style={{ marginLeft: 15,padding: 10 }}  onPress={() => navigation.goBack()}>
                 <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
               </TouchableOpacity>
               <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Qeyd ol</Text>
@@ -159,7 +159,7 @@ const Navigation = () => {
       <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen}   options={{
         header: () => (
           <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <TouchableOpacity style={{ marginLeft: 15 }}  onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={{ marginLeft: 15,padding: 10 }}  onPress={() => navigation.goBack()}>
               <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
             </TouchableOpacity>
             <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Məhsullar</Text>
@@ -173,7 +173,7 @@ const Navigation = () => {
       options={{
         header: () => (
           <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <TouchableOpacity style={{ marginLeft: 15 }}  onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={{ marginLeft: 15,padding: 10 }}  onPress={() => navigation.goBack()}>
               <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
             </TouchableOpacity>
             <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Məhsul haqqında</Text>
@@ -190,7 +190,7 @@ const Navigation = () => {
         options={{
           header: () => (
             <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <TouchableOpacity style={{ marginLeft: 15 }}  onPress={() => navigation.goBack()}>
+              <TouchableOpacity style={{ marginLeft: 15 ,padding: 10}}  onPress={() => navigation.goBack()}>
                 <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
               </TouchableOpacity>
               <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Kataloq</Text>
