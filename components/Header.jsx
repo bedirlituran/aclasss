@@ -30,9 +30,13 @@ const Header = () => {
       <View style={styles.logoContainer}>
         <Text style={styles.logoText}>AClass</Text>
       </View>
+      <TouchableOpacity onPress={()=>navigation.navigate("Kataloq")}>
+      <Ionicons name="search-outline" size={24} color="gray" />
+
+      </TouchableOpacity>
 
       <TouchableOpacity style={styles.iconWrapper}>
-          <Ionicons name="notifications-circle" size={28} color="#fb5607" />
+      <Ionicons name="notifications-outline" size={22} color="gray" />
         </TouchableOpacity> 
 
 

@@ -22,6 +22,7 @@ import WhatsAppButton from "./WhatsAppButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Reklam from "../components/Reklam";
 import Header from "../components/Header";
+import YorumAnimation from "../components/YorumAnimation";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/cartSlice";
@@ -42,7 +43,7 @@ const Ev = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
-
+  
   useEffect(() => {
     const unsubscribe = navigation.addListener('tabPress', e => {
       if (isFocused) {
@@ -151,6 +152,8 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   const animation = useRef(new Animated.Value(0)).current;
   const longText = item.category;
   const longText2  =  item.description
+  const [isFav, setIsFav] = useState(false);
+  const [count, setCount] = useState(0);
   const maxLength = 200;
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
@@ -172,6 +175,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   });
 
   const handleShare = () => {
+    toggleFav();
     setIsShared(!isShared);
     Animated.timing(animation, {
       toValue: isShared ? 0 : 1,
@@ -184,6 +188,28 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
       message: `Ürün: ${item.title}\nFiyat: ${item.price} ₼`,
     }).catch((error) => Alert.alert("Paylaşım Hatası", error.message));
   };
+
+    const toggleFav = () => {
+      setIsFav(!isFav);
+      setCount(count + 1)
+      if (isFav) {
+        setCount(count - 1)
+      };
+      Animated.sequence([
+        Animated.timing(animation, {
+          toValue: 2,
+          duration: 100,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+        Animated.spring(animation, {
+          toValue: 1,
+          friction: 3,
+          tension: 40,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    };
 
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
@@ -245,11 +271,10 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
           />
         </TouchableOpacity>
         <StarAnmimation />
-        <BasketAnimation />
-        <TouchableOpacity onPress={handleShare} style={styles.shareButton}>
-          <Animated.View style={{ transform: [{ rotate: shareRotate }] }}>
+       <YorumAnimation/>
+            <TouchableOpacity onPress={handleShare} style={{ alignItems: "center",flexDirection: "row",justifyContent: "center",gap:3, }}>
             <Ionicons name="share-social-outline" size={30} color="black" />
-          </Animated.View>
+            <Text style={{ marginTop: 10 }}>{`${count}`}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -387,7 +412,7 @@ const styles = StyleSheet.create({
   },
   animations: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     paddingHorizontal: 10,
     marginTop: 10,

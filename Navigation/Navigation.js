@@ -1,12 +1,11 @@
 import * as React from "react";
-import { useRef, useCallback } from "react";
-import { StyleSheet, View, TouchableOpacity, Platform,Text } from "react-native";
+import { useRef, useCallback, useState } from "react";
+import { View, TouchableOpacity, Platform, Text, Button,Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import Profile from "../sehifeler/Profile";
-import SearchScreen from "../sehifeler/SearchScreen";
 import Sebetim from "../sehifeler/Sebetim";
 import UrunDetay from "../sehifeler/UrunDetay";
 import FavoriteScreen from "../sehifeler/FavoriteScreen";
@@ -16,7 +15,7 @@ import Esasgiris from "../sehifeler/Esasgiris";
 import Giris from "../sehifeler/Giris";
 import Qeydiyyat from "../sehifeler/Qeydiyyat";
 import { useNavigation } from "@react-navigation/native";
-
+import * as ImagePicker from "expo-image-picker"
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -54,6 +53,16 @@ const TabNavigator = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const homeTabPressCount = useRef(0);
   const lastTabPressTime = useRef(0);
+  const [image, setImage] = useState('');
+
+  const handleImagePick = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      aspect: [1, 1],
+      quality: 1,
+  })
+  };
 
   const handleTabPress = useCallback((e) => {
     const currentTime = Date.now();
@@ -66,7 +75,7 @@ const TabNavigator = () => {
           navigation.emit({
             type: 'tabPress',
             target: e.target,
-            canPreventDefault: true,
+            canPrEventDefault: true,
           });
         } else {
           // Odd number of taps, scroll to top
@@ -104,16 +113,48 @@ const TabNavigator = () => {
         component={ProfileStack}
         options={{ headerShown: false }}
       />
+      {/* Əlavə et Butonu */}
       <Tab.Screen
-        name="Kataloq"
-        component={SearchScreen}
-        options={{ headerShown: false }}
+        name="Əlavə et"
+        component={Esasgiris} // Burada açılacak sayfanı seç
+        options={{
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+              onPress={handleImagePick}  // "Esasgiris" sayfasına gitmeyecek, resim yükleme işlemi yapılacak.
+              style={{
+                top: -16,
+                justifyContent: "center",
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOpacity: 0.3,
+                shadowOffset: { width: 0, height: 3 },
+              }}
+            >
+              {/* Arka Plan için View */}
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  backgroundColor: "white",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  shadowColor: "#000", // iOS için gölge
+                  shadowOpacity: 0.2,
+                  shadowOffset: { width: 0, height: 2 },
+                }}
+              >
+                <Ionicons name="add-circle-outline" size={48} color="#fb5607" />
+              </View>
+            </TouchableOpacity>
+          ),
+        }}
       />
       <Tab.Screen
         name="Səbət"
         component={Sebetim}
         options={{ headerShown: false }}
-
       />
       <Tab.Screen
         name="Bəyənilər"
@@ -125,86 +166,42 @@ const TabNavigator = () => {
 };
 
 const Navigation = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
   return (
     <Stack.Navigator>
       <Stack.Screen name="Esasgiris" component={Esasgiris} options={{ headerShown: false }} />
       <Stack.Screen name="Giris" component={Giris} options={{
-          header: () => (
-            <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <TouchableOpacity style={{ marginLeft: 15,padding: 10 }}  onPress={() => navigation.goBack()}>
-                <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
-              </TouchableOpacity>
-              <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Giriş et</Text>
-              <TouchableOpacity style={{ marginRight: 15,opacity:0 }}>
-                <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}/>
+        header: () => (
+          <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <TouchableOpacity style={{ marginLeft: 15, padding: 10 }} onPress={() => navigation.goBack()}>
+              <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
+            </TouchableOpacity>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Giriş et</Text>
+            <TouchableOpacity style={{ marginRight: 15, opacity: 0 }}>
+              <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
+            </TouchableOpacity>
+          </View>
+        ),
+      }} />
       <Stack.Screen name="Qeydiyyat" component={Qeydiyyat} options={{
-          header: () => (
-            <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <TouchableOpacity style={{ marginLeft: 15,padding: 10 }}  onPress={() => navigation.goBack()}>
-                <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
-              </TouchableOpacity>
-              <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Qeyd ol</Text>
-              <TouchableOpacity style={{ marginRight: 15,opacity:0 }}>
-                <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }} />
+        header: () => (
+          <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <TouchableOpacity style={{ marginLeft: 15, padding: 10 }} onPress={() => navigation.goBack()}>
+              <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
+            </TouchableOpacity>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Qeyd ol</Text>
+            <TouchableOpacity style={{ marginRight: 15, opacity: 0 }}>
+              <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
+            </TouchableOpacity>
+          </View>
+        ),
+      }} />
       <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen}   options={{
-        header: () => (
-          <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <TouchableOpacity style={{ marginLeft: 15,padding: 10 }}  onPress={() => navigation.goBack()}>
-              <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
-            </TouchableOpacity>
-            <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Məhsullar</Text>
-            <TouchableOpacity style={{ marginRight: 15,opacity:0 }}>
-              <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
-            </TouchableOpacity>
-          </View>
-        ),
-  }} />
-      <Stack.Screen name="UrunDetay" component={UrunDetay} 
-      options={{
-        header: () => (
-          <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <TouchableOpacity style={{ marginLeft: 15,padding: 10 }}  onPress={() => navigation.goBack()}>
-              <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
-            </TouchableOpacity>
-            <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Məhsul haqqında</Text>
-            <TouchableOpacity style={{ marginRight: 15,opacity:0 }}>
-              <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
-            </TouchableOpacity>
-          </View>
-        ),
-  }}/>
-      <Stack.Screen name="Ev" component={Ev} options={{ headerShown: false }} />
-      <Stack.Screen
-        name="Kataloq"
-        component={SearchScreen}
-        options={{
-          header: () => (
-            <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <TouchableOpacity style={{ marginLeft: 15 ,padding: 10}}  onPress={() => navigation.goBack()}>
-                <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
-              </TouchableOpacity>
-              <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Kataloq</Text>
-              <TouchableOpacity style={{ marginRight: 15,opacity:0 }}>
-                <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
-              </TouchableOpacity>
-            </View>
-          ),
-    }}
-      />
+      <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="UrunDetay" component={UrunDetay} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
 
 export default Navigation;
-
-const styles = StyleSheet.create({});
