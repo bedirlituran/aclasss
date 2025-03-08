@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useRef, useCallback, useState } from "react";
-import { View, TouchableOpacity, Platform, Text, Button,Image } from "react-native";
+import { View, TouchableOpacity, Platform, Text, Button,Image, Alert  } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
@@ -55,15 +55,27 @@ const TabNavigator = () => {
   const lastTabPressTime = useRef(0);
   const [image, setImage] = useState('');
 
-  const handleImagePick = async () => {
-      let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: false,
-      aspect: [1, 1],
-      quality: 1,
-  })
-  };
 
+
+  // const pickImage = async () => {
+  //   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //   if (status !== 'granted') {
+  //     Alert.alert('Erişim reddedildi', 'Resimleri seçebilmek için izin vermelisiniz.');
+  //     return;
+  //   }
+  
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   });
+  
+  //   if (!result.cancelled) {
+  //     setImage(result.uri);
+  //     navigation.navigate('Profile', { imageUri: result.uri });  // Resmi Profile sayfasına gönderiyoruz
+  //   }
+  // };
   const handleTabPress = useCallback((e) => {
     const currentTime = Date.now();
     if (e.target === 'Ev') {
@@ -121,7 +133,7 @@ const TabNavigator = () => {
           tabBarButton: (props) => (
             <TouchableOpacity
               {...props}
-              onPress={handleImagePick}  // "Esasgiris" sayfasına gitmeyecek, resim yükleme işlemi yapılacak.
+              // onPress={pickImage}  // "Esasgiris" sayfasına gitmeyecek, resim yükleme işlemi yapılacak.
               style={{
                 top: -16,
                 justifyContent: "center",
