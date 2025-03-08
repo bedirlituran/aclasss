@@ -25,7 +25,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const navigation = useNavigation();
-
+  const images = useSelector((state) => state.images.images);
   const handleToggleFavorite = (product) => {
     const isFavorited = favorites.some((favItem) => favItem.id === product.id);
     if (isFavorited) {
@@ -73,79 +73,72 @@ const Profile = () => {
       <View style={styles.profileDetailsContainer}>
         <ProfileDetails />
       </View>
+      <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <View style={styles.productContainer}>
+        {/* Yükleniyor durumu */}
+        {loading ? (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator size="large" color="#fb5607" />
+          </View>
+        ) : (
+          <View style={styles.grid}>
+            {/* Burada sadece imageUri array'inden gelen resimleri gösteriyoruz */}
+            {images.map((imageUri, index) => {
+              // Örnek ürün verileri
+              const product = {
+                id: index, // Her resim için benzersiz bir ID
+                title: "Ürün Başlığı " + (index + 1),
+                description: "Bu bir örnek açıklamadır.",
+                price: "100", 
+                rating: { count: 20 },
+                image: imageUri, // Seçilen resim
+              };
 
-      <ScrollView
-        contentContainerStyle={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-        removeClippedSubviews={true}
-      >
-        <View style={styles.productContainer}>
-        
+              return (
+                <View style={styles.card} key={index}>
+                  <TouchableOpacity
+                    style={styles.image}
+                    onPress={() =>
+                      navigation.navigate("UrunDetay", {
+                        title: product.title,
+                        description: product.description,
+                        price: product.price,
+                        image: product.image,
+                      })
+                    }
+                  >
+                    <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
+                  </TouchableOpacity>
 
-          {loading ? (
-            <View style={styles.loaderContainer}>
-              <ActivityIndicator size="large" color="#fb5607" />
-            </View>
-          ) : (
-            <View style={styles.grid}>
-              {products.map((product) => {
-                const isFavorited = favorites.some(
-                  (favItem) => favItem.id === product.id
-                );
-                return (
-                  <View style={styles.card} key={product.id}>
-                    <TouchableOpacity
-                      style={styles.image}
-                      onPress={() =>
-                        navigation.navigate("UrunDetay", {
-                          title: product.title,
-                          description: product.description,
-                          price: product.price,
-                          image: product.image,
-                        })
-                      }
-                    >
-                      <Image
-                        style={styles.image}
-                        source={{ uri: product.image }}
-                        resizeMode="center"
-                      />
-                    </TouchableOpacity>
+                  {/* Favori butonu */}
+                  <TouchableOpacity onPress={() => handleToggleFavorite(product)} style={styles.like}>
+                    <MaterialCommunityIcons
+                      name="heart-plus-outline"
+                      size={24}
+                      color="black"
+                    />
+                  </TouchableOpacity>
 
-                    <TouchableOpacity
-                      onPress={() => handleToggleFavorite(product)}
-                      style={styles.like}
-                    >
-                      <MaterialCommunityIcons
-                        name={isFavorited ? "heart" : "heart-plus-outline"}
-                        size={24}
-                        color={isFavorited ? "#fb5607" : "black"}
-                      />
-                    </TouchableOpacity>
-
-                    <View style={styles.cardBody}>
-                      <Text style={styles.cardTitle} numberOfLines={1}>
-                        {Truncate(product.title, 55)}
-                      </Text>
-                      <Text style={styles.cardDescription} numberOfLines={2}>
-                        {Truncate(product.description, 55)}
-                      </Text>
-                      <View style={styles.cardPriceContainer}>
-                        <Text style={styles.cardPrice}>
-                          {product.price} {"\u20BC"}{" "}
-                        </Text>
-                        <Text style={styles.cardDetail}>
-                          Stok: {product.rating.count}
-                        </Text>
-                      </View>
+                  {/* Ürün detayları */}
+                  <View style={styles.cardBody}>
+                    <Text style={styles.cardTitle} numberOfLines={1}>
+                      {Truncate(product.title, 55)} {/* Ürün başlığı burada */}
+                    </Text>
+                    <Text style={styles.cardDescription} numberOfLines={2}>
+                      {Truncate(product.description, 55)} {/* Ürün açıklaması burada */}
+                    </Text>
+                    <View style={styles.cardPriceContainer}>
+                      <Text style={styles.cardPrice}>{"100"} {"\u20BC"} </Text>
+                      <Text style={styles.cardDetail}>Stok: 20</Text>
                     </View>
                   </View>
-                );
-              })}
-            </View>
-          )}
-        </View>
-      </ScrollView>
+                </View>
+              );
+            })}
+          </View>
+        )}
+      </View>
+    </ScrollView>
     </View>
   );
 };

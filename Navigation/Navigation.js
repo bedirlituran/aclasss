@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useRef, useCallback, useState } from "react";
-import { View, TouchableOpacity, Platform, Text, Button,Image, Alert  } from "react-native";
+import { View, TouchableOpacity, Platform, Text, Alert  } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,6 +16,10 @@ import Giris from "../sehifeler/Giris";
 import Qeydiyyat from "../sehifeler/Qeydiyyat";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker"
+import SearchScreen from "../sehifeler/SearchScreen";
+import { useDispatch } from 'react-redux';
+import { addImage } from "../store/imageSlice";
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -54,28 +58,69 @@ const TabNavigator = () => {
   const homeTabPressCount = useRef(0);
   const lastTabPressTime = useRef(0);
   const [image, setImage] = useState('');
+  const dispatch = useDispatch();
 
 
-
-  // const pickImage = async () => {
-  //   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //   if (status !== 'granted') {
-  //     Alert.alert('Erişim reddedildi', 'Resimleri seçebilmek için izin vermelisiniz.');
-  //     return;
-  //   }
+  const pickImage = async () => {
+    Alert.alert(
+      "Şəkil vəya Video Seç",
+      "Qalereya vəya Kameradan şəkil və video seçə bilərsiniz.",
+      [
+        {
+          text: "Qalereya",
+          onPress: async () => {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+              Alert.alert('Giriş rədd edildi', 'Şəkilləri seçə bilmek üçün icazə verməlisiniz.');
+              return;
+            }
   
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
+            const result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ImagePicker.MediaTypeImages,
+              allowsEditing: true,
+              aspect: [4, 3],
+              quality: 1,
+            });
   
-  //   if (!result.cancelled) {
-  //     setImage(result.uri);
-  //     navigation.navigate('Profile', { imageUri: result.uri });  // Resmi Profile sayfasına gönderiyoruz
-  //   }
-  // };
+            if (!result.canceled && result.assets[0]?.uri) {
+              const imageUri = result.assets[0].uri;
+              dispatch(addImage(imageUri)); // Redux'a kaydediyoruz
+            } else {
+              console.log('Hata', 'Geçersiz resim URI\'si');
+            }
+          }
+        },
+        {
+          text: "Kamera",
+          onPress: async () => {
+            const { status } = await ImagePicker.requestCameraPermissionsAsync();
+            if (status !== 'granted') {
+              Alert.alert('Kameraya giriş rədd edildi', 'Kamera giriş üçün izacə verməlisiniz.');
+              return;
+            }
+  
+            const result = await ImagePicker.launchCameraAsync({
+              allowsEditing: true,
+              aspect: [4, 3],
+              quality: 1,
+            });
+  
+            if (!result.canceled && result.assets[0]?.uri) {
+              const imageUri = result.assets[0].uri;
+              dispatch(addImage(imageUri)); // Redux'a kaydediyoruz
+            } else {
+              console.log('Hata', 'Geçersiz resim URI\'si');
+            }
+          }
+        },
+        {
+          text: "Bağla",
+          style: "cancel"
+        }
+      ]
+    );
+  };
+
   const handleTabPress = useCallback((e) => {
     const currentTime = Date.now();
     if (e.target === 'Ev') {
@@ -133,7 +178,7 @@ const TabNavigator = () => {
           tabBarButton: (props) => (
             <TouchableOpacity
               {...props}
-              // onPress={pickImage}  // "Esasgiris" sayfasına gitmeyecek, resim yükleme işlemi yapılacak.
+              onPress={pickImage}  // Resim yükleme işlemi yapılacak
               style={{
                 top: -16,
                 justifyContent: "center",
@@ -143,7 +188,6 @@ const TabNavigator = () => {
                 shadowOffset: { width: 0, height: 3 },
               }}
             >
-              {/* Arka Plan için View */}
               <View
                 style={{
                   width: 60,
@@ -152,7 +196,7 @@ const TabNavigator = () => {
                   backgroundColor: "white",
                   justifyContent: "center",
                   alignItems: "center",
-                  shadowColor: "#000", // iOS için gölge
+                  shadowColor: "#000",
                   shadowOpacity: 0.2,
                   shadowOffset: { width: 0, height: 2 },
                 }}
@@ -212,6 +256,12 @@ const Navigation = () => {
       <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="UrunDetay" component={UrunDetay} options={{ headerShown: false }} />
+      <Stack.Screen name="Kataloq" component={SearchScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Sebetim" component={Sebetim} options={{ headerShown: false }} />
+      <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+
+
+
     </Stack.Navigator>
   );
 };

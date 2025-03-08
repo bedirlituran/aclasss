@@ -64,22 +64,7 @@ const ProfileDetails = () => {
     <View style={{ padding: 9, borderBottomWidth: 0.5, borderBottomColor: 'lightgray', }}>
       <View style={{flexDirection:'row', justifyContent:'space-between',alignItems:'center'}}>
         <View style={{ flexDirection: "row", alignItems: "center", }}>
-          {/* <Image
-            source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3N5jeFH2PTk7tx5nUsWNOzB_IuUxd67m8hw&s' }}
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 50,
-              marginRight: 15,
-              borderWidth: 2,
-              borderColor: 'green',
-              shadowColor: 'rgba(0, 0, 0, 0.2)',
-              shadowRadius: 4,
-              shadowOpacity: 0.7,
-              elevation: 4
-            }}
-            resizeMode="contain"
-          /> */}
+   
               {image ? (
           <Image source={{ uri: image }}   style={{
             width: 100,
@@ -111,18 +96,18 @@ const ProfileDetails = () => {
       >
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Profil Resmi Seçenekleri</Text>
+            <Text style={styles.modalTitle}>Profil</Text>
             <TouchableOpacity style={styles.optionButton} onPress={pickImage}>
-              <Text style={styles.optionText}>Profil seklini deyisdir</Text>
+              <Text style={styles.optionText}>Profil şəklini dəyişdir</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.optionButton} onPress={() => setImage('')}>
-              <Text style={styles.optionText}>Profil seklini sil</Text>
+              <Text style={styles.optionText}>Profil şəklini sil</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.optionButton}
               onPress={() => setModalVisible(false)}
             >
-              <Text style={styles.optionText}>Bagla</Text>
+              <Text style={styles.optionText}>Bağla</Text>
             </TouchableOpacity>
           </View>
         </View>

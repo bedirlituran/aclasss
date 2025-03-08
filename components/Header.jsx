@@ -20,15 +20,12 @@ const { width } = Dimensions.get("window");
 
 const Header = () => {
 
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular_Italic, // Poppins fontunu ekledik
-  });
   const navigation = useNavigation()
   const cartItems = useSelector((state) => state.cart.items);
   return (
     <View style={styles.headerContainer}>
       <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>AClass</Text>
+        <Text style={styles.logoText}>Aclass</Text>
       </View>
       <TouchableOpacity onPress={()=>navigation.navigate("Kataloq")}>
       <Ionicons name="search-outline" size={24} color="gray" />
@@ -81,7 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logoText: {
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: "semibold",
     color:'green',
     fontFamily: 'Poppins_400Regular_Italic',
