@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, } from "react";
 import {
   View,
   StyleSheet,
@@ -12,12 +12,12 @@ import {
   Share,
   Dimensions,
   RefreshControl,
-  Platform
+  Platform,
+Modal,
 } from "react-native";
 import { useNavigation,useIsFocused  } from "@react-navigation/native";
 import SkeletonLoader from "../components/SkeletonLoader";
 import StarAnmimation from "./StarAnmimation";
-import BasketAnimation from "./BasketAnimation";
 import WhatsAppButton from "./WhatsAppButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Reklam from "../components/Reklam";
@@ -29,8 +29,6 @@ import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from '@expo/vector-icons/Feather';
-import { useFonts, Poppins_400Regular_Italic } from '@expo-google-fonts/poppins';
-
 const { height, width } = Dimensions.get("window");
 
 const Ev = () => {
@@ -158,9 +156,8 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorited = favorites.some((favItem) => favItem.id === item.id);
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular_Italic, // Poppins fontunu ekledik
-  });
+
+
   const handleToggleFavorite = (product) => {
     if (isFavorited) {
       dispatch(removeFromFavorites(product));
@@ -175,6 +172,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   });
 
   const handleShare = () => {
+    
     toggleFav();
     setIsShared(!isShared);
     Animated.timing(animation, {
@@ -277,6 +275,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
             <Text style={{ marginTop: 10 }}>{`${count}`}</Text>
         </TouchableOpacity>
       </View>
+    
     </View>
   );
 });

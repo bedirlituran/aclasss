@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Platform, Text, Alert  } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import Profile from "../sehifeler/Profile";
 import Sebetim from "../sehifeler/Sebetim";
 import UrunDetay from "../sehifeler/UrunDetay";
@@ -17,9 +17,8 @@ import Qeydiyyat from "../sehifeler/Qeydiyyat";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker"
 import SearchScreen from "../sehifeler/SearchScreen";
-import { useDispatch } from 'react-redux';
 import { addImage } from "../store/imageSlice";
-
+import ProductModal from "../components/ProductModal"
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -59,7 +58,7 @@ const TabNavigator = () => {
   const lastTabPressTime = useRef(0);
   const [image, setImage] = useState('');
   const dispatch = useDispatch();
-
+  const [modalVisible, setModalVisible] = useState(false);
 
   const pickImage = async () => {
     Alert.alert(
@@ -84,6 +83,7 @@ const TabNavigator = () => {
   
             if (!result.canceled && result.assets[0]?.uri) {
               const imageUri = result.assets[0].uri;
+              setModalVisible(true);
               dispatch(addImage(imageUri)); // Redux'a kaydediyoruz
             } else {
               console.log('Hata', 'Geçersiz resim URI\'si');
@@ -188,6 +188,11 @@ const TabNavigator = () => {
                 shadowOffset: { width: 0, height: 3 },
               }}
             >
+               <ProductModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        imageUri={image}
+      />
               <View
                 style={{
                   width: 60,

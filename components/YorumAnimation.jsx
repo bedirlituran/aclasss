@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { View, Pressable, Animated, Easing, Text } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { View, Pressable, Animated, Easing, Text,Modal } from "react-native";
+import CommentsScreen from '../components/CommentsScreen'; // Yorum sayfasını import ediyoruz.
 
-const StarAnimation = () => {
+import { FontAwesome5 } from "@expo/vector-icons";
+const YorumAnimation = () => {
   const [isFav, setIsFav] = useState(false);
   const [count, setCount] = useState(0);
   const [animation] = useState(new Animated.Value(1));
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
 
   const toggleFav = () => {
+    setIsModalVisible(true);
     setIsFav(!isFav);
     setCount(count + 1)
     if (isFav) {
@@ -44,8 +48,15 @@ const StarAnimation = () => {
         </Animated.View>
       </Pressable>
       <Text style={{ marginTop: 10 }}>{`${count}`}</Text>
+        {/* Yorumlar modalı */}
+      {isModalVisible && (
+        <CommentsScreen
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+        />
+      )}
     </View>
   );
 };
 
-export default StarAnimation;
+export default YorumAnimation;

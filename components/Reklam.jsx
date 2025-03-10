@@ -33,7 +33,7 @@ const AdCarousel = () => {
         setActiveIndex(prevIndex => prevIndex + 1);
         scrollViewRef.current.scrollTo({ x: (activeIndex + 1) * (width - 200), animated: true });
       }
-    }, 2000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [activeIndex]);
@@ -63,7 +63,7 @@ const AdCarousel = () => {
           </View>
         ))}
       </ScrollView>
-      <MarqueeView 
+      {/* <MarqueeView 
       autoPlay={true}
       playing={true}
       speed={0.1}
@@ -73,7 +73,7 @@ const AdCarousel = () => {
 	<View>
 		<Text className="font-bold">Burada sizin reklamınız ola bilər</Text>
 	</View>
-</MarqueeView>
+</MarqueeView> */}
       {/* Çizgiler */}
       <View style={styles.indicatorContainer}>
         {images.map((_, index) => (

@@ -26,6 +26,7 @@ const Profile = () => {
   const favorites = useSelector((state) => state.favorites.items);
   const navigation = useNavigation();
   const images = useSelector((state) => state.images.images);
+  const productInfo = useSelector(state => state.product);
   const handleToggleFavorite = (product) => {
     const isFavorited = favorites.some((favItem) => favItem.id === product.id);
     if (isFavorited) {
@@ -100,10 +101,11 @@ const Profile = () => {
                     style={styles.image}
                     onPress={() =>
                       navigation.navigate("UrunDetay", {
-                        title: product.title,
-                        description: product.description,
-                        price: product.price,
+                        title: productInfo.category,
+                        description: productInfo.description,
+                        price: productInfo.price,
                         image: product.image,
+                        stock:productInfo.stock,
                       })
                     }
                   >
@@ -122,14 +124,14 @@ const Profile = () => {
                   {/* Ürün detayları */}
                   <View style={styles.cardBody}>
                     <Text style={styles.cardTitle} numberOfLines={1}>
-                      {Truncate(product.title, 55)} {/* Ürün başlığı burada */}
+                      {Truncate(productInfo.category, 55)} {/* Ürün başlığı burada */}
                     </Text>
                     <Text style={styles.cardDescription} numberOfLines={2}>
-                      {Truncate(product.description, 55)} {/* Ürün açıklaması burada */}
+                      {Truncate(productInfo.description, 55)} {/* Ürün açıklaması burada */}
                     </Text>
                     <View style={styles.cardPriceContainer}>
-                      <Text style={styles.cardPrice}>{"100"} {"\u20BC"} </Text>
-                      <Text style={styles.cardDetail}>Stok: 20</Text>
+                      <Text style={styles.cardPrice}>{productInfo.price}{"\u20BC"} </Text>
+                      <Text style={styles.cardDetail}>Stok: {productInfo.stock}</Text>
                     </View>
                   </View>
                 </View>
