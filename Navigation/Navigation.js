@@ -62,6 +62,8 @@ const TabNavigator = () => {
 
   const [selectedMediaUri, setSelectedMediaUri] = useState('');
   const [selectedMediaFormat, setSelectedMediaFormat] = useState('');
+
+
   const pickImage = async () => {
     Alert.alert(
       "Şəkil vəya Video Seç",
@@ -122,11 +124,13 @@ const TabNavigator = () => {
 
       setSelectedMediaUri(mediaUri);
       setSelectedMediaFormat(mediaFormat);
-      dispatch(addImage(mediaUri)); // Redux'a kaydediyoruz
-      setModalVisible(true); // Existing modal visibility setter
-      
-      console.log('Selected Media URI:', mediaUri);
-      console.log('Media Format:', mediaFormat);
+      dispatch(addImage(mediaUri));
+      setModalVisible(true); 
+
+      let localUri = mediaUri;
+      let filename = localUri.split('/').pop();
+      let type = 'image/jpeg';
+
     } else {
       console.log('Hata', 'Geçersiz medya seçimi');
     }
@@ -182,15 +186,14 @@ const TabNavigator = () => {
         component={ProfileStack}
         options={{ headerShown: false }}
       />
-      {/* Əlavə et Butonu */}
       <Tab.Screen
         name="Əlavə et"
-        component={Esasgiris} // Burada açılacak sayfanı seç
+        component={Esasgiris} 
         options={{
           tabBarButton: (props) => (
             <TouchableOpacity
               {...props}
-              onPress={pickImage}  // Resim yükleme işlemi yapılacak
+              onPress={pickImage} 
               style={{
                 top: -16,
                 justifyContent: "center",

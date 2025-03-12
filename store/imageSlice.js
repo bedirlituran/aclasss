@@ -10,7 +10,7 @@ const imageSlice = createSlice({
   reducers: {
     addImage: (state, action) => {
       if (action.payload) {
-        state.images.push(action.payload); // Yeni resmi sadece geçerli URI ile ekliyoruz
+        state.images.push(action.payload);
       } else {
         console.error('Geçersiz resim URI\'si');
       }

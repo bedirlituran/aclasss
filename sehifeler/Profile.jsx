@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Platform,
 } from "react-native";
+import { Video } from 'expo-av';
 import ProfileDetails from "../components/ProfileDetails";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,12 +22,13 @@ const { width } = Dimensions.get("window");
 
 const Profile = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // State for loading
+  const [loading, setLoading] = useState(true); 
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const navigation = useNavigation();
   const images = useSelector((state) => state.images.images);
   const productInfo = useSelector(state => state.product);
+
   const handleToggleFavorite = (product) => {
     const isFavorited = favorites.some((favItem) => favItem.id === product.id);
     if (isFavorited) {
@@ -51,14 +53,13 @@ const Profile = () => {
   };
 
   const handleImageUpload = () => {
-    fetchProducts(); // Resim yükleme işlemi tamamlandığında ürünleri güncelle
+    fetchProducts(); 
   };
 
   useEffect(() => {
     handleImageUpload();
   }, []);
 
- 
   const Truncate = (string, number) => {
     if (!string) {
       return null;
@@ -69,78 +70,96 @@ const Profile = () => {
     return string.slice(0, number) + "...";
   };
 
+  const renderMedia = (uri) => {
+    const extension = uri.split('.').pop().toLowerCase();
+    if (extension === 'mp4' || extension === 'mov' || extension === 'avi') {
+      return (
+        <Video
+          source={{ uri }}
+          useNativeControls
+          resizeMode="contain"
+          style={styles.media}
+        />
+      );
+    } else {
+      return (
+        <Image
+          source={{ uri }}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.profileDetailsContainer}>
         <ProfileDetails />
       </View>
       <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
-      <View style={styles.productContainer}>
-        {/* Yükleniyor durumu */}
-        {loading ? (
-          <View style={styles.loaderContainer}>
-            <ActivityIndicator size="large" color="#fb5607" />
-          </View>
-        ) : (
-          <View style={styles.grid}>
-            {/* Burada sadece imageUri array'inden gelen resimleri gösteriyoruz */}
-            {images.map((imageUri, index) => {
-              // Örnek ürün verileri
-              const product = {
-                id: index, // Her resim için benzersiz bir ID
-                title: "Ürün Başlığı " + (index + 1),
-                description: "Bu bir örnek açıklamadır.",
-                price: "100", 
-                rating: { count: 20 },
-                image: imageUri, // Seçilen resim
-              };
+        <View style={styles.productContainer}>
+          {loading ? (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="#fb5607" />
+              <Text>Paylaşım üçün şəkil vəya video yükləyin</Text>
+            </View>
+          ) : (
+            <View style={styles.grid}>
+              {images.map((imageUri, index) => {
+                const product = {
+                  id: index,
+                  title: "Ürün Başlığı " + (index + 1),
+                  description: "Bu bir örnek açıklamadır.",
+                  price: "100",
+                  rating: { count: 20 },
+                  image: imageUri,
+                };
 
-              return (
-                <View style={styles.card} key={index}>
-                  <TouchableOpacity
-                    style={styles.image}
-                    onPress={() =>
-                      navigation.navigate("UrunDetay", {
-                        title: productInfo.category,
-                        description: productInfo.description,
-                        price: productInfo.price,
-                        image: product.image,
-                        stock:productInfo.stock,
-                      })
-                    }
-                  >
-                    <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
-                  </TouchableOpacity>
+                return (
+                  <View style={styles.card} key={index}>
+                    <TouchableOpacity
+                      style={styles.image}
+                      onPress={() =>
+                        navigation.navigate("UrunDetay", {
+                          title: productInfo.category,
+                          description: productInfo.description,
+                          price: productInfo.price,
+                          image: product.image,
+                          stock: productInfo.stock,
+                        })
+                      }
+                    >
+                      {renderMedia(imageUri)}
+                    </TouchableOpacity>
 
-                  {/* Favori butonu */}
-                  <TouchableOpacity onPress={() => handleToggleFavorite(product)} style={styles.like}>
-                    <MaterialCommunityIcons
-                      name="heart-plus-outline"
-                      size={24}
-                      color="black"
-                    />
-                  </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleToggleFavorite(product)} style={styles.like}>
+                      <MaterialCommunityIcons
+                        name="heart-plus-outline"
+                        size={24}
+                        color="black"
+                      />
+                    </TouchableOpacity>
 
-                  {/* Ürün detayları */}
-                  <View style={styles.cardBody}>
-                    <Text style={styles.cardTitle} numberOfLines={1}>
-                      {Truncate(productInfo.category, 55)} {/* Ürün başlığı burada */}
-                    </Text>
-                    <Text style={styles.cardDescription} numberOfLines={2}>
-                      {Truncate(productInfo.description, 55)} {/* Ürün açıklaması burada */}
-                    </Text>
-                    <View style={styles.cardPriceContainer}>
-                      <Text style={styles.cardPrice}>{productInfo.price}{"\u20BC"} </Text>
-                      <Text style={styles.cardDetail}>Stok: {productInfo.stock}</Text>
+                    <View style={styles.cardBody}>
+                      <Text style={styles.cardTitle} numberOfLines={1}>
+                        {Truncate(productInfo.category, 55)} 
+                      </Text>
+                      <Text style={styles.cardDescription} numberOfLines={2}>
+                        {Truncate(productInfo.description, 55)}
+                      </Text>
+                      <View style={styles.cardPriceContainer}>
+                        <Text style={styles.cardPrice}>{productInfo.price}{"\u20BC"} </Text>
+                        <Text style={styles.cardDetail}>Stok: {productInfo.stock}</Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              );
-            })}
-          </View>
-        )}
-      </View>
-    </ScrollView>
+                );
+              })}
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -150,20 +169,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
- 
+  media: {
+    width: "100%",
+    height: 160,
+  },
   cardPriceContainer: {
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",
     flexDirection: "row",
-    gap: Platform.OS === "ios" ? 10 : 14, // iOS ve Android'de farklı boşluklar
+    gap: Platform.OS === "ios" ? 10 : 14,
   },
   like: {
     position: "absolute",
-    top: Platform.OS === "ios" ? 10 : 5, // Platforma göre pozisyon
+    top: Platform.OS === "ios" ? 10 : 5,
     right: 10,
     zIndex: 9999,
-    backgroundColor: Platform.OS === "ios" ? "lightblue" : "lightgreen", // Farklı renkler
+    backgroundColor: Platform.OS === "ios" ? "lightblue" : "lightgreen",
     borderRadius: 20,
     padding: 5,
   },
@@ -174,13 +196,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 10,
     paddingHorizontal: 8,
-    paddingVertical: Platform.OS === "ios" ? 6 : 8, // Platforma göre padding
+    paddingVertical: Platform.OS === "ios" ? 6 : 8,
   },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    paddingHorizontal: Platform.OS === "ios" ? 4 : 2, // iOS'ta daha fazla boşluk
+    paddingHorizontal: Platform.OS === "ios" ? 4 : 2,
     paddingBottom: 40,
   },
   card: {
@@ -189,11 +211,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: Platform.OS === "ios" ? 20 : 15,
     alignItems: "center",
-    shadowColor: "#000", // Siyah gölge rengi
-    shadowOffset: { width: 0, height: 4 }, // Gölgenin ofseti
-    shadowOpacity: 0.3, // Gölgenin opaklığı
-    shadowRadius: 5, // Gölgenin blur radius'u
-    elevation: 6, // Android'de gölge yüksekliği
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 6,
   },
   image: {
     width: "100%",
@@ -204,7 +226,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cardTitle: {
-    fontSize: Platform.OS === "ios" ? 14 : 13, // iOS'ta daha büyük font
+    fontSize: Platform.OS === "ios" ? 14 : 13,
     fontWeight: "bold",
     textAlign: "center",
   },
@@ -229,8 +251,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 200,
   },
-  scrollView:{
-padding:10
+  scrollView: {
+    padding: 10,
   },
 });
+
 export default Profile;

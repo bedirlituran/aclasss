@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import { Modal, View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import DropDownPicker from "react-native-dropdown-picker";
+import { useSelector } from "react-redux";
 import axios from 'axios';
-
 const ProductModal = ({ visible, onClose }) => {
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
   const [brand, setBrand] = useState('');
   const [description, setDescription] = useState('');
-
   const [openCategory, setOpenCategory] = useState(false);
   const [openSubCategory, setOpenSubCategory] = useState(false);
 
@@ -20,9 +18,8 @@ const ProductModal = ({ visible, onClose }) => {
   const [selectedCategoryName, setSelectedCategoryName] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
-  const [imageUri, setImageUri] = useState(null);
-  const [imageType, setImageType] = useState(null);
-
+  const images = useSelector((state) => state.images.images); 
+  const imageUri = images.length > 0 ? images[0] : null; // İlk resmi al
   // API'den kategori verilerini al
   useEffect(() => {
     const fetchCategories = async () => {
@@ -44,51 +41,58 @@ const ProductModal = ({ visible, onClose }) => {
     fetchCategories();
   }, []);
 
-  // Ana kategori değiştiğinde alt kategorileri ve ID'yi güncelle
   useEffect(() => {
     const selectedCategory = categories.find(cat => cat.value === selectedCategoryId);
     if (selectedCategory) {
       setSubCategories(selectedCategory.subCategories);
-      setSelectedCategoryName(selectedCategory.label); // Seçili kategorinin adını kaydet
+      setSelectedCategoryName(selectedCategory.label); 
     } else {
       setSubCategories([]);
       setSelectedCategoryName(null);
     }
   }, [selectedCategoryId]);
 
-  // Resim seçme işlemi
-  // const pickImage = async () => {
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaType.Images,
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
-  
-  //   console.log("Image Picker Result:", result); // Konsolda nəticəni yoxla
-  
-  //   if (!result.canceled && result.assets.length > 0) {
-  //     setImageUri(result.assets[0].uri); // Şəkilin URI-ni state-də saxla
-  //     setImageType(result.assets[0].mimeType || "image/jpeg"); // MIME type (formatı) state-də saxla
-  //   }
-  // };
 
-  const handleSave = () => {
+
+  const handleSave = async () => {
     const productData = {
-      price,
-      stock,
+      
       brand,
       description,
       categoryId: selectedCategoryId,
-      categoryName: selectedCategoryName,
       subCategory: selectedSubCategory,
-      image: {
-        uri: imageUri,
-        type: imageType,
-      },
+      fileType:'image/jpeg',
     };
     console.log("Kaydedilen Ürün:", productData);
     onClose();
+    let localUri = imageUri;
+  let filename = localUri.split('/').pop();
+  let type = 'image/jpeg'; 
+
+
+    let formData = new FormData();
+
+    formData.append("product", JSON.stringify(productData));
+  
+    formData.append("image", {
+      uri: localUri,
+      name: filename,
+      type:type,
+    });
+  
+    try {
+      const response = await axios.post("http://192.168.1.64:8081/api/productItem/save", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log(response.data);
+      
+    } catch (error) {
+      console.error("Upload Error:", error);
+  
+  }
   };
 
   return (
@@ -96,11 +100,6 @@ const ProductModal = ({ visible, onClose }) => {
       <View style={styles.container}>
         <Text style={styles.title}>Məhsul Məlumatları</Text>
 
-        {/* Resim Seçme Butonu */}
-      
-        {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
-
-        {/* Ana Kategori */}
         <DropDownPicker
           open={openCategory}
           setOpen={setOpenCategory}
@@ -111,7 +110,6 @@ const ProductModal = ({ visible, onClose }) => {
           style={styles.dropdown1}
         />
 
-        {/* Alt Kategori */}
         <DropDownPicker
           open={openSubCategory}
           setOpen={setOpenSubCategory}
