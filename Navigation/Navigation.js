@@ -60,6 +60,8 @@ const TabNavigator = () => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
 
+  const [selectedMediaUri, setSelectedMediaUri] = useState('');
+  const [selectedMediaFormat, setSelectedMediaFormat] = useState('');
   const pickImage = async () => {
     Alert.alert(
       "Şəkil vəya Video Seç",
@@ -70,24 +72,18 @@ const TabNavigator = () => {
           onPress: async () => {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
-              Alert.alert('Giriş rədd edildi', 'Şəkilləri seçə bilmek üçün icazə verməlisiniz.');
+              Alert.alert('Giriş rədd edildi', 'Şəkilləri və videoları seçə bilmek üçün icazə verməlisiniz.');
               return;
             }
   
             const result = await ImagePicker.launchImageLibraryAsync({
-              mediaTypes: ImagePicker.MediaTypeImages,
+              mediaTypes: ImagePicker.MediaTypeOptions.All,
               allowsEditing: true,
               aspect: [4, 3],
               quality: 1,
             });
   
-            if (!result.canceled && result.assets[0]?.uri) {
-              const imageUri = result.assets[0].uri;
-              setModalVisible(true);
-              dispatch(addImage(imageUri)); // Redux'a kaydediyoruz
-            } else {
-              console.log('Hata', 'Geçersiz resim URI\'si');
-            }
+            handleMediaSelection(result);
           }
         },
         {
@@ -100,17 +96,13 @@ const TabNavigator = () => {
             }
   
             const result = await ImagePicker.launchCameraAsync({
+              mediaTypes: ImagePicker.MediaTypeOptions.All,
               allowsEditing: true,
               aspect: [4, 3],
               quality: 1,
             });
   
-            if (!result.canceled && result.assets[0]?.uri) {
-              const imageUri = result.assets[0].uri;
-              dispatch(addImage(imageUri)); // Redux'a kaydediyoruz
-            } else {
-              console.log('Hata', 'Geçersiz resim URI\'si');
-            }
+            handleMediaSelection(result);
           }
         },
         {
@@ -120,6 +112,26 @@ const TabNavigator = () => {
       ]
     );
   };
+
+  const handleMediaSelection = (result) => {
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const selectedAsset = result.assets[0];
+      const mediaUri = selectedAsset.uri;
+      const mediaType = selectedAsset.type;
+      const mediaFormat = mediaType === 'video' ? 'video/mp4' : 'image/jpeg';
+
+      setSelectedMediaUri(mediaUri);
+      setSelectedMediaFormat(mediaFormat);
+      dispatch(addImage(mediaUri)); // Redux'a kaydediyoruz
+      setModalVisible(true); // Existing modal visibility setter
+      
+      console.log('Selected Media URI:', mediaUri);
+      console.log('Media Format:', mediaFormat);
+    } else {
+      console.log('Hata', 'Geçersiz medya seçimi');
+    }
+  };
+
 
   const handleTabPress = useCallback((e) => {
     const currentTime = Date.now();
