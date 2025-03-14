@@ -13,9 +13,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 const logo = require("../assets/3.png");
 
-// contact me :)
-// instagram: must_ait6
-// email : mustapha.aitigunaoun@gmail.com
+
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");

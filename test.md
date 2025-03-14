@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -23,10 +23,9 @@ const { width } = Dimensions.get("window");
 
 const Profile = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true); 
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
+  const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const navigation = useNavigation();
   const images = useSelector((state) => state.images.images);
@@ -49,21 +48,23 @@ const Profile = () => {
         setProducts(res.data);
         setLoading(false);
         setRefreshing(false);
+        console.log(res.data);
       })
       .catch((error) => {
-        setLoading(false);
+        setRefreshing(false);
         console.error("Error fetching products:", error);
       });
   };
 
- 
 
   useEffect(() => {
-    fetchProducts(); 
+    fetchProducts();
+
   }, []);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchProducts();
+    // fetchProducts();
   }, []);
 
   const Truncate = (string, number) => {
@@ -77,7 +78,7 @@ const Profile = () => {
   };
 
   const renderMedia = (uri) => {
-    const extension = uri.split('.').pop().toLowerCase();
+    const extension = uri?.split('.').pop().toLowerCase();
     if (extension === 'mp4' || extension === 'mov' || extension === 'avi') {
       return (
         <Video
@@ -103,25 +104,29 @@ const Profile = () => {
       <View style={styles.profileDetailsContainer}>
         <ProfileDetails />
       </View>
-      <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}   refreshControl={
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
+        }
+      >
         <View style={styles.productContainer}>
-          {loading ? (
+           {loading ? ( 
             <View style={styles.loaderContainer}>
               <ActivityIndicator size="large" color="#fb5607" />
               <Text>Paylaşım üçün şəkil vəya video yükləyin</Text>
             </View>
-          ) : (
+           ) : (
             <View style={styles.grid}>
-              {images.map((imageUri, index) => {
+              {products.map((imageUri, index) => {
                 const product = {
                   id: index,
                   title: "Ürün Başlığı " + (index + 1),
                   description: "Bu bir örnek açıklamadır.",
                   price: "100",
                   rating: { count: 20 },
-                  image: imageUri,
+                  image: imageUri.fileString,
                 };
 
                 return (
@@ -138,7 +143,7 @@ const Profile = () => {
                         })
                       }
                     >
-                      {renderMedia(imageUri)}
+                      {renderMedia(imageUri.fileString)}
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => handleToggleFavorite(product)} style={styles.like}>
@@ -151,7 +156,7 @@ const Profile = () => {
 
                     <View style={styles.cardBody}>
                       <Text style={styles.cardTitle} numberOfLines={1}>
-                        {Truncate(productInfo.category, 55)} 
+                        {Truncate(productInfo.category, 55)}
                       </Text>
                       <Text style={styles.cardDescription} numberOfLines={2}>
                         {Truncate(productInfo.description, 55)}

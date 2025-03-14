@@ -185,6 +185,9 @@ const TabNavigator = () => {
         name="Profil"
         component={ProfileStack}
         options={{ headerShown: false }}
+        screenListeners={{
+          tabPress: handleTabPress,
+        }}
       />
       <Tab.Screen
         name="Əlavə et"
