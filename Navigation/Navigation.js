@@ -19,6 +19,8 @@ import * as ImagePicker from "expo-image-picker"
 import SearchScreen from "../sehifeler/SearchScreen";
 import { addImage } from "../store/imageSlice";
 import ProductModal from "../components/ProductModal"
+import OTPVerification from "../sehifeler/OTPVerification"
+import MagazaRegister from "../sehifeler/MagazaRegister";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -282,6 +284,8 @@ const Navigation = () => {
       <Stack.Screen name="Kataloq" component={SearchScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Sebetim" component={Sebetim} options={{ headerShown: false }} />
       <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+      <Stack.Screen name="OTPVerification" component={OTPVerification} />
+      <Stack.Screen name="MagazaRegister" component={MagazaRegister} />
 
 
 

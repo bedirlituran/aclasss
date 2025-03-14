@@ -6,92 +6,173 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
+  TouchableOpacity
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { Button } from 'react-native-elements';
+
 const logo = require("../assets/3.png");
-
-
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [magaza, setMagaza] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
   const navigation = useNavigation();
-  const handleRegister = async () => {
-    console.log(username + password +confirmPassword)
+  const [selected, setSelected] = useState("istifadeci");
 
-    try{
-      const res = await axios.post("http://192.168.1.69:8080/web/login/registration",{
-        username:username,
-        password:password,
-        repeatPassword:confirmPassword,
+  // OTP göndərmək funksiyası
+  const handleSendOTP =  () => {
+    // if (!magaza || magaza.length < 10) {
+    //   Alert.alert("Hata", "Lütfen doğru telefon numarası girin!");
+    //   return;
+    // }
+
+    // try {
+    //   const res = await axios.post("http://192.168.1.69:8080/web/login/send-otp", { magaza });
+    //   console.log(res.data);
+    //   Alert.alert("Başarılı", "OTP kodu gönderildi!");
+      navigation.navigate("OTPVerification", { magaza });
+    // } catch (error) {
+    //   console.log(error);
+    //   Alert.alert("Hata", "OTP gönderilemedi, lütfen tekrar deneyin!");
+    // }
+  };
+
+  // OTP təsdiqləmə funksiyası
+  const handleVerifyOTP = async () => {
+    try {
+      const res = await axios.post("http://192.168.1.69:8080/web/login/verify-otp", { magaza, otp });
+      console.log(res.data);
+      Alert.alert("Uğur", "OTP təsdiqləndi!");
+      // OTP təsdiqləndikdən sonra qeydiyyat edək
+      handleRegister();
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Xəta", "OTP doğrulanmadı!");
+    }
+  };
+
+  const handleRegister = async () => {
+    if (selected === "istifadeci" && password !== confirmPassword) {
+      Alert.alert("Xəta", "Şifrələr eyni deyil!");
+      return;
+    } else if (password.length < 6) {
+      Alert.alert("Xəta", "Şifrə ən azı 6 simvol olmalıdır!");
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://192.168.1.69:8080/web/login/registration", {
+        username: username,
+        password: password,
+        repeatPassword: confirmPassword,
+        magaza: magaza
       });
       console.log(res.data);
-    }catch(error){
-        console.log(error);
+      Alert.alert("Uğur", "Qeydiyyat tamamlandı!");
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Xəta", "Qeydiyyat zamanı xəta baş verdi!");
     }
-  
-
-
-    if (password !== confirmPassword) {
-      Alert.alert("Xəta", "Şifrelər eyni deyil!");
-    } else if (password.length < 6) {
-      Alert.alert("Hata", "Şifre en az 6 karakter olmalıdır!");
-    }
-
-    // Burada kayıt işlemini gerçekleştir
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <Image source={logo} style={styles.image} resizeMode="contain" />
-      {/* <Text style={styles.title}>Qeydiyyat</Text> */}
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.input}
-          placeholder="İSTİFADƏÇİ ADI"
-          value={username}
-          onChangeText={setUsername}
-          autoCorrect={false}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="ŞİFRƏ"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-          autoCorrect={false}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="ŞİFRƏ TƏKRAR ET"
-          secureTextEntry
-          onChangeText={setConfirmPassword}
-          autoCorrect={false}
-          autoCapitalize="none"
-          value={confirmPassword}
-
-        />
-      </View>
-
-      <View style={styles.buttonView}>
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>QEYDİYYAT</Text>
-        </TouchableOpacity>
-        <Text style={{ textAlign: "center", marginTop: 10 }}>
-          Artıq hesabınız varsa?{" "}
-          <Text
-            style={{ color: "blue", fontWeight: "bold" }}
-            onPress={() => navigation.navigate("Giris")}
-          >
-            Giriş
+      <View style={styles.switchContainer}>
+        <TouchableOpacity
+          style={[styles.option, selected === "istifadeci" && styles.selectedOption]}
+          onPress={() => setSelected("istifadeci")}
+        >
+          <Text style={[styles.optionText, selected === "istifadeci" && styles.selectedText]}>
+            İSTİFADƏÇİ
           </Text>
-        </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.option, selected === "magaza" && styles.selectedOption]}
+          onPress={() => setSelected("magaza")}
+        >
+          <Text style={[styles.optionText, selected === "magaza" && styles.selectedText]}>
+            MAĞAZA
+          </Text>
+        </TouchableOpacity>
       </View>
+
+      <View style={styles.inputView}>
+        {selected === "istifadeci" ? (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="İSTİFADƏÇİ ADI"
+              value={username}
+              onChangeText={setUsername}
+              autoCorrect={false}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="ŞİFRƏ"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+              autoCorrect={false}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="ŞİFRƏNİ TƏKRAR ET"
+              secureTextEntry
+              onChangeText={setConfirmPassword}
+              autoCorrect={false}
+              autoCapitalize="none"
+              value={confirmPassword}
+            />
+          </>
+        ) : (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="+994 50 123 45 67"
+              keyboardType="phone-pad"
+              value={magaza}
+              onChangeText={setMagaza}
+            />
+            {!otpSent ? (
+              <Button title="OTP Gönder" type="solid" onPress={handleSendOTP} />
+            ) : (
+              <>
+                <TextInput
+                  style={styles.input}
+                  placeholder="OTP kodunu daxil edin"
+                  keyboardType="number-pad"
+                  value={otp}
+                  onChangeText={setOtp}
+                />
+                <Button title="OTP Təsdiqlə" type="solid" onPress={handleVerifyOTP} />
+              </>
+            )}
+          </>
+        )}
+      </View>
+
+      {selected === "istifadeci" && (
+        <View style={styles.buttonView}>
+          <Button title="Qeydiyyat" type="solid" onPress={handleRegister} />
+        </View>
+      )}
+
+      <Text style={{ textAlign: "center", marginTop: 10 }}>
+        Artıq hesabınız varsa?{" "}
+        <Text style={{ color: "blue", fontWeight: "bold" }} onPress={() => navigation.navigate("Giris")}>
+          Giriş
+        </Text>
+      </Text>
     </SafeAreaView>
   );
 }
@@ -103,19 +184,32 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  image: {
-    height: 160,
-    width: 160,
+  switchContainer: {
+    flexDirection: "row",
+    backgroundColor: "#EAEAEA",
+    borderRadius: 25,
+    padding: 5,
+    width: 280,
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
-    borderRadius: 80,
   },
-  title: {
-    fontSize: 30,
+  option: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: "center",
+    borderRadius: 20,
+  },
+  selectedOption: {
+    backgroundColor: "#C6E466",
+  },
+  optionText: {
+    fontSize: 16,
+    color: "#555",
     fontWeight: "bold",
-    textTransform: "uppercase",
-    textAlign: "center",
-    paddingVertical: 40,
-    color: "red",
+  },
+  selectedText: {
+    color: "#000",
   },
   inputView: {
     gap: 15,
@@ -130,70 +224,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
   },
-  rememberView: {
-    width: "100%",
-    paddingHorizontal: 50,
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-    marginBottom: 8,
-  },
-  switch: {
-    flexDirection: "row",
-    gap: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  rememberText: {
-    fontSize: 13,
-  },
-  forgetText: {
-    fontSize: 11,
-    color: "red",
-  },
-  button: {
-    backgroundColor: "red",
-    height: 45,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
+  image: {
+    height: 160,
+    width: 160,
+    borderRadius: 80,
   },
   buttonView: {
     width: "100%",
     paddingHorizontal: 50,
     marginTop: 30,
-  },
-  optionsText: {
-    textAlign: "center",
-    paddingVertical: 10,
-    color: "gray",
-    fontSize: 13,
-    marginBottom: 6,
-  },
-  mediaIcons: {
-    flexDirection: "row",
-    gap: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 23,
-  },
-  icons: {
-    width: 40,
-    height: 40,
-  },
-  footerText: {
-    textAlign: "center",
-    color: "gray",
-  },
-  signup: {
-    color: "red",
-    fontSize: 13,
   },
 });
