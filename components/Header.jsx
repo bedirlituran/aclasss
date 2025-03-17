@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
@@ -9,8 +8,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { useFonts, Poppins_400Regular_Italic } from '@expo-google-fonts/poppins';
-
+import { Text } from 'react-native-paper';
 
 
 
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: "semibold",
     color:'green',
-    fontFamily: 'Poppins_400Regular_Italic',
+    fontFamily: 'sans-serif',
   },
 
   
