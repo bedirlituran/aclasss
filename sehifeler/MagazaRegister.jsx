@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, TextInput, View, Text, ScrollView, Image, TouchableOpacity, Platform } from "react-native";
-import { Button } from 'react-native-elements';
+import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity, Platform } from "react-native";
+import { Button ,Input} from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute,useNavigation } from "@react-navigation/native";
-
 
 
 export default function MagazaRegister() {
@@ -63,81 +62,80 @@ export default function MagazaRegister() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Mağaza Kayıt</Text>
       <View style={styles.inputView}>
       <TouchableOpacity onPress={handleSelectImage} style={styles.imagePicker}>
-          <Text style={styles.imagePickerText}>Profil Resmi Seç</Text>
+          <Text style={styles.imagePickerText}>Profil Şəkli Seç</Text>
         </TouchableOpacity>
         {formData.profilSekli && (
           <Image source={{ uri: formData.profilSekli }} style={styles.profileImage} />
         )}
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Ad"
           value={formData.ad}
           onChangeText={(value) => handleChange("ad", value)}
         />
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Soyad"
           value={formData.soyad}
           onChangeText={(value) => handleChange("soyad", value)}
         />
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Email"
           keyboardType="email-address"
           value={formData.email}
           onChangeText={(value) => handleChange("email", value)}
         />
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Şifre"
           secureTextEntry
           value={formData.sifre}
           onChangeText={(value) => handleChange("sifre", value)}
         />
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Şifre Tekrar"
           secureTextEntry
           value={formData.sifreTekrar}
           onChangeText={(value) => handleChange("sifreTekrar", value)}
         />
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Ünvan"
           value={formData.unvan}
           onChangeText={(value) => handleChange("unvan", value)}
         />
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Etraflı Ünvan"
           value={formData.etrafliUnvan}
           onChangeText={(value) => handleChange("etrafliUnvan", value)}
         />
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Mağaza Adı"
           value={formData.magazaAdi}
           onChangeText={(value) => handleChange("magazaAdi", value)}
         />
       
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Elaqe Nomresi"
           keyboardType="phone-pad"
           value={formData.elaqeNomresi}
           onChangeText={(value) => handleChange("elaqeNomresi", value)}
         />
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Whatsapp Nomresi"
           keyboardType="phone-pad"
           value={formData.whatsappNomresi}
           onChangeText={(value) => handleChange("whatsappNomresi", value)}
         />
-        <Button title="Kaydı Tamamla" type="solid" onPress={()=>navigation.navigate("Giris")} />
+        <Button title="Qeydiyyatı tamamla" type="solid" onPress={()=>navigation.navigate("Giris")} />
       </View>
     </ScrollView>
   );
@@ -161,14 +159,7 @@ const styles = StyleSheet.create({
     gap: 15,
     width: "100%",
   },
-  input: {
-    height: 50,
-    paddingHorizontal: 20,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 7,
-    backgroundColor: "#fff",
-  },
+
   imagePicker: {
     backgroundColor: "#007BFF",
     padding: 15,

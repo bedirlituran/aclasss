@@ -5,13 +5,12 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   View,
   TouchableOpacity
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import { Button } from 'react-native-elements';
+import { Button,Input } from 'react-native-elements';
 
 const logo = require("../assets/3.png");
 
@@ -107,26 +106,27 @@ export default function LoginForm() {
       <View style={styles.inputView}>
         {selected === "istifadeci" ? (
           <>
-            <TextInput
+            <Input
               style={styles.input}
-              placeholder="İSTİFADƏÇİ ADI"
+              placeholder="İstifadəçi adı"
+              
               value={username}
               onChangeText={setUsername}
               autoCorrect={false}
               autoCapitalize="none"
             />
-            <TextInput
+            <Input
               style={styles.input}
-              placeholder="ŞİFRƏ"
+              placeholder="Şifrə"
               secureTextEntry
               value={password}
               onChangeText={setPassword}
               autoCorrect={false}
               autoCapitalize="none"
             />
-            <TextInput
+            <Input
               style={styles.input}
-              placeholder="ŞİFRƏNİ TƏKRAR ET"
+              placeholder="Şifrəni təkrar et"
               secureTextEntry
               onChangeText={setConfirmPassword}
               autoCorrect={false}
@@ -136,7 +136,7 @@ export default function LoginForm() {
           </>
         ) : (
           <>
-            <TextInput
+            <Input
               style={styles.input}
               placeholder="+994 50 123 45 67"
               keyboardType="phone-pad"
@@ -144,10 +144,10 @@ export default function LoginForm() {
               onChangeText={setMagaza}
             />
             {!otpSent ? (
-              <Button title="OTP Gönder" type="solid" onPress={handleSendOTP} />
+              <Button title="OTP Göndər" type="solid" onPress={handleSendOTP} />
             ) : (
               <>
-                <TextInput
+                <Input
                   style={styles.input}
                   placeholder="OTP kodunu daxil edin"
                   keyboardType="number-pad"
@@ -180,7 +180,7 @@ export default function LoginForm() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    paddingTop: 100,
+    paddingTop: 30,
     flex: 1,
     backgroundColor: "#fff",
   },
@@ -212,22 +212,20 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   inputView: {
-    gap: 15,
+    gap: 13,
     width: "100%",
     paddingHorizontal: 40,
     marginBottom: 5,
   },
   input: {
-    height: 50,
-    paddingHorizontal: 20,
-    borderColor: "red",
-    borderWidth: 1,
-    borderRadius: 7,
+    // height: 50,
+  
   },
   image: {
     height: 160,
     width: 160,
     borderRadius: 80,
+    marginBottom:40
   },
   buttonView: {
     width: "100%",

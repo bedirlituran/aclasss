@@ -284,8 +284,32 @@ const Navigation = () => {
       <Stack.Screen name="Kataloq" component={SearchScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Sebetim" component={Sebetim} options={{ headerShown: false }} />
       <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
-      <Stack.Screen name="OTPVerification" component={OTPVerification} />
-      <Stack.Screen name="MagazaRegister" component={MagazaRegister} />
+      <Stack.Screen name="OTPVerification" component={OTPVerification} options={{
+        header: () => (
+          <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <TouchableOpacity style={{ marginLeft: 15, padding: 10 }} onPress={() => navigation.goBack()}>
+              <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
+            </TouchableOpacity>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Otp Doğrulama</Text>
+            <TouchableOpacity style={{ marginRight: 15, opacity: 0 }}>
+              <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
+            </TouchableOpacity>
+          </View>
+        ),
+      }}/>
+      <Stack.Screen name="MagazaRegister" component={MagazaRegister} options={{
+        header: () => (
+          <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <TouchableOpacity style={{ marginLeft: 15, padding: 10 }} onPress={() => navigation.goBack()}>
+              <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
+            </TouchableOpacity>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Mağaza  Qeydiyyat</Text>
+            <TouchableOpacity style={{ marginRight: 15, opacity: 0 }}>
+              <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
+            </TouchableOpacity>
+          </View>
+        ),
+      }}/>
 
 
 

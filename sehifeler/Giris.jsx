@@ -7,13 +7,12 @@ import {
   StyleSheet,
   Switch,
   Text,
-  TextInput,
   View,
 } from "react-native";
 import { Buffer } from 'buffer';
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import Icon from 'react-native-vector-icons/Ionicons'; // Icon kütüphanesi
+import { Input,Button } from "react-native-elements";
 
 const logo = require("../assets/3.png");
 
@@ -51,28 +50,25 @@ export default function Giris() {
     <SafeAreaView style={styles.container}>
       <Image source={logo} style={styles.image} />
       <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputs}
-          placeholder="İSTİFADƏÇİ ADI"
+        <Input
+          // style={styles.inputs}
+          placeholder="İstifadəçi adı"
           value={username}
           onChangeText={setUsername}
           autoCorrect={false}
           autoCapitalize="none"
         />
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={[styles.input, styles.passwordInput]}
-            placeholder="ŞİFRƏ"
-            secureTextEntry={secureText}
+          <Input
+            // style={[styles.input, styles.passwordInput]}
+            placeholder="Şifrə"
+            secureTextEntry={true}
             value={password}
             onChangeText={setPassword}
             autoCorrect={false}
             autoCapitalize="none"
           />
-          <Pressable onPress={() => setSecureText(!secureText)}>
-            <Icon name={secureText ? "eye-off" : "eye"} size={20} color="gray" />
-          </Pressable>
-        </View>
+           
+          
       </View>
       <View style={styles.rememberView}>
         <View style={styles.switch}>
@@ -91,9 +87,7 @@ export default function Giris() {
       </View>
 
       <View style={styles.buttonView}>
-        <Pressable style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Giriş</Text>
-        </Pressable>
+        <Button style={styles.button} onPress={handleSubmit} type="solid" title='Giriş'/>
       </View>
 
       <Text style={styles.footerText}>
@@ -140,10 +134,7 @@ const styles = StyleSheet.create({
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'red',
-    borderRadius: 7,
-    paddingHorizontal: 10,
+  
   },
   passwordInput: {
     flex: 1,

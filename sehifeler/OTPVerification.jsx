@@ -23,12 +23,12 @@ export default function OTPVerification() {
       <View style={styles.inputView}>
         <TextInput
           style={styles.input}
-          placeholder="OTP kodunu girin"
+          placeholder="OTP kodunu daxil edin"
           keyboardType="number-pad"
           value={otp}
           onChangeText={setOtp}
         />
-        <Button title="İlerle" type="solid" onPress={handleProceed} />
+        <Button title="İrəli" type="solid" onPress={handleProceed} />
       </View>
     </SafeAreaView>
   );
