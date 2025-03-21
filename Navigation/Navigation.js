@@ -168,15 +168,39 @@ const TabNavigator = () => {
   }, [navigation]);
 
   return (
+    // <Tab.Navigator
+    //   screenOptions={({ route }) => ({
+    //     tabBarIcon: ({ focused, color, size }) => {
+    //       const iconName = getIconName(route.name, focused);
+    //       return <Ionicons name={iconName} size={size} color={color} />;
+    //     },
+    //     tabBarActiveTintColor: "#fb5607",
+    //     tabBarInactiveTintColor: "gray",
+    //     tabBarBadge: route.name === "Səbət" && cartItems.length > 0 ? cartItems.length : undefined,
+    //   })}
+    //   
+    // >
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           const iconName = getIconName(route.name, focused);
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+       
         tabBarActiveTintColor: "#fb5607",
         tabBarInactiveTintColor: "gray",
         tabBarBadge: route.name === "Səbət" && cartItems.length > 0 ? cartItems.length : undefined,
+        tabBarStyle: {
+          height: Platform.OS === "ios" ? 80 : 60, // iOS için 90, Android için 70
+          paddingBottom: Platform.OS === "ios" ? 25 : 10, // iOS için 25, Android için 10
+          paddingTop: 6, // Üst padding
+          borderTopWidth: 0.5, // Üst çizgiyi kaldır
+          shadowColor: "#000", // Gölge efekti
+          shadowOffset: { width: 0, height: -2 }, // Gölge yönü
+          shadowOpacity: 0.1, // Gölge opaklığı
+          shadowRadius: 4, // Gölge yarıçapı
+        },
+        
       })}
       screenListeners={{
         tabPress: handleTabPress,
