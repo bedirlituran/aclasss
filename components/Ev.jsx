@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -13,9 +13,9 @@ import {
   Dimensions,
   RefreshControl,
   Platform,
-Modal,
+  ActivityIndicator,
 } from "react-native";
-import { useNavigation,useIsFocused  } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import SkeletonLoader from "../components/SkeletonLoader";
 import StarAnmimation from "./StarAnmimation";
 import WhatsAppButton from "./WhatsAppButton";
@@ -29,6 +29,7 @@ import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from '@expo/vector-icons/Feather';
+
 const { height, width } = Dimensions.get("window");
 
 const Ev = () => {
@@ -37,67 +38,81 @@ const Ev = () => {
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const navigation = useNavigation();
   const scrollViewRef = useRef(null);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1); // Sayfa numarası 1'den başlıyor
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
-  
+  const [hasMoreData, setHasMoreData] = useState(true); // Daha fazla veri var mı?
+
+  // Tab'a basıldığında sayfayı yenile
   useEffect(() => {
-    const unsubscribe = navigation.addListener('tabPress', e => {
+    const unsubscribe = navigation.addListener('tabPress', () => {
       if (isFocused) {
         onRefresh();
       }
     });
 
-    const unsubscribeLong = navigation.addListener('tabLongPress', e => {
-      if (isFocused && scrollViewRef.current) {
-        scrollViewRef.current.scrollToOffset({ offset: 0, animated: true });
-      }
-    });
-
     return () => {
       unsubscribe();
-      unsubscribeLong();
     };
   }, [navigation, isFocused]);
 
-  // ... rest of your component code
+  // Verileri çek ve rastgele sırala
+  const fetchData = async (pageNumber = 1) => {
+    if (!hasMoreData) return; // Daha fazla veri yoksa işlemi durdur
 
-  const loadMore = async () => {
-    if (isFetchingMore) return;
-    setIsFetchingMore(true);
-    try {
-      setPage((prevPage) => prevPage + 1);
-      fetchData();
-    } finally {
-      setIsFetchingMore(false);
-    }
-  };
-
-  const fetchData = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get(`https://fakestoreapi.com/products`);
-      const shuffledData = res.data.sort(() => Math.random() - 0.5);
-      setData((prevData) => [...prevData, ...shuffledData]);
+      const shuffledData = res.data.sort(() => Math.random() - 0.5); // Verileri rastgele sırala
+
+      if (shuffledData.length === 0) {
+        // Eğer yeni veri yoksa, daha fazla veri olmadığını işaretle
+        setHasMoreData(false);
+        Alert.alert("Bilgi", "Tüm veriler yüklendi. Sayfa yenileniyor...");
+        onRefresh(); // Sayfayı yenile
+        return;
+      }
+
+      // Yeni verileri eklerken, önceki verilerle çakışma olmamasını sağla
+      setData((prevData) => {
+        const uniqueData = shuffledData.filter(
+          (newItem) => !prevData.some((prevItem) => prevItem.id === newItem.id)
+        );
+        return pageNumber === 1 ? uniqueData : [...prevData, ...uniqueData];
+      });
     } catch (error) {
       console.error("API isteği sırasında hata:", error);
       Alert.alert("Hata", "Veriler yüklenirken bir sorun oluştu.");
     } finally {
       setIsLoading(false);
+      setRefreshing(false);
+      setIsFetchingMore(false);
     }
   };
 
+  // Sayfa yenileme
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setPage(0);
-    setData([]);
-    fetchData().then(() => setRefreshing(false));
+    setPage(1);
+    setHasMoreData(true); // Yeniden veri yükleme için hasMoreData'yı sıfırla
+    fetchData(1);
   }, []);
+
+  // Daha fazla veri yükle
+  const loadMore = () => {
+    if (isFetchingMore || !hasMoreData) return; // Daha fazla veri yoksa işlemi durdur
+    setIsFetchingMore(true);
+    setPage((prevPage) => prevPage + 1);
+    fetchData(page + 1);
+  };
+
+  // İlk veri yükleme
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Yükleme durumunda skeleton göster
   if (isLoading && !refreshing) {
     return (
       <View style={styles.skeletonContainer}>
@@ -128,91 +143,63 @@ const Ev = () => {
             onAddToCart={() => dispatch(addToCart(item))}
           />
         )}
-        keyExtractor={(item) => `${item.id}-${item.price}`}
+        keyExtractor={(item) => item.id.toString()} // Sadece item.id kullan
         showsVerticalScrollIndicator={false}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
-        initialNumToRender={5}
+        initialNumToRender={10}
         maxToRenderPerBatch={10}
-        windowSize={5}
+        windowSize={21}
         removeClippedSubviews={true}
         ListHeaderComponent={<Reklam />}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListFooterComponent={
+          isFetchingMore && hasMoreData ? (
+            <View style={styles.footer}>
+              <ActivityIndicator size="small" color="#0000ff" />
+            </View>
+          ) : null
+        }
+        ListEmptyComponent={
+          !isLoading && Data.length === 0 ? (
+            <View style={styles.emptyContainer}>
+
+            </View>
+          ) : null
         }
       />
     </View>
   );
 };
 
+// Card bileşeni
 const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   const [isShared, setIsShared] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
-  const longText = item.category;
-  const longText2  =  item.description
   const [isFav, setIsFav] = useState(false);
   const [count, setCount] = useState(0);
-  const maxLength = 200;
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorited = favorites.some((favItem) => favItem.id === item.id);
 
-
-  const handleToggleFavorite = (product) => {
+  const handleToggleFavorite = () => {
     if (isFavorited) {
-      dispatch(removeFromFavorites(product));
+      dispatch(removeFromFavorites(item));
     } else {
-      dispatch(addToFavorites(product));
+      dispatch(addToFavorites(item));
     }
   };
 
-  const shareRotate = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "180deg"],
-  });
-
   const handleShare = () => {
-    
-    toggleFav();
-    setIsShared(!isShared);
-    Animated.timing(animation, {
-      toValue: isShared ? 0 : 1,
-      duration: 400,
-      easing: Easing.elastic(1.2),
-      useNativeDriver: true,
-    }).start();
-
     Share.share({
       message: `Ürün: ${item.title}\nFiyat: ${item.price} ₼`,
     }).catch((error) => Alert.alert("Paylaşım Hatası", error.message));
   };
 
-    const toggleFav = () => {
-      setIsFav(!isFav);
-      setCount(count + 1)
-      if (isFav) {
-        setCount(count - 1)
-      };
-      Animated.sequence([
-        Animated.timing(animation, {
-          toValue: 2,
-          duration: 100,
-          easing: Easing.linear,
-          useNativeDriver: true,
-        }),
-        Animated.spring(animation, {
-          toValue: 1,
-          friction: 3,
-          tension: 40,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    };
-
   const truncateText = (text, maxLength) => {
-    return text.length > maxLength
-      ? text.substring(0, maxLength) + "..."
-      : text;
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
   return (
@@ -221,7 +208,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
         <View style={styles.headerLeft}>
           <Image source={{ uri: item.image }} style={styles.avatar} />
           <Text style={styles.categoryText}>
-            {truncateText(longText, maxLength)}
+            {truncateText(item.category, 50)}
           </Text>
         </View>
         <View style={styles.headerRight}>
@@ -232,12 +219,8 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
             <WhatsAppButton />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton}>
-          <Feather name="phone-call" size={20} color="black" />
+            <Feather name="phone-call" size={20} color="black" />
           </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.followButton} >
-    <Entypo name="phone" size={20} color="black" />
-
-          </TouchableOpacity> */}
         </View>
       </View>
 
@@ -247,7 +230,9 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
 
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{truncateText(longText2, maxLength)}</Text>
+        <Text style={styles.description}>
+          {truncateText(item.description, 100)}
+        </Text>
         <View style={styles.footer}>
           <Text style={styles.price}>{item.price} ₼</Text>
           <TouchableOpacity
@@ -261,7 +246,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
       </View>
 
       <View style={styles.animations}>
-        <TouchableOpacity onPress={() => handleToggleFavorite(item)}>
+        <TouchableOpacity onPress={handleToggleFavorite}>
           <MaterialCommunityIcons
             name={isFavorited ? "heart" : "heart-plus-outline"}
             size={24}
@@ -269,17 +254,16 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
           />
         </TouchableOpacity>
         <StarAnmimation />
-       <YorumAnimation/>
-            <TouchableOpacity onPress={handleShare} style={{ alignItems: "center",flexDirection: "row",justifyContent: "center",gap:3, }}>
-            <Ionicons name="share-social-outline" size={30} color="black" />
-            <Text style={{ marginTop: 10 }}>{`${count}`}</Text>
+        <YorumAnimation />
+        <TouchableOpacity onPress={handleShare}>
+          <Ionicons name="share-social-outline" size={30} color="black" />
         </TouchableOpacity>
       </View>
-    
     </View>
   );
 });
 
+// Stil tanımlamaları
 const styles = StyleSheet.create({
   container: {
     flex: 1,

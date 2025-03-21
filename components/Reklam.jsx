@@ -17,11 +17,10 @@ const AdCarousel = () => {
 
   // Statik resimlerin listesi
   const images = [
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Zara_Logo.svg/640px-Zara_Logo.svg.png',
+   
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsbchtWf8OPedGKTaEtcXQVCt_0PGXNuvTlw&s",
-    "https://img.utdstc.com/icon/73c/f7b/73cf7bce3f4857a5967fdf4bb41773d6a510b618b8b5daccd48503e8fcc79110:200",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGumcmyIIGvR7Guex7NjZSs8AljQ4W7h6arg&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5jyro0BfHS97NO9dCUN7WLTXoptIkecas2g&s"
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5jyro0BfHS97NO9dCUN7WLTXoptIkecas2g&s",
   ];
 
   useEffect(() => {
