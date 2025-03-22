@@ -82,8 +82,8 @@ const Ev = () => {
         return pageNumber === 1 ? uniqueData : [...prevData, ...uniqueData];
       });
     } catch (error) {
-      console.error("API isteği sırasında hata:", error);
-      Alert.alert("Hata", "Veriler yüklenirken bir sorun oluştu.");
+      setIsLoading(true);
+      
     } finally {
       setIsLoading(false);
       setRefreshing(false);
