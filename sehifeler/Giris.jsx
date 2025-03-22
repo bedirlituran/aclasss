@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { Buffer } from 'buffer';
-import axios from "axios";
+// import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { Input,Button } from "react-native-elements";
 
@@ -28,22 +28,23 @@ export default function Giris() {
   };
 
   const handleSubmit = async () => {
-    const token = generateBasicToken(username, password);
-    console.log(token);
+    // const token = generateBasicToken(username, password);
+    // console.log(token);
     
-    try {
-      const response = await axios.get("http://192.168.1.69:8080/api/login", {
-        headers: {
-          Authorization: token, 
-        },
-      });
+    // try {
+    //   const response = await axios.get("http://192.168.1.69:8080/api/login", {
+    //     headers: {
+    //       Authorization: token, 
+    //     },
+    //   });
   
-      console.log("Login successful:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Login failed:", error.response ? error.response.data : error);
-      throw error;
-    }
+    //   console.log("Login successful:", response.data);
+    //   return response.data;
+    // } catch (error) {
+    //   console.error("Login failed:", error.response ? error.response.data : error);
+    //   throw error;
+    // }
+    navigation.navigate('Main') //muveqqeti giris ucundur,sonradan deyisecek
   };
 
   return (

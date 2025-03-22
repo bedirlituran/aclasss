@@ -236,6 +236,12 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
         <View style={styles.footer}>
           <Text style={styles.price}>{item.price} ₼</Text>
           <TouchableOpacity
+            style={styles.ByButton}
+            onPress={onAddToCart}
+          >
+            <Text style={styles.addToCartText}>Indi Al</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             style={styles.addToCartButton}
             onPress={onAddToCart}
           >
@@ -375,10 +381,17 @@ const styles = StyleSheet.create({
 
   },
   addToCartButton: {
-    backgroundColor: "#fb5607",
+    backgroundColor: "green",
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5,
+  },
+  ByButton:{
+    backgroundColor: "red",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginLeft:60,
   },
   addToCartText: {
     color: "#fff",
