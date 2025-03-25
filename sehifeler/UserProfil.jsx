@@ -1,17 +1,17 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 const userProfil = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-     <View>
-        <View>
-            <View><Text>P</Text></View>
-        <Text style={styles.title}>User Profile</Text>
-
+      <View>
+        <View  style={styles.header}>
+          <View>
+            <Text>P</Text>
+          </View>
+          <Text style={styles.title}>User Profile</Text>
         </View>
- 
-     </View>
+      </View>
     </ScrollView>
   );
 };
@@ -19,10 +19,16 @@ const userProfil = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     padding: 16,
   },
- 
+  header:{
+    backgroundColor: "#4caf50",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+  }
 });
 
 export default userProfil;
