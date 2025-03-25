@@ -49,6 +49,8 @@ const Ev = () => {
     const unsubscribe = navigation.addListener('tabPress', () => {
       if (isFocused) {
         onRefresh();
+    fetchData();
+
       }
     });
 
@@ -112,6 +114,7 @@ const Ev = () => {
 
   // İlk veri yükleme
   useEffect(() => {
+    fetchData()
   }, []);
 
   // Yükleme durumunda skeleton göster
@@ -257,7 +260,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
             color={isFavorited ? "#fb5607" : "black"}
           />
         </TouchableOpacity>
-        <StarAnmimation size={item.likeCount}/>
+        <StarAnmimation size={item.likeCount} productId={item.id}/>
         <YorumAnimation />
         <TouchableOpacity onPress={handleShare}>
           <Ionicons name="share-social-outline" size={30} color="black" />

@@ -28,5 +28,12 @@ const authSlice = createSlice({
   },
 });
 
+// Selector'ları export etme
+export const selectToken = (state) => state.auth.token;
+export const selectUser = (state) => state.auth.user;
+export const selectAuthLoading = (state) => state.auth.isLoading;
+export const selectAuthError = (state) => state.auth.error;
+
+// Action'ları export etme
 export const { setToken, setUser, clearAuth, setLoading, setError } = authSlice.actions;
 export default authSlice.reducer;
