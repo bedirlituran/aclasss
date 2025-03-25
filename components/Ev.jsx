@@ -58,29 +58,32 @@ const Ev = () => {
   }, [navigation, isFocused]);
 
   // Verileri çek ve rastgele sırala
-  const fetchData = async (pageNumber = 1) => {
-    if (!hasMoreData) return; // Daha fazla veri yoksa işlemi durdur
+  const fetchData = async () => {
+    // if (!hasMoreData) return; // Daha fazla veri yoksa işlemi durdur
 
-    setIsLoading(true);
+    // setIsLoading(true);
     try {
-      const res = await axios.get(`https://fakestoreapi.com/products`);
-      const shuffledData = res.data.sort(() => Math.random() - 0.5); // Verileri rastgele sırala
+      const res = await axios.get(`http://192.168.0.107:8081/api/productItem/getAll`);
+      setData(res.data);
+      // console.log(res.data);
+      // const shuffledData = res.data.sort(() => Math.random() - 0.5); // Verileri rastgele sırala
 
-      if (shuffledData.length === 0) {
-        // Eğer yeni veri yoksa, daha fazla veri olmadığını işaretle
-        setHasMoreData(false);
-        Alert.alert("Bilgi", "Tüm veriler yüklendi. Sayfa yenileniyor...");
-        onRefresh(); // Sayfayı yenile
-        return;
-      }
+      // if (shuffledData.length === 0) {
+      //   // Eğer yeni veri yoksa, daha fazla veri olmadığını işaretle
+      //   setHasMoreData(false);
+      //   Alert.alert("Bilgi", "Tüm veriler yüklendi. Sayfa yenileniyor...");
+      //   onRefresh(); // Sayfayı yenile
+      //   return;
+      // }
 
       // Yeni verileri eklerken, önceki verilerle çakışma olmamasını sağla
-      setData((prevData) => {
-        const uniqueData = shuffledData.filter(
-          (newItem) => !prevData.some((prevItem) => prevItem.id === newItem.id)
-        );
-        return pageNumber === 1 ? uniqueData : [...prevData, ...uniqueData];
-      });
+      // setData((prevData) => {
+      //   const uniqueData = shuffledData.filter(
+      //     (newItem) => !prevData.some((prevItem) => prevItem.id === newItem.id)
+      //   );
+      //   return pageNumber === 1 ? uniqueData : [...prevData, ...uniqueData];
+      // }
+      //);
     } catch (error) {
       setIsLoading(true);
       
@@ -96,7 +99,7 @@ const Ev = () => {
     setRefreshing(true);
     setPage(1);
     setHasMoreData(true); // Yeniden veri yükleme için hasMoreData'yı sıfırla
-    fetchData(1);
+    fetchData();
   }, []);
 
   // Daha fazla veri yükle
@@ -104,12 +107,11 @@ const Ev = () => {
     if (isFetchingMore || !hasMoreData) return; // Daha fazla veri yoksa işlemi durdur
     setIsFetchingMore(true);
     setPage((prevPage) => prevPage + 1);
-    fetchData(page + 1);
+    fetchData();
   };
 
   // İlk veri yükleme
   useEffect(() => {
-    fetchData();
   }, []);
 
   // Yükleme durumunda skeleton göster
@@ -134,10 +136,10 @@ const Ev = () => {
             item={item}
             onDetailPress={() =>
               navigation.navigate("UrunDetay", {
-                image: item.image,
-                title: item.title,
+                image: item.fileString,
+                title: item.brand,
                 description: item.description,
-                price: item.price,
+                price: item.sellingPrice,
               })
             }
             onAddToCart={() => dispatch(addToCart(item))}
@@ -190,7 +192,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
 
   const handleShare = () => {
     Share.share({
-      message: `Ürün: ${item.title}\nFiyat: ${item.price} ₼`,
+      message: `Ürün: ${item.brand}\nFiyat: ${item.sellingPrice} ₼`,
     }).catch((error) => Alert.alert("Paylaşım Hatası", error.message));
   };
 
@@ -202,9 +204,9 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
     <View style={styles.card}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Image source={{ uri: item.image }} style={styles.avatar} />
+          <Image source={{ uri: item.fileString }} style={styles.avatar} />
           <Text style={styles.categoryText}>
-            {truncateText(item.category, 50)}
+            {truncateText(item.subCategory, 50)}
           </Text>
         </View>
         <View style={styles.headerRight}>
@@ -221,16 +223,16 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
       </View>
 
       <TouchableOpacity onPress={onDetailPress}>
-        <Image source={{ uri: item.image }} style={styles.image} />
+        <Image source={{ uri: item.fileString }} style={styles.image} />
       </TouchableOpacity>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>{item.brand}</Text>
         <Text style={styles.description}>
           {truncateText(item.description, 100)}
         </Text>
         <View style={styles.footer}>
-          <Text style={styles.price}>{item.price} ₼</Text>
+          <Text style={styles.price}>{item.sellingPrice} ₼</Text>
           <TouchableOpacity
             style={styles.ByButton}
             onPress={onAddToCart}
@@ -255,7 +257,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
             color={isFavorited ? "#fb5607" : "black"}
           />
         </TouchableOpacity>
-        <StarAnmimation />
+        <StarAnmimation size={item.likeCount}/>
         <YorumAnimation />
         <TouchableOpacity onPress={handleShare}>
           <Ionicons name="share-social-outline" size={30} color="black" />

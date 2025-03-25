@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Alert,
   Image,
   Pressable,
   SafeAreaView,
@@ -9,10 +8,12 @@ import {
   Text,
   View,
 } from "react-native";
-import { Buffer } from "buffer";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { Input, Button } from "react-native-elements";
+import { useDispatch } from 'react-redux';
+import { setToken, setUser } from '../store/authSlice';
+import { Ionicons } from "@expo/vector-icons";
 
 const logo = require("../assets/3.png");
 
@@ -20,12 +21,9 @@ export default function Giris() {
   const [click, setClick] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [secureText, setSecureText] = useState(true); // Parola gizleme durumu
+  const [secureText, setSecureText] = useState(true);
   const navigation = useNavigation();
-
-  const generateBasicToken = (username, password) => {
-    return `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`;
-  };
+  const dispatch = useDispatch();
 
   const handleSubmit = async () => {
     try {
@@ -38,15 +36,18 @@ export default function Giris() {
       );
 
       console.log("Başarılı:", response.data);
-      if (response.data != null) {
+      
+      if (response.data) {
+        // Token'ı ve kullanıcı bilgilerini Redux'a kaydet
+        dispatch(setToken(response.data.token || response.data));
+        
+     
+        
         navigation.navigate("Main");
       }
     } catch (error) {
       console.error("Hata:", error.response?.data || error.message);
-      alert(
-        "Kayıt sırasında hata oluştu: " +
-          (error.response?.data?.message || error.message)
-      );
+      alert("Giriş hatası: " + (error.response?.data?.message || error.message));
     }
   };
 
@@ -55,7 +56,6 @@ export default function Giris() {
       <Image source={logo} style={styles.image} />
       <View style={styles.inputView}>
         <Input
-          // style={styles.inputs}
           placeholder="İstifadəçi adı"
           value={username}
           onChangeText={setUsername}
@@ -65,11 +65,20 @@ export default function Giris() {
         <Input
           style={[styles.input, styles.passwordInput]}
           placeholder="Şifrə"
-          secureTextEntry={true}
+          secureTextEntry={secureText}
           value={password}
           onChangeText={setPassword}
           autoCorrect={false}
           autoCapitalize="none"
+          rightIcon={
+            <Pressable onPress={() => setSecureText(!secureText)}>
+              <Ionicons 
+                name={secureText ? "eye-off" : "eye"} 
+                size={20} 
+                color="#6a1b9a" 
+              />
+            </Pressable>
+          }
         />
       </View>
       <View style={styles.rememberView}>
@@ -82,7 +91,7 @@ export default function Giris() {
           <Text style={styles.rememberText}>Məni xatırla</Text>
         </View>
         <View>
-          <Pressable onPress={() => Alert.alert("Forget Password!")}>
+          <Pressable onPress={() => navigation.navigate("ResetPassword")}>
             <Text style={styles.forgetText}>Şifrəni unutdun?</Text>
           </Pressable>
         </View>
@@ -90,9 +99,8 @@ export default function Giris() {
 
       <View style={styles.buttonView}>
         <Button
-          style={styles.button}
+          buttonStyle={styles.button}
           onPress={handleSubmit}
-          type="solid"
           title="Giriş"
         />
       </View>
@@ -115,10 +123,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 100,
     backgroundColor: "white",
-    borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
     flex: 1,
   },
   image: {
@@ -134,17 +138,6 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    paddingHorizontal: 8,
-    borderColor: "red",
-    borderRadius: 7,
-  },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  passwordInput: {
-    flex: 1,
-    height: 50,
   },
   rememberView: {
     width: "100%",
@@ -152,54 +145,42 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    marginBottom: 8,
+    marginBottom: 20,
   },
   switch: {
     flexDirection: "row",
-    gap: 1,
-    justifyContent: "center",
+    gap: 5,
     alignItems: "center",
   },
   rememberText: {
-    fontSize: 13,
+    fontSize: 14,
+    color: "#555",
   },
   forgetText: {
-    fontSize: 11,
-    color: "red",
+    fontSize: 14,
+    color: "#6a1b9a",
+    fontWeight: "500",
   },
   button: {
-    backgroundColor: "red",
-    height: 45,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
+    backgroundColor: "#6a1b9a",
+    height: 50,
+    borderRadius: 10,
   },
   buttonView: {
     width: "100%",
     paddingHorizontal: 50,
+    marginTop: 10,
   },
   footerText: {
     textAlign: "center",
     color: "gray",
-    marginTop: 10,
+    marginTop: 20,
+    fontSize: 14,
   },
   signup: {
-    color: "blue",
-    fontSize: 13,
+    color: "#6a1b9a",
+    fontSize: 14,
     fontWeight: "bold",
-  },
-  inputs: {
-    height: 50,
-    paddingHorizontal: 20,
-    borderColor: "red",
-    borderRadius: 7,
-    borderWidth: 1,
+    marginLeft: 5,
   },
 });

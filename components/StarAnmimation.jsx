@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { View, Pressable, Animated, Easing, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
-const StarAnimation = () => {
+const StarAnimation = ({ size }) => {
   const [isFav, setIsFav] = useState(false);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(size);
   const [animation] = useState(new Animated.Value(1));
 
   const toggleFav = () => {

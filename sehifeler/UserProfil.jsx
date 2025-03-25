@@ -1,8 +1,20 @@
-import { Ionicons ,Fontisto,MaterialIcons,FontAwesome} from "@expo/vector-icons";
+import { Ionicons, Fontisto, MaterialIcons, FontAwesome ,FontAwesome5} from "@expo/vector-icons";
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from "react-native";
 
 const UserProfil = () => {
+  const handlePhoneCall = () => {
+    Linking.openURL(`tel:0558080801`);
+  };
+
+  const handleWhatsApp = () => {
+    Linking.openURL(`https://wa.me/994558080801`);
+  };
+
+  const openSocialMedia = (url) => {
+    Linking.openURL(url).catch(err => console.error("Bağlantı açılamadı", err));
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Profil Header */}
@@ -62,6 +74,11 @@ const UserProfil = () => {
           <Text style={styles.infoText}>Ödəniş üsulları</Text>
           <Ionicons name="chevron-forward" size={20} color="#999" />
         </View>
+        <View style={styles.infoItem}>
+        <FontAwesome name="street-view" size={24} color="#6a1b9a" />
+          <Text style={styles.infoText}>Unvan melumatlari</Text>
+          <Ionicons name="chevron-forward" size={20} color="#999" />
+        </View>
       </View>
 
       <View style={styles.section}>
@@ -69,36 +86,77 @@ const UserProfil = () => {
           <Text style={styles.sectionTitle}>Xidmetler</Text>
         </View>
         <View style={styles.infoItem}>
-        <FontAwesome name="handshake-o" size={24} color="#6a1b9a" />
+          <FontAwesome name="handshake-o" size={18} color="#6a1b9a" />
           <Text style={styles.infoText}>Alici muqavilesi</Text>
           <Ionicons name="chevron-forward" size={20} color="#999" />
         </View>
         <View style={styles.infoItem}>
-        <MaterialIcons name="security" size={24} color="#6a1b9a" />
+          <MaterialIcons name="security" size={20} color="#6a1b9a" />
           <Text style={styles.infoText}>Mexfilik siyaseti</Text>
           <Ionicons name="chevron-forward" size={20} color="#999" />
         </View>
         <View style={styles.infoItem}>
-        <Ionicons name="bus-sharp" size={24} color="#6a1b9a" />
+          <Ionicons name="bus-sharp" size={20} color="#6a1b9a" />
           <Text style={styles.infoText}>Catdirilma</Text>
           <Ionicons name="chevron-forward" size={20} color="#999" />
         </View>
         <View style={styles.infoItem}>
-        <Fontisto name="arrow-return-left" size={24} color="#6a1b9a" />
+          <Fontisto name="arrow-return-left" size={20} color="#6a1b9a" />
           <Text style={styles.infoText}>Qaytarilma</Text>
           <Ionicons name="chevron-forward" size={20} color="#999" />
         </View>
         <View style={styles.infoItem}>
-        <MaterialIcons name="border-color" size={24} color="#6a1b9a" />
+          <MaterialIcons name="border-color" size={20} color="#6a1b9a" />
           <Text style={styles.infoText}>Sifaris</Text>
           <Ionicons name="chevron-forward" size={20} color="#999" />
         </View>
+      </View>
+
+      {/* Çıkış ve İletişim Bilgileri */}
+      <View style={styles.contactSection}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Bizimlə Əlaqə</Text>
+        </View>
+        
+        {/* Telefon Numarası */}
+        <TouchableOpacity style={styles.contactItem} onPress={handlePhoneCall}>
+          <Ionicons name="call-outline" size={24} color="#6a1b9a" />
+          <Text style={styles.contactText}>Admin:055 808 08 01</Text>
+        </TouchableOpacity>
+        
+        {/* WhatsApp */}
+        
+        
+        {/* Sosyal Medya */}
+        <View style={styles.socialMediaContainer}>
+          <TouchableOpacity onPress={() => openSocialMedia('https://t.me/yourchannel')}>
+            <Fontisto name="telegram" size={28} color="#0088cc" style={styles.socialIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => openSocialMedia('https://facebook.com/yourpage')}>
+            <Fontisto name="facebook" size={28} color="#3b5998" style={styles.socialIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => openSocialMedia('https://instagram.com/yourprofile')}>
+            <Fontisto name="instagram" size={28} color="#E1306C" style={styles.socialIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => openSocialMedia('https://tiktok.com/@yourprofile')}>
+            <FontAwesome5 name="tiktok" size={28} color="#000000" style={styles.socialIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleWhatsApp}>
+          <Fontisto name="whatsapp" size={28} color="green" style={styles.socialIcon}/>
+        </TouchableOpacity>
+        </View>
+        
+        {/* Çıkış Butonu */}
+        <TouchableOpacity style={styles.logoutButton}>
+          <Text style={styles.logoutText}>Çıxış</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  // ... Önceki stiller aynen kalacak ...
   container: {
     flexGrow: 1,
     backgroundColor: "#f5f5f5",
@@ -248,6 +306,55 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#333',
     marginLeft: 12,
+  },
+  contactSection: {
+    backgroundColor: 'white',
+    borderRadius: 15,
+    paddingVertical: 15,
+    marginBottom: 20,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+  },
+  contactItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  contactText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+    marginLeft: 15,
+    fontWeight:"bold",
+  },
+  socialMediaContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+  },
+  socialIcon: {
+    marginHorizontal: 5,
+  },
+  logoutButton: {
+    backgroundColor: '#f5f5f5',
+    borderRadius: 10,
+    padding: 15,
+    marginHorizontal: 20,
+    marginTop: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  logoutText: {
+    color: '#6a1b9a',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
