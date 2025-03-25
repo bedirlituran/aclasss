@@ -1,0 +1,42 @@
+{
+  "buildFiles": [
+    "C:\\react-native-projects\\aclass\\a\\node_modules\\react-native\\ReactAndroid\\cmake-utils\\default-app-setup\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\tbedi\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\react-native-projects\\aclass\\a\\android\\app\\.cxx\\Debug\\572ur3b3\\x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\tbedi\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\react-native-projects\\aclass\\a\\android\\app\\.cxx\\Debug\\572ur3b3\\x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "appmodules::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "x86",
+      "artifactName": "appmodules",
+      "output": "C:\\react-native-projects\\aclass\\a\\android\\app\\build\\intermediates\\cxx\\Debug\\572ur3b3\\obj\\x86\\libappmodules.so",
+      "runtimeFiles": [
+        "C:\\Users\\tbedi\\.gradle\\caches\\8.10.2\\transforms\\31075bc6c43c101fe629cf4925cab858\\transformed\\fbjni-0.6.0\\prefab\\modules\\fbjni\\libs\\android.x86\\libfbjni.so",
+        "C:\\Users\\tbedi\\.gradle\\caches\\8.10.2\\transforms\\e7d2cf3ea0f710e01bb7af2449bcb768\\transformed\\react-android-0.76.7-debug\\prefab\\modules\\jsi\\libs\\android.x86\\libjsi.so",
+        "C:\\Users\\tbedi\\.gradle\\caches\\8.10.2\\transforms\\e7d2cf3ea0f710e01bb7af2449bcb768\\transformed\\react-android-0.76.7-debug\\prefab\\modules\\reactnative\\libs\\android.x86\\libreactnative.so"
+      ]
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "C:\\Users\\tbedi\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe",
+      "cppCompilerExecutable": "C:\\Users\\tbedi\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

@@ -21,12 +21,15 @@ import { addImage } from "../store/imageSlice";
 import ProductModal from "../components/ProductModal"
 import OTPVerification from "../sehifeler/OTPVerification"
 import MagazaRegister from "../sehifeler/MagazaRegister";
+import userProfil from "../sehifeler/UserProfil";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const getIconName = (routeName, focused) => {
   switch (routeName) {
-    case "Profil":
+    case "Profile":
+      return focused ? "person" : "person-outline";
+      case "userProfil":
       return focused ? "person" : "person-outline";
     case "Kataloq":
       return focused ? "search" : "search-outline";
@@ -208,7 +211,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="Ev" component={Ev} options={{ headerShown: false }} />
       <Tab.Screen
-        name="Profil"
+        name="Profile"
         component={ProfileStack}
         options={{ headerShown: false }}
         screenListeners={{
@@ -266,6 +269,11 @@ const TabNavigator = () => {
         component={FavoriteScreen}
         options={{ headerShown: false }}
       />
+       <Tab.Screen
+        name="userProfil"
+        component={userProfil}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 };
@@ -308,6 +316,8 @@ const Navigation = () => {
       <Stack.Screen name="Kataloq" component={SearchScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Sebetim" component={Sebetim} options={{ headerShown: false }} />
       <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+      <Stack.Screen name="userProfil" component={userProfil} options={{ headerShown: false }} />
+
       <Stack.Screen name="OTPVerification" component={OTPVerification} options={{
         header: () => (
           <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

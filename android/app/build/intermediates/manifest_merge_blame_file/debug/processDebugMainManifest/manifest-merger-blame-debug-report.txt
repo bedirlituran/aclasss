@@ -1,0 +1,923 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.bedirliProductDetailScreen.A_class"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+11-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:6:3-75
+11-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:6:20-73
+12    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+12-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:2:3-78
+12-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:2:20-76
+13    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+13-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:3:3-76
+13-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:3:20-74
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:4:3-64
+14-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:4:20-62
+15    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+15-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:5:3-77
+15-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:5:20-75
+16    <uses-permission android:name="android.permission.VIBRATE" />
+16-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:7:3-63
+16-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:7:20-61
+17    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+17-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:8:3-78
+17-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:8:20-76
+18
+19    <queries>
+19-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:9:3-15:13
+20        <intent>
+20-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:10:5-14:14
+21            <action android:name="android.intent.action.VIEW" />
+21-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:11:7-58
+21-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:11:15-56
+22
+23            <category android:name="android.intent.category.BROWSABLE" />
+23-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:12:7-67
+23-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:12:17-65
+24
+25            <data android:scheme="https" />
+25-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:7-37
+25-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:13-35
+26        </intent>
+27
+28        <package android:name="host.exp.exponent" /> <!-- Query open documents -->
+28-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:9-53
+28-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:18-50
+29        <intent>
+29-->[:expo-file-system] C:\react-native-projects\aclass\a\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:9-17:18
+30            <action android:name="android.intent.action.OPEN_DOCUMENT_TREE" />
+30-->[:expo-file-system] C:\react-native-projects\aclass\a\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:16:13-79
+30-->[:expo-file-system] C:\react-native-projects\aclass\a\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:16:21-76
+31        </intent> <!-- Needs to be explicitly declared on Android R+ -->
+32        <package android:name="com.google.android.apps.maps" />
+32-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:33:9-64
+32-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:33:18-61
+33    </queries>
+34
+35    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+35-->[:expo-media-library] C:\react-native-projects\aclass\a\node_modules\expo-media-library\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-76
+35-->[:expo-media-library] C:\react-native-projects\aclass\a\node_modules\expo-media-library\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:22-73
+36    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+36-->[:expo-media-library] C:\react-native-projects\aclass\a\node_modules\expo-media-library\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-75
+36-->[:expo-media-library] C:\react-native-projects\aclass\a\node_modules\expo-media-library\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:22-72
+37    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+37-->[:expo-media-library] C:\react-native-projects\aclass\a\node_modules\expo-media-library\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-75
+37-->[:expo-media-library] C:\react-native-projects\aclass\a\node_modules\expo-media-library\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:22-72
+38    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+38-->[:expo-media-library] C:\react-native-projects\aclass\a\node_modules\expo-media-library\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:5-90
+38-->[:expo-media-library] C:\react-native-projects\aclass\a\node_modules\expo-media-library\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:22-87
+39    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+39-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-81
+39-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:22-78
+40    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Include required permissions for Google Maps API to run. -->
+40-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-77
+40-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:22-74
+41    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+41-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:23:5-79
+41-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:23:22-76
+42
+43    <uses-feature
+43-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:26:5-28:35
+44        android:glEsVersion="0x00020000"
+44-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:27:9-41
+45        android:required="true" />
+45-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:28:9-32
+46
+47    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+47-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:24:5-68
+47-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:24:22-65
+48    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+48-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:26:5-82
+48-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:26:22-79
+49    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+49-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:28:5-77
+49-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:28:22-74
+50
+51    <permission
+51-->[androidx.core:core:1.13.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\152740e363b1ef2a2c682c948dbced74\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+52        android:name="com.bedirliProductDetailScreen.A_class.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+52-->[androidx.core:core:1.13.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\152740e363b1ef2a2c682c948dbced74\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+53        android:protectionLevel="signature" />
+53-->[androidx.core:core:1.13.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\152740e363b1ef2a2c682c948dbced74\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+54
+55    <uses-permission android:name="com.bedirliProductDetailScreen.A_class.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" /> <!-- for android -->
+55-->[androidx.core:core:1.13.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\152740e363b1ef2a2c682c948dbced74\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+55-->[androidx.core:core:1.13.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\152740e363b1ef2a2c682c948dbced74\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+56    <!-- <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/> -->
+57    <!-- <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/> -->
+58    <!-- <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" /> -->
+59    <!-- <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" /> -->
+60    <!-- for Samsung -->
+61    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+61-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:19:5-86
+61-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:19:22-83
+62    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" /> <!-- for htc -->
+62-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:20:5-87
+62-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:20:22-84
+63    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
+63-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:23:5-81
+63-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:23:22-78
+64    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" /> <!-- for sony -->
+64-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:24:5-83
+64-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:24:22-80
+65    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
+65-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:27:5-88
+65-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:27:22-85
+66    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE" /> <!-- for apex -->
+66-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:28:5-92
+66-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:28:22-89
+67    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT" /> <!-- for solid -->
+67-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:31:5-84
+67-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:31:22-81
+68    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE" /> <!-- for huawei -->
+68-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:34:5-83
+68-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:34:22-80
+69    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+69-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:37:5-91
+69-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:37:22-88
+70    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+70-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:38:5-92
+70-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:38:22-89
+71    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" /> <!-- for ZUK -->
+71-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:39:5-93
+71-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:39:22-90
+72    <uses-permission android:name="android.permission.READ_APP_BADGE" /> <!-- for OPPO -->
+72-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:42:5-73
+72-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:42:22-70
+73    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+73-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:45:5-82
+73-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:45:22-79
+74    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" /> <!-- for EvMe -->
+74-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:46:5-83
+74-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:46:22-80
+75    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ" />
+75-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:49:5-88
+75-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:49:22-85
+76    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" />
+76-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:50:5-89
+76-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\be299e78e3dad630de27ff36c4ca7e1e\transformed\ShortcutBadger-1.1.22\AndroidManifest.xml:50:22-86
+77    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+77-->[com.android.installreferrer:installreferrer:2.2] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\a561a75d7f537ab92f317b63f3098d76\transformed\installreferrer-2.2\AndroidManifest.xml:9:5-110
+77-->[com.android.installreferrer:installreferrer:2.2] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\a561a75d7f537ab92f317b63f3098d76\transformed\installreferrer-2.2\AndroidManifest.xml:9:22-107
+78    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+78-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:15:5-98
+78-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:15:22-95
+79    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+79-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:16:5-94
+79-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:16:22-91
+80
+81    <application
+81-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:16:3-34:17
+82        android:name="com.bedirliProductDetailScreen.A_class.MainApplication"
+82-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:16:16-47
+83        android:allowBackup="true"
+83-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:16:162-188
+84        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+84-->[androidx.core:core:1.13.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\152740e363b1ef2a2c682c948dbced74\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+85        android:debuggable="true"
+86        android:extractNativeLibs="false"
+87        android:icon="@mipmap/ic_launcher"
+87-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:16:81-115
+88        android:label="@string/app_name"
+88-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:16:48-80
+89        android:requestLegacyExternalStorage="true"
+89-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:16:248-291
+90        android:roundIcon="@mipmap/ic_launcher_round"
+90-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:16:116-161
+91        android:supportsRtl="true"
+91-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:16:221-247
+92        android:theme="@style/AppTheme"
+92-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:16:189-220
+93        android:usesCleartextTraffic="true" >
+93-->C:\react-native-projects\aclass\a\android\app\src\debug\AndroidManifest.xml:6:18-53
+94        <meta-data
+94-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:17:5-83
+95            android:name="expo.modules.updates.ENABLED"
+95-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:17:16-59
+96            android:value="false" />
+96-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:17:60-81
+97        <meta-data
+97-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:18:5-105
+98            android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH"
+98-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:18:16-80
+99            android:value="ALWAYS" />
+99-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:18:81-103
+100        <meta-data
+100-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:19:5-99
+101            android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS"
+101-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:19:16-79
+102            android:value="0" />
+102-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:19:80-97
+103
+104        <activity
+104-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:20:5-33:16
+105            android:name="com.bedirliProductDetailScreen.A_class.MainActivity"
+105-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:20:15-43
+106            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode"
+106-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:20:44-134
+107            android:exported="true"
+107-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:20:256-279
+108            android:launchMode="singleTask"
+108-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:20:135-166
+109            android:screenOrientation="portrait"
+109-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:20:280-316
+110            android:theme="@style/Theme.App.SplashScreen"
+110-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:20:210-255
+111            android:windowSoftInputMode="adjustResize" >
+111-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:20:167-209
+112            <intent-filter>
+112-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:21:7-24:23
+113                <action android:name="android.intent.action.MAIN" />
+113-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:22:9-60
+113-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:22:17-58
+114
+115                <category android:name="android.intent.category.LAUNCHER" />
+115-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:23:9-68
+115-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:23:19-66
+116            </intent-filter>
+117            <intent-filter>
+117-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:25:7-32:23
+118                <action android:name="android.intent.action.VIEW" />
+118-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:11:7-58
+118-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:11:15-56
+119
+120                <category android:name="android.intent.category.DEFAULT" />
+120-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:27:9-67
+120-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:27:19-65
+121                <category android:name="android.intent.category.BROWSABLE" />
+121-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:12:7-67
+121-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:12:17-65
+122
+123                <data android:scheme="A class" />
+123-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:7-37
+123-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:13-35
+124                <data android:scheme="com.bedirliProductDetailScreen.A_class" />
+124-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:7-37
+124-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:13-35
+125                <data android:scheme="exp+aclass" />
+125-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:7-37
+125-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:13-35
+126            </intent-filter>
+127        </activity>
+128
+129        <provider
+129-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:9-16:20
+130            android:name="com.imagepicker.ImagePickerProvider"
+130-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:13-63
+131            android:authorities="com.bedirliProductDetailScreen.A_class.imagepickerprovider"
+131-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-71
+132            android:exported="false"
+132-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-37
+133            android:grantUriPermissions="true" >
+133-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-47
+134            <meta-data
+134-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-15:70
+135                android:name="android.support.FILE_PROVIDER_PATHS"
+135-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:17-67
+136                android:resource="@xml/imagepicker_provider_paths" />
+136-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:17-67
+137        </provider>
+138        <provider
+138-->[:react-native-share] C:\react-native-projects\aclass\a\node_modules\react-native-share\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:9-16:20
+139            android:name="cl.json.RNShareFileProvider"
+139-->[:react-native-share] C:\react-native-projects\aclass\a\node_modules\react-native-share\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:13-55
+140            android:authorities="com.bedirliProductDetailScreen.A_class.rnshare.fileprovider"
+140-->[:react-native-share] C:\react-native-projects\aclass\a\node_modules\react-native-share\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-72
+141            android:exported="false"
+141-->[:react-native-share] C:\react-native-projects\aclass\a\node_modules\react-native-share\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-37
+142            android:grantUriPermissions="true" >
+142-->[:react-native-share] C:\react-native-projects\aclass\a\node_modules\react-native-share\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-47
+143            <meta-data
+143-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-15:70
+144                android:name="android.support.FILE_PROVIDER_PATHS"
+144-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:17-67
+145                android:resource="@xml/share_download_paths" />
+145-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:17-67
+146        </provider>
+147
+148        <activity
+148-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:9-25:20
+149            android:name="expo.modules.devlauncher.launcher.DevLauncherActivity"
+149-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-81
+150            android:exported="true"
+150-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:13-36
+151            android:launchMode="singleTask"
+151-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:13-44
+152            android:theme="@style/Theme.DevLauncher.LauncherActivity" >
+152-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:16:13-70
+153            <intent-filter>
+153-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:17:13-24:29
+154                <action android:name="android.intent.action.VIEW" />
+154-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:11:7-58
+154-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:11:15-56
+155
+156                <category android:name="android.intent.category.DEFAULT" />
+156-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:27:9-67
+156-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:27:19-65
+157                <category android:name="android.intent.category.BROWSABLE" />
+157-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:12:7-67
+157-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:12:17-65
+158
+159                <data android:scheme="expo-dev-launcher" />
+159-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:7-37
+159-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:13-35
+160            </intent-filter>
+161        </activity>
+162        <activity
+162-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:26:9-29:70
+163            android:name="expo.modules.devlauncher.launcher.errors.DevLauncherErrorActivity"
+163-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:27:13-93
+164            android:screenOrientation="portrait"
+164-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:28:13-49
+165            android:theme="@style/Theme.DevLauncher.ErrorActivity" />
+165-->[:expo-dev-launcher] C:\react-native-projects\aclass\a\node_modules\expo-dev-launcher\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:29:13-67
+166        <activity
+166-->[:expo-dev-menu] C:\react-native-projects\aclass\a\node_modules\expo-dev-menu\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:9-21:20
+167            android:name="expo.modules.devmenu.DevMenuActivity"
+167-->[:expo-dev-menu] C:\react-native-projects\aclass\a\node_modules\expo-dev-menu\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:13-64
+168            android:exported="true"
+168-->[:expo-dev-menu] C:\react-native-projects\aclass\a\node_modules\expo-dev-menu\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-36
+169            android:launchMode="singleTask"
+169-->[:expo-dev-menu] C:\react-native-projects\aclass\a\node_modules\expo-dev-menu\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-44
+170            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" >
+170-->[:expo-dev-menu] C:\react-native-projects\aclass\a\node_modules\expo-dev-menu\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-75
+171            <intent-filter>
+171-->[:expo-dev-menu] C:\react-native-projects\aclass\a\node_modules\expo-dev-menu\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-20:29
+172                <action android:name="android.intent.action.VIEW" />
+172-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:11:7-58
+172-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:11:15-56
+173
+174                <category android:name="android.intent.category.DEFAULT" />
+174-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:27:9-67
+174-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:27:19-65
+175                <category android:name="android.intent.category.BROWSABLE" />
+175-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:12:7-67
+175-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:12:17-65
+176
+177                <data android:scheme="expo-dev-menu" />
+177-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:7-37
+177-->C:\react-native-projects\aclass\a\android\app\src\main\AndroidManifest.xml:13:13-35
+178            </intent-filter>
+179        </activity>
+180
+181        <provider
+181-->[:expo-file-system] C:\react-native-projects\aclass\a\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:21:9-30:20
+182            android:name="expo.modules.filesystem.FileSystemFileProvider"
+182-->[:expo-file-system] C:\react-native-projects\aclass\a\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:22:13-74
+183            android:authorities="com.bedirliProductDetailScreen.A_class.FileSystemFileProvider"
+183-->[:expo-file-system] C:\react-native-projects\aclass\a\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:23:13-74
+184            android:exported="false"
+184-->[:expo-file-system] C:\react-native-projects\aclass\a\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:24:13-37
+185            android:grantUriPermissions="true" >
+185-->[:expo-file-system] C:\react-native-projects\aclass\a\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:13-47
+186            <meta-data
+186-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-15:70
+187                android:name="android.support.FILE_PROVIDER_PATHS"
+187-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:17-67
+188                android:resource="@xml/file_system_provider_paths" />
+188-->[:react-native-image-picker] C:\react-native-projects\aclass\a\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:17-67
+189        </provider>
+190
+191        <service
+191-->[:expo-location] C:\react-native-projects\aclass\a\node_modules\expo-location\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:9-14:56
+192            android:name="expo.modules.location.services.LocationTaskService"
+192-->[:expo-location] C:\react-native-projects\aclass\a\node_modules\expo-location\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-78
+193            android:exported="false"
+193-->[:expo-location] C:\react-native-projects\aclass\a\node_modules\expo-location\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-37
+194            android:foregroundServiceType="location" />
+194-->[:expo-location] C:\react-native-projects\aclass\a\node_modules\expo-location\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:13-53
+195        <service
+195-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:9-17:19
+196            android:name="expo.modules.notifications.service.ExpoFirebaseMessagingService"
+196-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-91
+197            android:exported="false" >
+197-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-37
+198            <intent-filter android:priority="-1" >
+198-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:13-16:29
+198-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:28-49
+199                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+199-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:17-78
+199-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:25-75
+200            </intent-filter>
+201        </service>
+202
+203        <receiver
+203-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:19:9-31:20
+204            android:name="expo.modules.notifications.service.NotificationsService"
+204-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:20:13-83
+205            android:enabled="true"
+205-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:21:13-35
+206            android:exported="false" >
+206-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:22:13-37
+207            <intent-filter android:priority="-1" >
+207-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:23:13-30:29
+207-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:23:28-49
+208                <action android:name="expo.modules.notifications.NOTIFICATION_EVENT" />
+208-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:24:17-88
+208-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:24:25-85
+209                <action android:name="android.intent.action.BOOT_COMPLETED" />
+209-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:17-79
+209-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:25-76
+210                <action android:name="android.intent.action.REBOOT" />
+210-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:26:17-71
+210-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:26:25-68
+211                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+211-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:27:17-82
+211-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:27:25-79
+212                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+212-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:28:17-82
+212-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:28:25-79
+213                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+213-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:29:17-84
+213-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:29:25-81
+214            </intent-filter>
+215        </receiver>
+216
+217        <activity
+217-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:33:9-40:75
+218            android:name="expo.modules.notifications.service.NotificationForwarderActivity"
+218-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:34:13-92
+219            android:excludeFromRecents="true"
+219-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:35:13-46
+220            android:exported="false"
+220-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:36:13-37
+221            android:launchMode="standard"
+221-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:37:13-42
+222            android:noHistory="true"
+222-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:38:13-37
+223            android:taskAffinity=""
+223-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:39:13-36
+224            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+224-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:40:13-72
+225
+226        <meta-data
+226-->[:expo-modules-core] C:\react-native-projects\aclass\a\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:9-11:89
+227            android:name="org.unimodules.core.AppLoader#react-native-headless"
+227-->[:expo-modules-core] C:\react-native-projects\aclass\a\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-79
+228            android:value="expo.modules.adapters.react.apploader.RNHeadlessAppLoader" />
+228-->[:expo-modules-core] C:\react-native-projects\aclass\a\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-86
+229        <meta-data
+229-->[:expo-modules-core] C:\react-native-projects\aclass\a\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:9-15:45
+230            android:name="com.facebook.soloader.enabled"
+230-->[:expo-modules-core] C:\react-native-projects\aclass\a\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-57
+231            android:value="true" />
+231-->[:expo-modules-core] C:\react-native-projects\aclass\a\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:13-33
+232
+233        <activity
+233-->[com.facebook.react:react-android:0.76.7] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\e7d2cf3ea0f710e01bb7af2449bcb768\transformed\react-android-0.76.7-debug\AndroidManifest.xml:19:9-21:40
+234            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+234-->[com.facebook.react:react-android:0.76.7] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\e7d2cf3ea0f710e01bb7af2449bcb768\transformed\react-android-0.76.7-debug\AndroidManifest.xml:20:13-77
+235            android:exported="false" />
+235-->[com.facebook.react:react-android:0.76.7] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\e7d2cf3ea0f710e01bb7af2449bcb768\transformed\react-android-0.76.7-debug\AndroidManifest.xml:21:13-37
+236
+237        <meta-data
+237-->[com.github.bumptech.glide:okhttp3-integration:4.12.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4f9da15867c431d9be7984dd8f8a00d0\transformed\okhttp3-integration-4.12.0\AndroidManifest.xml:11:9-13:43
+238            android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+238-->[com.github.bumptech.glide:okhttp3-integration:4.12.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4f9da15867c431d9be7984dd8f8a00d0\transformed\okhttp3-integration-4.12.0\AndroidManifest.xml:12:13-84
+239            android:value="GlideModule" />
+239-->[com.github.bumptech.glide:okhttp3-integration:4.12.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4f9da15867c431d9be7984dd8f8a00d0\transformed\okhttp3-integration-4.12.0\AndroidManifest.xml:13:13-40
+240        <meta-data
+240-->[com.google.maps.android:android-maps-utils:3.8.2] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\c01962603f84c18077fc86deb6204ba6\transformed\android-maps-utils-3.8.2\AndroidManifest.xml:8:9-10:69
+241            android:name="com.google.android.gms.version"
+241-->[com.google.maps.android:android-maps-utils:3.8.2] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\c01962603f84c18077fc86deb6204ba6\transformed\android-maps-utils-3.8.2\AndroidManifest.xml:9:13-58
+242            android:value="@integer/google_play_services_version" /> <!-- Needs to be explicitly declared on P+ -->
+242-->[com.google.maps.android:android-maps-utils:3.8.2] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\c01962603f84c18077fc86deb6204ba6\transformed\android-maps-utils-3.8.2\AndroidManifest.xml:10:13-66
+243        <uses-library
+243-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:39:9-41:40
+244            android:name="org.apache.http.legacy"
+244-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:40:13-50
+245            android:required="false" />
+245-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\4aac41246362e0abccd474e2b7390968\transformed\play-services-maps-18.2.0\AndroidManifest.xml:41:13-37
+246
+247        <receiver
+247-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:29:9-40:20
+248            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+248-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:30:13-78
+249            android:exported="true"
+249-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:31:13-36
+250            android:permission="com.google.android.c2dm.permission.SEND" >
+250-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:32:13-73
+251            <intent-filter>
+251-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:33:13-35:29
+252                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+252-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:34:17-81
+252-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:34:25-78
+253            </intent-filter>
+254
+255            <meta-data
+255-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:37:13-39:40
+256                android:name="com.google.android.gms.cloudmessaging.FINISHED_AFTER_HANDLED"
+256-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:38:17-92
+257                android:value="true" />
+257-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:39:17-37
+258        </receiver>
+259        <!--
+260             FirebaseMessagingService performs security checks at runtime,
+261             but set to not exported to explicitly avoid allowing another app to call it.
+262        -->
+263        <service
+263-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:46:9-53:19
+264            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+264-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:47:13-82
+265            android:directBootAware="true"
+265-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:48:13-43
+266            android:exported="false" >
+266-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:49:13-37
+267            <intent-filter android:priority="-500" >
+267-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:13-16:29
+267-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:28-49
+268                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+268-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:17-78
+268-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:25-75
+269            </intent-filter>
+270        </service>
+271        <service
+271-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:54:9-63:19
+272            android:name="com.google.firebase.components.ComponentDiscoveryService"
+272-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:55:13-84
+273            android:directBootAware="true"
+273-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:32:13-43
+274            android:exported="false" >
+274-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:56:13-37
+275            <meta-data
+275-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:57:13-59:85
+276                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingKtxRegistrar"
+276-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:58:17-122
+277                android:value="com.google.firebase.components.ComponentRegistrar" />
+277-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:59:17-82
+278            <meta-data
+278-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:60:13-62:85
+279                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+279-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:61:17-119
+280                android:value="com.google.firebase.components.ComponentRegistrar" />
+280-->[com.google.firebase:firebase-messaging:24.0.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\cce1ba5011698fb0626313bdc20afdd1\transformed\firebase-messaging-24.0.1\AndroidManifest.xml:62:17-82
+281            <meta-data
+281-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\bc199572c782a8142f1d6c224f4c4b9d\transformed\firebase-installations-17.2.0\AndroidManifest.xml:15:13-17:85
+282                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+282-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\bc199572c782a8142f1d6c224f4c4b9d\transformed\firebase-installations-17.2.0\AndroidManifest.xml:16:17-130
+283                android:value="com.google.firebase.components.ComponentRegistrar" />
+283-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\bc199572c782a8142f1d6c224f4c4b9d\transformed\firebase-installations-17.2.0\AndroidManifest.xml:17:17-82
+284            <meta-data
+284-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\bc199572c782a8142f1d6c224f4c4b9d\transformed\firebase-installations-17.2.0\AndroidManifest.xml:18:13-20:85
+285                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+285-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\bc199572c782a8142f1d6c224f4c4b9d\transformed\firebase-installations-17.2.0\AndroidManifest.xml:19:17-127
+286                android:value="com.google.firebase.components.ComponentRegistrar" />
+286-->[com.google.firebase:firebase-installations:17.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\bc199572c782a8142f1d6c224f4c4b9d\transformed\firebase-installations-17.2.0\AndroidManifest.xml:20:17-82
+287            <meta-data
+287-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\24f51519e73fdc837186873698e0a23e\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:12:13-14:85
+288                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+288-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\24f51519e73fdc837186873698e0a23e\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:13:17-116
+289                android:value="com.google.firebase.components.ComponentRegistrar" />
+289-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\24f51519e73fdc837186873698e0a23e\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:14:17-82
+290            <meta-data
+290-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:35:13-37:85
+291                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+291-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:36:17-109
+292                android:value="com.google.firebase.components.ComponentRegistrar" />
+292-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:37:17-82
+293            <meta-data
+293-->[com.google.firebase:firebase-datatransport:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\f85d8c4e039f6b9c2d393dd16d889aa1\transformed\firebase-datatransport-18.2.0\AndroidManifest.xml:25:13-27:85
+294                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+294-->[com.google.firebase:firebase-datatransport:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\f85d8c4e039f6b9c2d393dd16d889aa1\transformed\firebase-datatransport-18.2.0\AndroidManifest.xml:26:17-115
+295                android:value="com.google.firebase.components.ComponentRegistrar" />
+295-->[com.google.firebase:firebase-datatransport:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\f85d8c4e039f6b9c2d393dd16d889aa1\transformed\firebase-datatransport-18.2.0\AndroidManifest.xml:27:17-82
+296        </service>
+297
+298        <activity
+298-->[com.google.android.gms:play-services-base:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\0b5a895e457d9fbf280ed4df9afc9309\transformed\play-services-base-18.2.0\AndroidManifest.xml:20:9-22:45
+299            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+299-->[com.google.android.gms:play-services-base:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\0b5a895e457d9fbf280ed4df9afc9309\transformed\play-services-base-18.2.0\AndroidManifest.xml:20:19-85
+300            android:exported="false"
+300-->[com.google.android.gms:play-services-base:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\0b5a895e457d9fbf280ed4df9afc9309\transformed\play-services-base-18.2.0\AndroidManifest.xml:22:19-43
+301            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+301-->[com.google.android.gms:play-services-base:18.2.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\0b5a895e457d9fbf280ed4df9afc9309\transformed\play-services-base-18.2.0\AndroidManifest.xml:21:19-78
+302
+303        <provider
+303-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:23:9-28:39
+304            android:name="com.google.firebase.provider.FirebaseInitProvider"
+304-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:24:13-77
+305            android:authorities="com.bedirliProductDetailScreen.A_class.firebaseinitprovider"
+305-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:25:13-72
+306            android:directBootAware="true"
+306-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:26:13-43
+307            android:exported="false"
+307-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:27:13-37
+308            android:initOrder="100" />
+308-->[com.google.firebase:firebase-common:21.0.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\8aa4e7ff4a6757718440aef5b283de3a\transformed\firebase-common-21.0.0\AndroidManifest.xml:28:13-36
+309        <provider
+309-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:31:9-39:20
+310            android:name="androidx.startup.InitializationProvider"
+310-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:32:13-67
+311            android:authorities="com.bedirliProductDetailScreen.A_class.androidx-startup"
+311-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:33:13-68
+312            android:exported="false" >
+312-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:34:13-37
+313            <meta-data
+313-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:36:13-38:52
+314                android:name="androidx.work.WorkManagerInitializer"
+314-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:37:17-68
+315                android:value="androidx.startup" />
+315-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:38:17-49
+316            <meta-data
+316-->[androidx.emoji2:emoji2:1.3.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\43348f4790489d0d58047534c8ae45cc\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+317                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+317-->[androidx.emoji2:emoji2:1.3.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\43348f4790489d0d58047534c8ae45cc\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+318                android:value="androidx.startup" />
+318-->[androidx.emoji2:emoji2:1.3.0] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\43348f4790489d0d58047534c8ae45cc\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+319            <meta-data
+319-->[androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\f4e0fabf694af3fb20704deb6901023f\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:29:13-31:52
+320                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+320-->[androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\f4e0fabf694af3fb20704deb6901023f\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:30:17-78
+321                android:value="androidx.startup" />
+321-->[androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\f4e0fabf694af3fb20704deb6901023f\transformed\lifecycle-process-2.8.3\AndroidManifest.xml:31:17-49
+322            <meta-data
+322-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+323                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+323-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+324                android:value="androidx.startup" />
+324-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+325        </provider>
+326
+327        <service
+327-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:41:9-46:35
+328            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+328-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:42:13-88
+329            android:directBootAware="false"
+329-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:43:13-44
+330            android:enabled="@bool/enable_system_alarm_service_default"
+330-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:44:13-72
+331            android:exported="false" />
+331-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:45:13-37
+332        <service
+332-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:47:9-53:35
+333            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+333-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:48:13-84
+334            android:directBootAware="false"
+334-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:49:13-44
+335            android:enabled="@bool/enable_system_job_service_default"
+335-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:50:13-70
+336            android:exported="true"
+336-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:51:13-36
+337            android:permission="android.permission.BIND_JOB_SERVICE" />
+337-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:52:13-69
+338        <service
+338-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:54:9-59:35
+339            android:name="androidx.work.impl.foreground.SystemForegroundService"
+339-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:55:13-81
+340            android:directBootAware="false"
+340-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:56:13-44
+341            android:enabled="@bool/enable_system_foreground_service_default"
+341-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:57:13-77
+342            android:exported="false" />
+342-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:58:13-37
+343
+344        <receiver
+344-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:61:9-66:35
+345            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+345-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:62:13-88
+346            android:directBootAware="false"
+346-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:63:13-44
+347            android:enabled="true"
+347-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:64:13-35
+348            android:exported="false" />
+348-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:65:13-37
+349        <receiver
+349-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:67:9-77:20
+350            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+350-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:68:13-106
+351            android:directBootAware="false"
+351-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:69:13-44
+352            android:enabled="false"
+352-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:70:13-36
+353            android:exported="false" >
+353-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:71:13-37
+354            <intent-filter>
+354-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:73:13-76:29
+355                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+355-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:74:17-87
+355-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:74:25-84
+356                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+356-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:75:17-90
+356-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:75:25-87
+357            </intent-filter>
+358        </receiver>
+359        <receiver
+359-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:78:9-88:20
+360            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+360-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:79:13-104
+361            android:directBootAware="false"
+361-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:80:13-44
+362            android:enabled="false"
+362-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:81:13-36
+363            android:exported="false" >
+363-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:82:13-37
+364            <intent-filter>
+364-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:84:13-87:29
+365                <action android:name="android.intent.action.BATTERY_OKAY" />
+365-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:85:17-77
+365-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:85:25-74
+366                <action android:name="android.intent.action.BATTERY_LOW" />
+366-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:86:17-76
+366-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:86:25-73
+367            </intent-filter>
+368        </receiver>
+369        <receiver
+369-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:89:9-99:20
+370            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+370-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:90:13-104
+371            android:directBootAware="false"
+371-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:91:13-44
+372            android:enabled="false"
+372-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:92:13-36
+373            android:exported="false" >
+373-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:93:13-37
+374            <intent-filter>
+374-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:95:13-98:29
+375                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+375-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:96:17-83
+375-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:96:25-80
+376                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+376-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:97:17-82
+376-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:97:25-79
+377            </intent-filter>
+378        </receiver>
+379        <receiver
+379-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:100:9-109:20
+380            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+380-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:101:13-103
+381            android:directBootAware="false"
+381-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:102:13-44
+382            android:enabled="false"
+382-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:103:13-36
+383            android:exported="false" >
+383-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:104:13-37
+384            <intent-filter>
+384-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:106:13-108:29
+385                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+385-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:107:17-79
+385-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:107:25-76
+386            </intent-filter>
+387        </receiver>
+388        <receiver
+388-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:110:9-121:20
+389            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+389-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:111:13-88
+390            android:directBootAware="false"
+390-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:112:13-44
+391            android:enabled="false"
+391-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:113:13-36
+392            android:exported="false" >
+392-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:114:13-37
+393            <intent-filter>
+393-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:116:13-120:29
+394                <action android:name="android.intent.action.BOOT_COMPLETED" />
+394-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:17-79
+394-->[:expo-notifications] C:\react-native-projects\aclass\a\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:25-76
+395                <action android:name="android.intent.action.TIME_SET" />
+395-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:118:17-73
+395-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:118:25-70
+396                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+396-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:119:17-81
+396-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:119:25-78
+397            </intent-filter>
+398        </receiver>
+399        <receiver
+399-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:122:9-131:20
+400            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+400-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:123:13-99
+401            android:directBootAware="false"
+401-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:124:13-44
+402            android:enabled="@bool/enable_system_alarm_service_default"
+402-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:125:13-72
+403            android:exported="false" >
+403-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:126:13-37
+404            <intent-filter>
+404-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:128:13-130:29
+405                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+405-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:129:17-98
+405-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:129:25-95
+406            </intent-filter>
+407        </receiver>
+408        <receiver
+408-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:132:9-142:20
+409            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+409-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:133:13-78
+410            android:directBootAware="false"
+410-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:134:13-44
+411            android:enabled="true"
+411-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:135:13-35
+412            android:exported="true"
+412-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:136:13-36
+413            android:permission="android.permission.DUMP" >
+413-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:137:13-57
+414            <intent-filter>
+414-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:139:13-141:29
+415                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+415-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:140:17-88
+415-->[androidx.work:work-runtime:2.7.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\30b537bb7c1781f876b963954ea30a1a\transformed\work-runtime-2.7.1\AndroidManifest.xml:140:25-85
+416            </intent-filter>
+417        </receiver>
+418        <receiver
+418-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+419            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+419-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+420            android:directBootAware="false"
+420-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+421            android:enabled="true"
+421-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+422            android:exported="true"
+422-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+423            android:permission="android.permission.DUMP" >
+423-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+424            <intent-filter>
+424-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+425                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+425-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+425-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+426            </intent-filter>
+427            <intent-filter>
+427-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+428                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+428-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+428-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+429            </intent-filter>
+430            <intent-filter>
+430-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+431                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+431-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+431-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+432            </intent-filter>
+433            <intent-filter>
+433-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+434                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+434-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+434-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\54c4dfb50a623bb88cfb1a28df88c5ed\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+435            </intent-filter>
+436        </receiver>
+437
+438        <service
+438-->[androidx.room:room-runtime:2.2.5] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\d7fad06b386e2105274538b9540b61b0\transformed\room-runtime-2.2.5\AndroidManifest.xml:25:9-28:40
+439            android:name="androidx.room.MultiInstanceInvalidationService"
+439-->[androidx.room:room-runtime:2.2.5] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\d7fad06b386e2105274538b9540b61b0\transformed\room-runtime-2.2.5\AndroidManifest.xml:26:13-74
+440            android:directBootAware="true"
+440-->[androidx.room:room-runtime:2.2.5] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\d7fad06b386e2105274538b9540b61b0\transformed\room-runtime-2.2.5\AndroidManifest.xml:27:13-43
+441            android:exported="false" />
+441-->[androidx.room:room-runtime:2.2.5] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\d7fad06b386e2105274538b9540b61b0\transformed\room-runtime-2.2.5\AndroidManifest.xml:28:13-37
+442        <service
+442-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\81d158bc518a2c212bcc9692edfefcf6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:28:9-34:19
+443            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+443-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\81d158bc518a2c212bcc9692edfefcf6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:29:13-103
+444            android:exported="false" >
+444-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\81d158bc518a2c212bcc9692edfefcf6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:30:13-37
+445            <meta-data
+445-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\81d158bc518a2c212bcc9692edfefcf6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:31:13-33:39
+446                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+446-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\81d158bc518a2c212bcc9692edfefcf6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:32:17-94
+447                android:value="cct" />
+447-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\81d158bc518a2c212bcc9692edfefcf6\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:33:17-36
+448        </service>
+449        <service
+449-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\120bf2cfd84fc733f4859f139a57f3c3\transformed\transport-runtime-3.1.9\AndroidManifest.xml:26:9-30:19
+450            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+450-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\120bf2cfd84fc733f4859f139a57f3c3\transformed\transport-runtime-3.1.9\AndroidManifest.xml:27:13-117
+451            android:exported="false"
+451-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\120bf2cfd84fc733f4859f139a57f3c3\transformed\transport-runtime-3.1.9\AndroidManifest.xml:28:13-37
+452            android:permission="android.permission.BIND_JOB_SERVICE" >
+452-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\120bf2cfd84fc733f4859f139a57f3c3\transformed\transport-runtime-3.1.9\AndroidManifest.xml:29:13-69
+453        </service>
+454
+455        <receiver
+455-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\120bf2cfd84fc733f4859f139a57f3c3\transformed\transport-runtime-3.1.9\AndroidManifest.xml:32:9-34:40
+456            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+456-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\120bf2cfd84fc733f4859f139a57f3c3\transformed\transport-runtime-3.1.9\AndroidManifest.xml:33:13-132
+457            android:exported="false" />
+457-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\120bf2cfd84fc733f4859f139a57f3c3\transformed\transport-runtime-3.1.9\AndroidManifest.xml:34:13-37
+458
+459        <service
+459-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:19:9-21:40
+460            android:name="io.nlopez.smartlocation.activity.providers.ActivityGooglePlayServicesProvider$ActivityRecognitionService"
+460-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:20:13-132
+461            android:exported="false" />
+461-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:21:13-37
+462        <service
+462-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:22:9-24:40
+463            android:name="io.nlopez.smartlocation.geofencing.providers.GeofencingGooglePlayServicesProvider$GeofencingService"
+463-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:23:13-127
+464            android:exported="false" />
+464-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:24:13-37
+465        <service
+465-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:25:9-27:40
+466            android:name="io.nlopez.smartlocation.geocoding.providers.AndroidGeocodingProvider$AndroidGeocodingService"
+466-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:26:13-120
+467            android:exported="false" />
+467-->[:expo-location$io.nlopez.smartlocation-jetified-aar] C:\Users\tbedi\.gradle\caches\8.10.2\transforms\fd4948d0eadfdb7320be40b2eeeb263b\transformed\io.nlopez.smartlocation-3.3.3-jetified\AndroidManifest.xml:27:13-37
+468    </application>
+469
+470</manifest>

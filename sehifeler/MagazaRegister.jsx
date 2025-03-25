@@ -1,35 +1,66 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity, Platform } from "react-native";
-import { Button ,Input} from 'react-native-elements';
+import { Button, Input } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
-import { useRoute,useNavigation } from "@react-navigation/native";
-
+import { useRoute, useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 export default function MagazaRegister() {
   const route = useRoute();
   const { magaza } = route.params;
   const navigation = useNavigation();
-
+  const [imageUri, setImageUri] = useState(null);
   const [formData, setFormData] = useState({
-    ad: "",
-    soyad: "",
+    firstName: "",
+    surname: "",
     email: "",
-    sifre: "",
-    sifreTekrar: "",
-    unvan: "",
-    etrafliUnvan: "",
-    magazaAdi: "",
-    profilSekli: null,
-    elaqeNomresi: "",
-    whatsappNomresi: "",
+    password: "",
+    voen: "",
+    address: "",
+    username: "",
+    phoneNumber: "",
+    wpNumber: "",
+    desc: "",
   });
+
+  const register = async () => {
+    try {
+      let formD = new FormData();
+      
+      // Kullanıcı bilgilerini JSON olarak ekle (sunucunun beklediği anahtar ismiyle)
+      formD.append("user", JSON.stringify(formData)); // "authRequest" yerine "user" olabilir
+      
+      // Resmi ekle (sunucunun beklediği anahtar ismiyle)
+      if (imageUri) {
+        let filename = imageUri.split('/').pop();
+        
+        formD.append('profilePic', {  // "profilePic" yerine "profileImage" olabilir
+          uri: imageUri,
+          name: filename,
+          type: 'image/jpeg',  // Türü sabit olarak jpeg yapıyoruz
+        });
+      }
+  
+      const response = await axios.post('http://192.168.0.107:8081/api/auth/register', formD, {
+        headers: {
+          "Content-Type": "multipart/form-data",  // Bu header önemli
+        },
+      });
+  
+      console.log("Başarılı:", response.data);
+      navigation.navigate("Main");
+    } catch (error) {
+      console.error("Hata:", error.response?.data || error.message);
+      alert("Kayıt sırasında hata oluştu: " + (error.response?.data?.message || error.message));
+    }
+  };
 
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-          alert('Kütüphaneye erişim izni gerekli!');
+          console.log('Kütüphaneye erişim izni gerekli!');
         }
       }
     })();
@@ -51,91 +82,87 @@ export default function MagazaRegister() {
     });
 
     if (!result.canceled) {
-      handleChange('profilSekli', result.assets[0].uri);
+      setImageUri(result.assets[0].uri);
     }
   };
 
   const handleRegister = () => {
-    // Form verilerini işleyin veya gönderin
-    console.log("Form Verileri:", formData);
+  
+    register();
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.inputView}>
-      <TouchableOpacity onPress={handleSelectImage} style={styles.imagePicker}>
+        <TouchableOpacity onPress={handleSelectImage} style={styles.imagePicker}>
           <Text style={styles.imagePickerText}>Profil Şəkli Seç</Text>
         </TouchableOpacity>
-        {formData.profilSekli && (
-          <Image source={{ uri: formData.profilSekli }} style={styles.profileImage} />
+        {imageUri && (
+          <Image source={{ uri: imageUri }} style={styles.profileImage} />
         )}
         <Input
-          style={styles.input}
           placeholder="Ad"
-          value={formData.ad}
-          onChangeText={(value) => handleChange("ad", value)}
+          value={formData.firstName}
+          onChangeText={(value) => handleChange("firstName", value)}
         />
         <Input
-          style={styles.input}
           placeholder="Soyad"
-          value={formData.soyad}
-          onChangeText={(value) => handleChange("soyad", value)}
+          value={formData.surname}
+          onChangeText={(value) => handleChange("surname", value)}
         />
         <Input
-          style={styles.input}
           placeholder="Email"
           keyboardType="email-address"
           value={formData.email}
           onChangeText={(value) => handleChange("email", value)}
         />
         <Input
-          style={styles.input}
           placeholder="Şifre"
           secureTextEntry
-          value={formData.sifre}
-          onChangeText={(value) => handleChange("sifre", value)}
-        />
-        <Input
-          style={styles.input}
-          placeholder="Şifre Tekrar"
-          secureTextEntry
-          value={formData.sifreTekrar}
-          onChangeText={(value) => handleChange("sifreTekrar", value)}
-        />
-        <Input
-          style={styles.input}
-          placeholder="Ünvan"
-          value={formData.unvan}
-          onChangeText={(value) => handleChange("unvan", value)}
-        />
-        <Input
-          style={styles.input}
-          placeholder="Etraflı Ünvan"
-          value={formData.etrafliUnvan}
-          onChangeText={(value) => handleChange("etrafliUnvan", value)}
-        />
-        <Input
-          style={styles.input}
-          placeholder="Mağaza Adı"
-          value={formData.magazaAdi}
-          onChangeText={(value) => handleChange("magazaAdi", value)}
+          value={formData.password}
+          onChangeText={(value) => handleChange("password", value)}
         />
       
         <Input
-          style={styles.input}
-          placeholder="Elaqe Nomresi"
-          keyboardType="phone-pad"
-          value={formData.elaqeNomresi}
-          onChangeText={(value) => handleChange("elaqeNomresi", value)}
+          placeholder="Voen"
+          value={formData.voen}
+          onChangeText={(value) => handleChange("voen", value)}
         />
         <Input
-          style={styles.input}
+          placeholder="Etraflı Ünvan"
+          value={formData.address}
+          onChangeText={(value) => handleChange("address", value)}
+        />
+        <Input
+          placeholder="Mağaza Adı"
+          value={formData.username}
+          onChangeText={(value) => handleChange("username", value)}
+        />
+        <Input
+          placeholder="Elaqe Nomresi"
+          keyboardType="phone-pad"
+          value={formData.phoneNumber}
+          onChangeText={(value) => handleChange("phoneNumber", value)}
+        />
+        <Input
           placeholder="Whatsapp Nomresi"
           keyboardType="phone-pad"
-          value={formData.whatsappNomresi}
-          onChangeText={(value) => handleChange("whatsappNomresi", value)}
+          value={formData.wpNumber}
+          onChangeText={(value) => handleChange("wpNumber", value)}
         />
-        <Button title="Qeydiyyatı tamamla" type="solid" onPress={()=>navigation.navigate("Giris")} />
+        <Input
+          placeholder="Açıqlama"
+          value={formData.desc}
+          onChangeText={(value) => handleChange("desc", value)}
+          multiline
+        />
+
+        <Button 
+          title="Qeydiyyatı tamamla" 
+          type="solid" 
+          onPress={handleRegister} 
+          buttonStyle={styles.registerButton}
+        />
       </View>
     </ScrollView>
   );
@@ -149,17 +176,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     padding: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    color: "#333",
-  },
   inputView: {
     gap: 15,
     width: "100%",
   },
-
   imagePicker: {
     backgroundColor: "#007BFF",
     padding: 15,
@@ -175,6 +195,10 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     marginTop: 10,
-    margin:'auto'
+    alignSelf: "center",
+  },
+  registerButton: {
+    marginTop: 20,
+    backgroundColor: "#28a745",
   },
 });

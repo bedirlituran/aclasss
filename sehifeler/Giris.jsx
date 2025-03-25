@@ -9,10 +9,10 @@ import {
   Text,
   View,
 } from "react-native";
-import { Buffer } from 'buffer';
-// import axios from "axios";
+import { Buffer } from "buffer";
+import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import { Input,Button } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 
 const logo = require("../assets/3.png");
 
@@ -28,23 +28,26 @@ export default function Giris() {
   };
 
   const handleSubmit = async () => {
-    // const token = generateBasicToken(username, password);
-    // console.log(token);
-    
-    // try {
-    //   const response = await axios.get("http://192.168.1.69:8080/api/login", {
-    //     headers: {
-    //       Authorization: token, 
-    //     },
-    //   });
-  
-    //   console.log("Login successful:", response.data);
-    //   return response.data;
-    // } catch (error) {
-    //   console.error("Login failed:", error.response ? error.response.data : error);
-    //   throw error;
-    // }
-    navigation.navigate('Main') //muveqqeti giris ucundur,sonradan deyisecek
+    try {
+      const response = await axios.post(
+        "http://192.168.0.107:8081/api/auth/login",
+        {
+          username: username,
+          password: password,
+        },
+      );
+
+      console.log("Başarılı:", response.data);
+      if (response.data != null) {
+        navigation.navigate("Main");
+      }
+    } catch (error) {
+      console.error("Hata:", error.response?.data || error.message);
+      alert(
+        "Kayıt sırasında hata oluştu: " +
+          (error.response?.data?.message || error.message)
+      );
+    }
   };
 
   return (
@@ -59,17 +62,15 @@ export default function Giris() {
           autoCorrect={false}
           autoCapitalize="none"
         />
-          <Input
-            // style={[styles.input, styles.passwordInput]}
-            placeholder="Şifrə"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={setPassword}
-            autoCorrect={false}
-            autoCapitalize="none"
-          />
-           
-          
+        <Input
+          style={[styles.input, styles.passwordInput]}
+          placeholder="Şifrə"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
       </View>
       <View style={styles.rememberView}>
         <View style={styles.switch}>
@@ -88,7 +89,12 @@ export default function Giris() {
       </View>
 
       <View style={styles.buttonView}>
-        <Button style={styles.button} onPress={handleSubmit} type="solid" title='Giriş'/>
+        <Button
+          style={styles.button}
+          onPress={handleSubmit}
+          type="solid"
+          title="Giriş"
+        />
       </View>
 
       <Text style={styles.footerText}>
@@ -118,7 +124,7 @@ const styles = StyleSheet.create({
   image: {
     height: 160,
     width: 160,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   inputView: {
     gap: 15,
@@ -133,9 +139,8 @@ const styles = StyleSheet.create({
     borderRadius: 7,
   },
   passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  
+    flexDirection: "row",
+    alignItems: "center",
   },
   passwordInput: {
     flex: 1,
@@ -172,8 +177,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
   },
   buttonView: {
@@ -195,6 +200,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderColor: "red",
     borderRadius: 7,
-    borderWidth:1
+    borderWidth: 1,
   },
 });

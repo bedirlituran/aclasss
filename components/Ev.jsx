@@ -176,10 +176,6 @@ const Ev = () => {
 
 // Card bileşeni
 const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
-  const [isShared, setIsShared] = useState(false);
-  const animation = useRef(new Animated.Value(0)).current;
-  const [isFav, setIsFav] = useState(false);
-  const [count, setCount] = useState(0);
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorited = favorites.some((favItem) => favItem.id === item.id);
