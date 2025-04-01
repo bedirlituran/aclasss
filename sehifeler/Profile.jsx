@@ -44,7 +44,7 @@ const Profile = () => {
   const fetchProducts = () => {
     setLoading(true);
     axios
-      .get("http://192.168.1.64:8081/api/productItem/getAll")
+      .get("http://35.159.64.205:8081/api/productItem/getAll")
       .then((res) => {
         setProducts(res.data);
         setLoading(false);

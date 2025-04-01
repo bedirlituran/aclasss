@@ -15,17 +15,15 @@ import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("screen");
 
-// https://www.flaticon.com/packs/retro-wave
-// inspiration: https://dribbble.com/shots/11164698-Onboarding-screens-animation
-// https://twitter.com/mironcatalin/status/1321180191935373312
+
 
 const bgs = ["#A5BBFF", "#DDBEFE", "#FF63ED", "#B98EFF"];
 const DATA = [
   {
     key: "3571572",
-    title: "Aclass ilə üslubunu yarat, fərqini hiss et!",
+    title: "Aclass – Geyim Alış-Verişinin Yeni Milli Ünvanı!",
     description:
-      "Aclass ilə hər gün üçün mükəmməl geyim tapmaq artıq çox asandır. Aclass, zövqünüzə uyğun ən son trendleri sizin üçün seçir!",
+      "Onlayn mağazamızda zövqünüzə uyğun geyimləri rahatlıqla tapın və ən sərfəli şərtlərlə sifariş edin! ✨",
     salam:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcIPr5NXlJz7NThMR5ZgG0VcCltLP11W3u6w&s",
   },

@@ -81,7 +81,7 @@ const ProductModal = ({ visible, onClose }) => {
     });
   
     try {
-      const response = await axios.post("http://192.168.1.64:8081/api/productItem/save", formData, {
+      const response = await axios.post("http://35.159.64.205:8081/api/productItem/save", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

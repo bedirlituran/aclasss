@@ -65,7 +65,7 @@ const Ev = () => {
 
     // setIsLoading(true);
     try {
-      const res = await axios.get(`http://192.168.0.107:8081/api/productItem/getAll`);
+      const res = await axios.get(`http://35.159.64.205:8081/api/productItem/getAll`);
       setData(res.data);
       // console.log(res.data);
       // const shuffledData = res.data.sort(() => Math.random() - 0.5); // Verileri rastgele sırala

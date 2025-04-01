@@ -17,7 +17,7 @@ const SearchScreen = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://192.168.1.64:8081/api/categories/getAll");
+      const response = await axios.get("http://35.159.64.205:8081/api/categories/getAll");
       setCategories(response.data.reverse());
     } catch (error) {
       console.error("Error fetching products:", error);

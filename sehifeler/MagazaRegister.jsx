@@ -41,7 +41,7 @@ export default function MagazaRegister() {
         });
       }
   
-      const response = await axios.post('http://192.168.0.107:8081/api/auth/register', formD, {
+      const response = await axios.post('http://35.159.64.205:8081/api/auth/register', formD, {
         headers: {
           "Content-Type": "multipart/form-data",  // Bu header önemli
         },

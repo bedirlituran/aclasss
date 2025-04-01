@@ -45,7 +45,7 @@ export default function LoginForm() {
   // OTP təsdiqləmə funksiyası
   const handleVerifyOTP = async () => {
     try {
-      const res = await axios.post("http://192.168.1.69:8080/web/login/verify-otp", { magaza, otp });
+      const res = await axios.post("http://35.159.64.205:8080/web/login/verify-otp", { magaza, otp });
       console.log(res.data);
       Alert.alert("Uğur", "OTP təsdiqləndi!");
       // OTP təsdiqləndikdən sonra qeydiyyat edək
@@ -66,7 +66,7 @@ export default function LoginForm() {
     }
 
     try {
-      const res = await axios.post("http://192.168.1.69:8080/web/login/registration", {
+      const res = await axios.post("http://35.159.64.205:8080/web/login/registration", {
         username: username,
         password: password,
         repeatPassword: confirmPassword,

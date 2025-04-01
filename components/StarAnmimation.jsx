@@ -40,7 +40,7 @@ const StarAnimation = ({ size,productId }) => {
       console.log(productId);
       
       const response = await axios.post(
-        "http://192.168.0.107:8081/api/likes/like?productId="+productId, {},
+        "http://35.159.64.205:8081/api/likes/like?productId="+productId, {},
         { headers: { Authorization: `Bearer ${token}` } },
       );
 

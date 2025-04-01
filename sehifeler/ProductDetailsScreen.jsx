@@ -32,7 +32,7 @@ const ProductDetailsScreen = ({ route }) => {
     fetch = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.64:8081/api/productItem/getProductItemWithCategory?categoryId=${categoryId}&subCategory=${subCategory}`
+          `http://35.159.64.205:8081/api/productItem/getProductItemWithCategory?categoryId=${categoryId}&subCategory=${subCategory}`
         );
         setProducts(response.data);
       } catch (error) {
