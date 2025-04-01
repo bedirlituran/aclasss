@@ -28,7 +28,7 @@ export default function Giris() {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.0.107:8081/api/auth/login",
+        "http://35.159.64.205:8081/api/auth/login",
         {
           username: username,
           password: password,
