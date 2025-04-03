@@ -10,6 +10,7 @@ const imageSlice = createSlice({
   reducers: {
     addImage: (state, action) => {
       if (action.payload) {
+        state.images = [];
         state.images.push(action.payload);
       } else {
         console.error('Geçersiz resim URI\'si');

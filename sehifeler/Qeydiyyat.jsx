@@ -66,7 +66,7 @@ export default function LoginForm() {
     }
 
     try {
-      const res = await axios.post("http://35.159.64.205:8080/web/login/registration", {
+      const res = await axios.post("http://35.159.64.205:8081/web/login/registration", {
         username: username,
         password: password,
         repeatPassword: confirmPassword,
