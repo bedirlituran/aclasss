@@ -29,6 +29,7 @@ import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from '@expo/vector-icons/Feather';
+import { setLoading } from "../store/authSlice";
 
 const { height, width } = Dimensions.get("window");
 
@@ -38,86 +39,44 @@ const Ev = () => {
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const navigation = useNavigation();
   const scrollViewRef = useRef(null);
-  const [page, setPage] = useState(1); // Sayfa numarası 1'den başlıyor
+  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
-  const [hasMoreData, setHasMoreData] = useState(true); // Daha fazla veri var mı?
+  const [hasMoreData, setHasMoreData] = useState(true);
 
-  // Tab'a basıldığında sayfayı yenile
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('tabPress', () => {
-      if (isFocused) {
-        onRefresh();
-    fetchData();
-
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [navigation, isFocused]);
-
-  // Verileri çek ve rastgele sırala
   const fetchData = async () => {
-    // if (!hasMoreData) return; // Daha fazla veri yoksa işlemi durdur
-
-    // setIsLoading(true);
     try {
       const res = await axios.get(`http://35.159.64.205:8081/api/productItem/getAll`);
       setData(res.data);
-      // console.log(res.data);
-      // const shuffledData = res.data.sort(() => Math.random() - 0.5); // Verileri rastgele sırala
+      setLoading(false);
 
-      // if (shuffledData.length === 0) {
-      //   // Eğer yeni veri yoksa, daha fazla veri olmadığını işaretle
-      //   setHasMoreData(false);
-      //   Alert.alert("Bilgi", "Tüm veriler yüklendi. Sayfa yenileniyor...");
-      //   onRefresh(); // Sayfayı yenile
-      //   return;
-      // }
-
-      // Yeni verileri eklerken, önceki verilerle çakışma olmamasını sağla
-      // setData((prevData) => {
-      //   const uniqueData = shuffledData.filter(
-      //     (newItem) => !prevData.some((prevItem) => prevItem.id === newItem.id)
-      //   );
-      //   return pageNumber === 1 ? uniqueData : [...prevData, ...uniqueData];
-      // }
-      //);
     } catch (error) {
-      setIsLoading(true);
-      
+      console.log(error);
     } finally {
       setIsLoading(false);
-      setRefreshing(false);
-      setIsFetchingMore(false);
+      setRefreshing(false); // Yenileme tamamlandığında refreshing'i false yap
     }
   };
 
-  // Sayfa yenileme
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setPage(1);
-    setHasMoreData(true); // Yeniden veri yükleme için hasMoreData'yı sıfırla
+    setHasMoreData(true);
     fetchData();
   }, []);
 
-  // Daha fazla veri yükle
   const loadMore = () => {
-    if (isFetchingMore || !hasMoreData) return; // Daha fazla veri yoksa işlemi durdur
+    if (isFetchingMore || !hasMoreData) return;
     setIsFetchingMore(true);
     setPage((prevPage) => prevPage + 1);
     fetchData();
   };
 
-  // İlk veri yükleme
   useEffect(() => {
-    fetchData()
+    fetchData();
   }, []);
 
-  // Yükleme durumunda skeleton göster
   if (isLoading && !refreshing) {
     return (
       <View style={styles.skeletonContainer}>
@@ -148,7 +107,7 @@ const Ev = () => {
             onAddToCart={() => dispatch(addToCart(item))}
           />
         )}
-        keyExtractor={(item) => item.id.toString()} // Sadece item.id kullan
+        keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
@@ -159,13 +118,6 @@ const Ev = () => {
         ListHeaderComponent={<Reklam />}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        ListFooterComponent={
-          isFetchingMore && hasMoreData ? (
-            <View style={styles.footer}>
-              <ActivityIndicator size="small" color="#0000ff" />
-            </View>
-          ) : null
         }
         ListEmptyComponent={
           !isLoading && Data.length === 0 ? (
@@ -207,7 +159,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
     <View style={styles.card}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Image source={{ uri: item.fileString }} style={styles.avatar} />
+          <Image source={{ uri: item.userProfilePicture }} style={styles.avatar} />
           <Text style={styles.categoryText}>
             {truncateText(item.subCategory, 50)}
           </Text>

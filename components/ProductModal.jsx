@@ -3,6 +3,7 @@ import { Modal, View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import DropDownPicker from "react-native-dropdown-picker";
 import { useSelector } from "react-redux";
 import axios from 'axios';
+import { selectToken } from '../store/authSlice';
 const ProductModal = ({ visible, onClose }) => {
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
@@ -17,9 +18,9 @@ const ProductModal = ({ visible, onClose }) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [selectedCategoryName, setSelectedCategoryName] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
-
+  const token = useSelector(selectToken);
   const images = useSelector((state) => state.images.images); 
-  const imageUri = images.length > 0 ? images[0] : null; // İlk resmi al
+  const imageUri = images.length > 0 ? images[0] : null;
   // API'den kategori verilerini al
   useEffect(() => {
     const fetchCategories = async () => {
@@ -84,6 +85,7 @@ const ProductModal = ({ visible, onClose }) => {
       const response = await axios.post("http://35.159.64.205:8081/api/productItem/save", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`
         },
       });
 
