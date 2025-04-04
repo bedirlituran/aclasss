@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector,useDispatch } from "react-redux";
-import Profile from "../sehifeler/Profile";
 import Sebetim from "../sehifeler/Sebetim";
 import UrunDetay from "../sehifeler/UrunDetay";
 import FavoriteScreen from "../sehifeler/FavoriteScreen";
@@ -27,8 +26,7 @@ const Stack = createStackNavigator();
 
 const getIconName = (routeName, focused) => {
   switch (routeName) {
-    case "Profile":
-      return focused ? "person" : "person-outline";
+    
       case "UserProfil":
       return focused ? "person" : "person-outline";
     case "Kataloq":
@@ -46,15 +44,15 @@ const getIconName = (routeName, focused) => {
   }
 };
 
-const ProfileStack = () => (
-  <Stack.Navigator>
-    <Stack.Screen
-      name="Profile"
-      component={Profile}
-      options={{ headerShown: false }}
-    />
-  </Stack.Navigator>
-);
+// const UserProfilStack = () => (
+//   <Stack.Navigator>
+//     <Stack.Screen
+//       name="UserProfil"
+//       component={UserProfil}
+//       options={{ headerShown: false }}
+//     />
+//   </Stack.Navigator>
+// );
 
 const TabNavigator = () => {
   const navigation = useNavigation();
@@ -210,15 +208,21 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen name="Ev" component={Ev} options={{ headerShown: false }} />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileStack}
+      {/* <Tab.Screen
+        name="UserProfil"
+        component={UserProfilStack}
         options={{ headerShown: false }}
         screenListeners={{
           tabPress: handleTabPress,
         }}
-      />
+      /> */}
+     
       <Tab.Screen
+        name="Səbət"
+        component={Sebetim}
+        options={{ headerShown: false }}
+      />
+       <Tab.Screen
         name="Əlavə et"
         component={Esasgiris} 
         options={{
@@ -258,11 +262,6 @@ const TabNavigator = () => {
             </TouchableOpacity>
           ),
         }}
-      />
-      <Tab.Screen
-        name="Səbət"
-        component={Sebetim}
-        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Bəyənilər"
@@ -315,7 +314,6 @@ const Navigation = () => {
       <Stack.Screen name="UrunDetay" component={UrunDetay} options={{ headerShown: false }} />
       <Stack.Screen name="Kataloq" component={SearchScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Sebetim" component={Sebetim} options={{ headerShown: false }} />
-      <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
       <Stack.Screen name="UserProfil" component={UserProfil} options={{ headerShown: false }} />
 
       <Stack.Screen name="OTPVerification" component={OTPVerification} options={{
