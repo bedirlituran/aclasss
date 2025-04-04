@@ -1,55 +1,89 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Modal, TouchableOpacity, Dimensions ,Text,ScrollView,Image} from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Modal, TouchableOpacity, Dimensions, Text, ScrollView, Image, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const { height } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
+
+// Örnek resimler (gerçek uygulamada API'den gelecek)
+const samplePosts = [
+  { id: 1, uri: 'https://picsum.photos/300/300?random=1' },
+  { id: 2, uri: 'https://picsum.photos/300/300?random=2' },
+  { id: 3, uri: 'https://picsum.photos/300/300?random=3' },
+  { id: 4, uri: 'https://picsum.photos/300/300?random=4' },
+  { id: 5, uri: 'https://picsum.photos/300/300?random=5' },
+  { id: 6, uri: 'https://picsum.photos/300/300?random=6' },
+  { id: 7, uri: 'https://picsum.photos/300/300?random=7' },
+  { id: 8, uri: 'https://picsum.photos/300/300?random=8' },
+  { id: 9, uri: 'https://picsum.photos/300/300?random=9' },
+  { id: 10, uri: 'https://picsum.photos/300/300?random=10' },
+];
 
 const ProfilModal = ({ visible, onClose }) => {
-    return (
-      <Modal
-        visible={visible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={onClose}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Ionicons name="close" size={24} color="#333" />
-              </TouchableOpacity>
-            </View>
-            
-            <ScrollView style={styles.modalContent}>
-              {/* Profil Resmi */}
-              <View style={styles.profileImageContainer}>
-                <Image 
-                  source={{ uri: 'https://example.com/profile.jpg' }}
-                  style={styles.profileImage}
-                />
-                <Text style={styles.profileName}>Turan Bedirhan</Text>
-              </View>
-              
-              {/* Bilgiler */}
-              <View style={styles.infoSection}>
-                <Text style={styles.sectionTitle}>Kişisel Bilgiler</Text>
-                <View style={styles.infoItem}>
-                  <Ionicons name="mail-outline" size={20} color="#666" />
-                  <Text style={styles.infoText}>turan@example.com</Text>
-                </View>
-                <View style={styles.infoItem}>
-                  <Ionicons name="call-outline" size={20} color="#666" />
-                  <Text style={styles.infoText}>+994 55 808 08 01</Text>
-                </View>
-              </View>
-              
-              {/* Diğer içerikler... */}
-            </ScrollView>
+  return (
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent={true}
+      onRequestClose={onClose}
+    >
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+              <Ionicons name="close" size={24} color="#333" />
+            </TouchableOpacity>
           </View>
+          
+          <ScrollView style={styles.modalContent}>
+            {/* Profil Üst Kısmı */}
+            <View style={styles.profileTopSection}>
+              <Image 
+                source={{ uri: 'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?a=1&b=1&s=612x612&w=0&k=20&c=u5RPl326UFf1oyrM1iLFJtqdQ3K28TdBdSaSPKeCrdc=' }}
+                style={styles.profileImage}
+              />
+              
+              <View style={styles.profileStats}>
+                <View style={styles.statItem}>
+                  <Text style={styles.statNumber}>1,234</Text>
+                  <Text style={styles.statLabel}>Posts</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Text style={styles.statNumber}>5.6M</Text>
+                  <Text style={styles.statLabel}>Followers</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Text style={styles.statNumber}>24</Text>
+                  <Text style={styles.statLabel}>Following</Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Kullanıcı Bilgileri */}
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileName}>Aclass</Text>
+              <Text style={styles.profileBio}>Digital Content Creator | Photography Enthusiast</Text>
+              <Text style={styles.profileLink}>www.aclass.example.com</Text>
+            </View>
+
+            {/* Paylaşımlar Grid */}
+            <View style={styles.postsSection}>
+              <Text style={styles.sectionTitle}>Posts</Text>
+              <View style={styles.postsGrid}>
+                {samplePosts.map((post) => (
+                  <Image 
+                    key={post.id}
+                    source={{ uri: post.uri }}
+                    style={styles.postImage}
+                  />
+                ))}
+              </View>
+            </View>
+          </ScrollView>
         </View>
-      </Modal>
-    );
-  };
+      </View>
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
   modalOverlay: {
@@ -58,16 +92,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContainer: {
-    height: height * 0.9, // Ekranın %90'ı
+    height: height * 0.9,
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 20,
+    padding: 15,
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginBottom: 15,
   },
   closeButton: {
     padding: 5,
@@ -75,13 +108,8 @@ const styles = StyleSheet.create({
   modalContent: {
     flex: 1,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  profileImageContainer: {
+  profileTopSection: {
+    flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
   },
@@ -89,29 +117,61 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    marginBottom: 10,
+    marginRight: 20,
+  },
+  profileStats: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-around',
+  },
+  statItem: {
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#666',
+  },
+  profileInfo: {
+    marginBottom: 25,
   },
   profileName: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 5,
   },
-  infoSection: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 10,
+  profileBio: {
+    fontSize: 14,
+    marginBottom: 5,
     color: '#333',
   },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  infoText: {
-    marginLeft: 10,
+  profileLink: {
     fontSize: 14,
+    color: '#00376B',
+    fontWeight: '500',
+  },
+  postsSection: {
+    borderTopWidth: 1,
+    borderTopColor: '#dbdbdb',
+    paddingTop: 15,
+  },
+  sectionTitle: {
+    fontWeight: '600',
+    fontSize: 16,
+    marginBottom: 15,
+  },
+  postsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  postImage: {
+    width: (width - 40) / 3, // 3 sütunlu grid
+    height: (width - 40) / 3,
+    marginBottom: 2,
   },
 });
 
