@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Pressable, Animated, Easing, Text,Modal } from "react-native";
+import { View, Pressable, Animated, Easing, Text } from "react-native";
 import CommentsScreen from '../components/CommentsScreen'; // Yorum sayfasını import ediyoruz.
 
 import { FontAwesome5 } from "@expo/vector-icons";

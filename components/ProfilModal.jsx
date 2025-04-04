@@ -48,22 +48,7 @@ const samplePosts = [
   { id: 38, uri: 'https://picsum.photos/300/300?random=8' },
   { id: 39, uri: 'https://picsum.photos/300/300?random=9' },
   { id: 40, uri: 'https://picsum.photos/300/300?random=10' },
-  {
-    id: 41,
-    uri: 'https://example.com/image1.jpg',
-    brand: 'Paris',
-    stars: 4.6,
-    sold: 186,
-    price: '7.20',
-  },
-  {
-    id: 42,
-    uri: 'https://example.com/image2.jpg',
-    brand: 'Vintage',
-    stars: 4.3,
-    sold: 221,
-    price: '6.62',
-  },
+  
 ];
 
 const ProfilModal = ({ visible, onClose }) => {
@@ -107,20 +92,22 @@ const ProfilModal = ({ visible, onClose }) => {
                 style={styles.profileImage}
               />
 
-              <View style={styles.profileStats}>
-                <View style={styles.statItem}>
-                  <Text style={styles.statNumber}>1,234</Text>
-                  <Text style={styles.statLabel}>Məhsullar</Text>
-                </View>
-                <View style={styles.statItem}>
-                  <Text style={styles.statNumber}>5.6M</Text>
-                  <Text style={styles.statLabel}>Reytinq</Text>
-                </View>
-                <View style={styles.statItem}>
-                  <Text style={styles.statNumber}>1,024</Text>
-                  <Text style={styles.statLabel}>Satış</Text>
-                </View>
-              </View>
+<View style={styles.profileStats}>
+  <View style={styles.statItem}>
+    <Text style={styles.statNumber}>1,234</Text>
+    <Text style={styles.statLabel}>Post</Text>
+  </View>
+  <View style={styles.divider} />
+  <View style={styles.statItem}>
+    <Text style={styles.statNumber}>5.6M</Text>
+    <Text style={styles.statLabel}>Reytinq</Text>
+  </View>
+  <View style={styles.divider}></View>
+  <View style={styles.statItem}>
+    <Text style={styles.statNumber}>1,024</Text>
+    <Text style={styles.statLabel}>Satış</Text>
+  </View>
+</View>
             </View>
 
             <View style={styles.profileInfo}>
@@ -130,7 +117,7 @@ const ProfilModal = ({ visible, onClose }) => {
             </View>
 
             <View style={styles.postsSection}>
-              <Text style={styles.sectionTitle}>Paylaşımlar</Text>
+              <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text>
               <View style={styles.postsGrid}>
                 {samplePosts.map((post) => (
                  <View key={post.id} style={styles.postContainer}>
@@ -158,7 +145,7 @@ const ProfilModal = ({ visible, onClose }) => {
                    </View>
                
                    <View style={styles.priceCartContainer}>
-                     <Text style={styles.price}>{post.price}100<Text style={styles.miniprice}>.00</Text> ₼</Text>
+                     <Text style={styles.price}>{post.price}100<Text style={styles.miniprice}>.15</Text> ₼</Text>
                      <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
                      <Ionicons name="cart-outline" size={24} color="black" />
                      </TouchableOpacity>
@@ -193,7 +180,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   closeButton: {
-    padding: 5,
+    padding: 2,
   },
   modalContent: {
     flex: 1,
@@ -217,8 +204,7 @@ const styles = StyleSheet.create({
   },
   profileStats: {
     flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   statItem: {
     alignItems: 'center',
@@ -229,7 +215,7 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 14,
-    color: '#666',
+    color: 'gray',
   },
   profileInfo: {
     marginBottom: 25,
@@ -324,6 +310,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     padding: 4,
     borderRadius: 6,
+  },
+  divider: {
+    height: '80%',
+    width: 1,
+    backgroundColor: 'black',
+    marginHorizontal: 10,
   },
 });
 

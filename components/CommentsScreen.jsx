@@ -173,7 +173,7 @@ const CommentsScreen = ({ isModalVisible, setIsModalVisible }) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { setSelectedCommentId(item.id); setIsReplyModalVisible(true); }} style={styles.replyButton1}>
-          <MaterialCommunityIcons name="comment-text-outline" size={20} color="black" />
+            <MaterialCommunityIcons name="comment-text-outline" size={20} color="black" />
             <Text style={styles.replyText}>{item.replies.length} </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleDeleteComment(item.id)}>
@@ -288,6 +288,7 @@ const CommentsScreen = ({ isModalVisible, setIsModalVisible }) => {
               keyExtractor={(item) => item.id}
               renderItem={renderComment}
               contentContainerStyle={styles.flatListContent}
+              keyboardShouldPersistTaps="handled"
             />
           )}
 

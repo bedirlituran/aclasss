@@ -27,7 +27,7 @@ const Stack = createStackNavigator();
 const getIconName = (routeName, focused) => {
   switch (routeName) {
     
-      case "UserProfil":
+      case "Profil":
       return focused ? "person" : "person-outline";
     case "Kataloq":
       return focused ? "search" : "search-outline";
@@ -269,7 +269,7 @@ const TabNavigator = () => {
         options={{ headerShown: false }}
       />
        <Tab.Screen
-        name="UserProfil"
+        name="Profil"
         component={UserProfil}
         options={{ headerShown: false }}
       />
