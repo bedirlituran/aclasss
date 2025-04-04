@@ -18,7 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
-
+import Constants from 'expo-constants';
+import { selectToken, selectUser } from "../store/authSlice";
 const { width } = Dimensions.get("window");
 
 const Profile = () => {
@@ -26,7 +27,9 @@ const Profile = () => {
   const [loading, setLoading] = useState(true); 
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-
+  const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
+  const apiUrl = Constants.expoConfig.extra.apiKey;
   const favorites = useSelector((state) => state.favorites.items);
   const navigation = useNavigation();
   const images = useSelector((state) => state.images.images);
@@ -40,30 +43,34 @@ const Profile = () => {
       dispatch(addToFavorites(product));
     }
   };
+  const getUserProducts = async () => {
+    try {
+      console.log(apiUrl + "/productItem/getUserProducts/" + user.username,);
+      
+      const response = await axios.get(
+        apiUrl + "/productItem/getUserProducts/" + user.username,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
 
-  const fetchProducts = () => {
-    setLoading(true);
-    axios
-      .get("http://35.159.64.205:8081/api/productItem/getAll")
-      .then((res) => {
-        setProducts(res.data);
+      if (response.status == 200) {
+        setProducts(response.data);
         setLoading(false);
         setRefreshing(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error("Error fetching products:", error);
-      });
+        console.log(response.data);    
+      }
+    } catch (error) {
+      console.error("Hata:", error.response?.data || error.message);
+      alert("Error: " + (error.response?.data?.message || error.message));
+    }
   };
-
  
 
   useEffect(() => {
-    fetchProducts(); 
+    getUserProducts(); 
   }, []);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchProducts();
+    getUserProducts();
   }, []);
 
   const Truncate = (string, number) => {
@@ -77,7 +84,7 @@ const Profile = () => {
   };
 
   const renderMedia = (uri) => {
-    const extension = uri.split('.').pop().toLowerCase();
+    const extension = uri != null ? uri.split('.').pop().toLowerCase() : '';
     if (extension === 'mp4' || extension === 'mov' || extension === 'avi') {
       return (
         <Video
@@ -114,14 +121,14 @@ const Profile = () => {
             </View>
           ) : (
             <View style={styles.grid}>
-              {images.map((imageUri, index) => {
+              {products.length > 0 && products.map((item, index) => {
                 const product = {
-                  id: index,
+                  id: item.id,
                   title: "Ürün Başlığı " + (index + 1),
                   description: "Bu bir örnek açıklamadır.",
-                  price: "100",
+                  price: item.sellingPrice,
                   rating: { count: 20 },
-                  image: imageUri,
+                  image: item.fileString,
                 };
 
                 return (
@@ -138,7 +145,7 @@ const Profile = () => {
                         })
                       }
                     >
-                      {renderMedia(imageUri)}
+                      {renderMedia(product.image)}
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => handleToggleFavorite(product)} style={styles.like}>
@@ -209,7 +216,7 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
     paddingHorizontal: Platform.OS === "ios" ? 4 : 2,
     paddingBottom: 40,
   },

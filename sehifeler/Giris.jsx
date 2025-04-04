@@ -14,10 +14,13 @@ import { Input, Button } from "react-native-elements";
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../store/authSlice';
 import { Ionicons } from "@expo/vector-icons";
+import Constants from 'expo-constants';
+
 
 const logo = require("../assets/3.png");
 
 export default function Giris() {
+  const apiUrl = Constants.expoConfig.extra.apiKey;
   const [click, setClick] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -28,21 +31,17 @@ export default function Giris() {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://35.159.64.205:8081/api/auth/login",
+        apiUrl + "/auth/login",
         {
           username: username,
           password: password,
         },
       );
 
-      console.log("Başarılı:", response.data);
       
-      if (response.data) {
-        // Token'ı ve kullanıcı bilgilerini Redux'a kaydet
-        dispatch(setToken(response.data.token || response.data));
-        
-     
-        
+      if (response.status == 200) {
+        dispatch(setToken(response.data.token));
+        dispatch(setUser(response.data));
         navigation.navigate("Main");
       }
     } catch (error) {

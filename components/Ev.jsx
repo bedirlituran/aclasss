@@ -30,10 +30,11 @@ import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from '@expo/vector-icons/Feather';
 import { setLoading } from "../store/authSlice";
-
+import Constants from 'expo-constants';
 const { height, width } = Dimensions.get("window");
 
 const Ev = () => {
+  const apiUrl = Constants.expoConfig.extra.apiKey;
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
@@ -47,7 +48,7 @@ const Ev = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`http://35.159.64.205:8081/api/productItem/getAll`);
+      const res = await axios.get(apiUrl + `/productItem/getAll`);
       setData(res.data);
       setLoading(false);
 

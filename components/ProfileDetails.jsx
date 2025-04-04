@@ -5,12 +5,17 @@ import Feather from '@expo/vector-icons/Feather';
 import WhatsAppButton from './WhatsAppButton'
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // AsyncStorage'ı import ediyoruz.
-
+import { selectToken, selectUser } from "../store/authSlice";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import Constants from 'expo-constants';
 const { height, width } = Dimensions.get('window')
 const ProfileDetails = () => {
   const [modalVisible, setModalVisible] = useState(false); // Menü modal'ının görünürlüğü
   const [image, setImage] = useState(""); // Seçilen resmin URI'sini sakla
-
+  const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
+  const apiUrl = Constants.expoConfig.extra.apiKey;
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -32,41 +37,17 @@ const ProfileDetails = () => {
     }
   };
 
-  // Uygulama açıldığında AsyncStorage'dan resim URI'sini yükle
   useEffect(() => {
-    const loadImage = async () => {
-      try {
-        const savedImage = await AsyncStorage.getItem("profileImage");
-        if (savedImage) {
-          setImage(savedImage);
-        }
-      } catch (error) {
-        Alert.alert("Hata", "Resim yüklenirken bir hata oluştu.");
-      }
-    };
 
-    loadImage(); // Component mount olduğunda AsyncStorage'dan resmi yükle
   }, []);
 
-    // // Menü seçeneklerini işlemek için fonksiyonlar
-    // const handleChangeProfilePicture = () => {
-    //   // Profil resmi değiştirme işlemi
-    //   console.log('Profil resmi değiştir');
-    //   setModalVisible(false); // Modal'ı kapat
-    // };
-
-    // const handleDeleteProfilePicture = () => {
-    //   // Profil resmi silme işlemi
-    //   console.log('Profil resmi silindi');
-    //   setModalVisible(false); // Modal'ı kapat
-    // };
   return (
     <View style={{ padding: 9, borderBottomWidth: 0.5, borderBottomColor: 'lightgray', }}>
       <View style={{flexDirection:'row', justifyContent:'space-between',alignItems:'center'}}>
         <View style={{ flexDirection: "row", alignItems: "center", }}>
    
-              {image ? (
-          <Image source={{ uri: image }}   style={{
+              {user ? (
+          <Image source={{ uri: user?.userProfilePicture }}   style={{
             width: 100,
             height: 100,
             borderRadius: 50,
@@ -118,7 +99,7 @@ const ProfileDetails = () => {
 
 
       <View style={{ display: 'flex', padding: 5,marginTop:17 }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#333', textAlign: 'start' }}>Hər növ geyimlər</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#333', textAlign: 'start' }}>{user?.description}</Text>
 
         <TouchableOpacity style={{ flexDirection: 'row', marginTop: 5, width: width, gap: 2, marginBottom: 8 }}>
           <Ionicons name="navigate-circle-outline" size={20} color="black" />
@@ -168,7 +149,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Gölge arka plan
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
     backgroundColor: 'white',
