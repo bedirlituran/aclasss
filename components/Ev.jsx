@@ -3,17 +3,13 @@ import {
   View,
   StyleSheet,
   FlatList,
-  Text,
   Image,
   TouchableOpacity,
-  Animated,
-  Easing,
   Alert,
   Share,
   Dimensions,
   RefreshControl,
   Platform,
-  ActivityIndicator,
 } from "react-native";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import SkeletonLoader from "../components/SkeletonLoader";
@@ -22,6 +18,7 @@ import WhatsAppButton from "./WhatsAppButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Reklam from "../components/Reklam";
 import Header from "../components/Header";
+import ProfilModal from './ProfilModal';
 import YorumAnimation from "../components/YorumAnimation";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,6 +29,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { setLoading } from "../store/authSlice";
 import Constants from 'expo-constants';
 const { height, width } = Dimensions.get("window");
+import { Text } from "react-native-elements";
 
 const Ev = () => {
   const apiUrl = Constants.expoConfig.extra.apiKey;
@@ -45,6 +43,7 @@ const Ev = () => {
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
   const [hasMoreData, setHasMoreData] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -128,6 +127,10 @@ const Ev = () => {
           ) : null
         }
       />
+      <ProfilModal 
+        visible={modalVisible} 
+        onClose={() => setModalVisible(false)} 
+      />
     </View>
   );
 };
@@ -137,7 +140,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorited = favorites.some((favItem) => favItem.id === item.id);
-
+  const [modalVisible, setModalVisible] = useState(false);
   const handleToggleFavorite = () => {
     if (isFavorited) {
       dispatch(removeFromFavorites(item));
@@ -158,13 +161,14 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
 
   return (
     <View style={styles.card}>
+      
       <View style={styles.header}>
-        <View style={styles.headerLeft}>
+        <TouchableOpacity style={styles.headerLeft} onPress={() => setModalVisible(true)} >
           <Image source={{ uri: item.userProfilePicture }} style={styles.avatar} />
           <Text style={styles.categoryText}>
             {truncateText(item.subCategory, 50)}
           </Text>
-        </View>
+        </TouchableOpacity>
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="navigate-circle-outline" size={23} color="black" />
@@ -177,7 +181,10 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
           </TouchableOpacity>
         </View>
       </View>
-
+      <ProfilModal 
+        visible={modalVisible} 
+        onClose={() => setModalVisible(false)} 
+      />
       <TouchableOpacity onPress={onDetailPress}>
         <Image source={{ uri: item.fileString }} style={styles.image} />
       </TouchableOpacity>
