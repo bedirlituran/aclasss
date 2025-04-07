@@ -149,11 +149,7 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
   };
 
   const handleProfilePress = () => {
-    if (!isLoggedIn) {
-      showAuthAlert("profilə baxmaq");
-    } else {
-      setModalVisible(true);
-    }
+    setModalVisible(true);
   };
 
   const handleStarPress = () => {
@@ -179,7 +175,7 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
       <View style={styles.header}>
         <TouchableOpacity style={styles.headerLeft} onPress={handleProfilePress}>
           <Image 
-            source={{ uri: item.userProfilePicture || 'https://via.placeholder.com/40' }} 
+            source={{ uri: item.userProfilePicture}} 
             style={styles.avatar} 
           />
           <Text style={styles.categoryText}>

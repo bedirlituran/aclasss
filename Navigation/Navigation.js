@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useRef, useCallback, useState,useEffect } from "react";
-import { View, TouchableOpacity, Platform, Text, Alert  } from "react-native";
+import { useRef, useCallback, useState, useEffect } from "react";
+import { View, TouchableOpacity, Platform, Text, Alert } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Sebetim from "../sehifeler/Sebetim";
 import UrunDetay from "../sehifeler/UrunDetay";
 import FavoriteScreen from "../sehifeler/FavoriteScreen";
@@ -14,20 +14,21 @@ import Esasgiris from "../sehifeler/Esasgiris";
 import Giris from "../sehifeler/Giris";
 import Qeydiyyat from "../sehifeler/Qeydiyyat";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker"
+import * as ImagePicker from "expo-image-picker";
 import SearchScreen from "../sehifeler/SearchScreen";
 import { addImage } from "../store/imageSlice";
-import ProductModal from "../components/ProductModal"
-import OTPVerification from "../sehifeler/OTPVerification"
+import ProductModal from "../components/ProductModal";
+import OTPVerification from "../sehifeler/OTPVerification";
 import MagazaRegister from "../sehifeler/MagazaRegister";
 import UserProfil from "../sehifeler/UserProfil";
+import { selectIsFirstLaunch, selectIsLoggedIn, completeOnboarding } from '../store/authSlice';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-import { selectIsFirstLaunch, selectIsLoggedIn,completeOnboarding, logout } from '../store/authSlice';
+
 const getIconName = (routeName, focused) => {
   switch (routeName) {
-    
-      case "Profil":
+    case "Profil":
       return focused ? "person" : "person-outline";
     case "Kataloq":
       return focused ? "search" : "search-outline";
@@ -44,16 +45,6 @@ const getIconName = (routeName, focused) => {
   }
 };
 
-// const UserProfilStack = () => (
-//   <Stack.Navigator>
-//     <Stack.Screen
-//       name="UserProfil"
-//       component={UserProfil}
-//       options={{ headerShown: false }}
-//     />
-//   </Stack.Navigator>
-// );
-
 const TabNavigator = () => {
   const navigation = useNavigation();
   const cartItems = useSelector((state) => state.cart.items);
@@ -63,9 +54,14 @@ const TabNavigator = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedMediaUri, setSelectedMediaUri] = useState('');
   const [selectedMediaFormat, setSelectedMediaFormat] = useState('');
-
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const pickImage = async () => {
+    if (!isLoggedIn) {
+      showAuthAlert();
+      return;
+    }
+
     Alert.alert(
       "Şəkil vəya Video Seç",
       "Qalereya vəya Kameradan şəkil və video seçə bilərsiniz.",
@@ -78,14 +74,14 @@ const TabNavigator = () => {
               Alert.alert('Giriş rədd edildi', 'Şəkilləri və videoları seçə bilmek üçün icazə verməlisiniz.');
               return;
             }
-  
+
             const result = await ImagePicker.launchImageLibraryAsync({
               mediaTypes: ImagePicker.MediaType.All,
               allowsEditing: true,
               aspect: [4, 3],
               quality: 1,
             });
-  
+
             handleMediaSelection(result);
           }
         },
@@ -97,14 +93,14 @@ const TabNavigator = () => {
               Alert.alert('Kameraya giriş rədd edildi', 'Kamera giriş üçün izacə verməlisiniz.');
               return;
             }
-  
+
             const result = await ImagePicker.launchCameraAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.All,
               allowsEditing: true,
               aspect: [4, 3],
               quality: 1,
             });
-  
+
             handleMediaSelection(result);
           }
         },
@@ -126,108 +122,94 @@ const TabNavigator = () => {
       setSelectedMediaUri(mediaUri);
       setSelectedMediaFormat(mediaFormat);
       dispatch(addImage(mediaUri));
-      setModalVisible(true); 
-
-      let localUri = mediaUri;
-      let filename = localUri.split('/').pop();
-      let type = 'image/jpeg';
-
+      setModalVisible(true);
     } else {
       console.log('Hata', 'Geçersiz medya seçimi');
     }
   };
 
-
   const handleTabPress = useCallback((e) => {
     const currentTime = Date.now();
     if (e.target === 'Ev') {
       if (currentTime - lastTabPressTime.current < 300) {
-        // Double tap detected
         homeTabPressCount.current += 1;
         if (homeTabPressCount.current % 2 === 0) {
-          // Even number of taps, trigger refresh
           navigation.emit({
             type: 'tabPress',
             target: e.target,
             canPrEventDefault: true,
           });
         } else {
-          // Odd number of taps, scroll to top
           navigation.emit({
             type: 'tabLongPress',
             target: e.target,
           });
         }
       } else {
-        // Single tap
         homeTabPressCount.current = 1;
       }
       lastTabPressTime.current = currentTime;
     }
   }, [navigation]);
 
+  const showAuthAlert = () => {
+    Alert.alert(
+      "Giriş Tələb Olunur",
+      "Bu əməliyyatı yerinə yetirmək üçün üçün qeydiyyat olmalısınız.",
+      [
+        { text: "İptal", style: "cancel" },
+        { text: "Qeydiyyat", onPress: () => navigation.navigate("Qeydiyyat") }
+      ]
+    );
+  };
+
   return (
-    // <Tab.Navigator
-    //   screenOptions={({ route }) => ({
-    //     tabBarIcon: ({ focused, color, size }) => {
-    //       const iconName = getIconName(route.name, focused);
-    //       return <Ionicons name={iconName} size={size} color={color} />;
-    //     },
-    //     tabBarActiveTintColor: "#fb5607",
-    //     tabBarInactiveTintColor: "gray",
-    //     tabBarBadge: route.name === "Səbət" && cartItems.length > 0 ? cartItems.length : undefined,
-    //   })}
-    //   
-    // >
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           const iconName = getIconName(route.name, focused);
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-       
         tabBarActiveTintColor: "#fb5607",
         tabBarInactiveTintColor: "gray",
         tabBarBadge: route.name === "Səbət" && cartItems.length > 0 ? cartItems.length : undefined,
         tabBarStyle: {
-          height: Platform.OS === "ios" ? 80 : 60, // iOS için 90, Android için 70
-          paddingBottom: Platform.OS === "ios" ? 25 : 10, // iOS için 25, Android için 10
-          paddingTop: 6, // Üst padding
-          borderTopWidth: 0.5, // Üst çizgiyi kaldır
-          shadowColor: "#000", // Gölge efekti
-          shadowOffset: { width: 0, height: -2 }, // Gölge yönü
-          shadowOpacity: 0.1, // Gölge opaklığı
-          shadowRadius: 4, // Gölge yarıçapı
+          height: Platform.OS === "ios" ? 80 : 60,
+          paddingBottom: Platform.OS === "ios" ? 25 : 10,
+          paddingTop: 6,
+          borderTopWidth: 0.5,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
         },
-        
       })}
       screenListeners={{
         tabPress: handleTabPress,
       }}
     >
       <Tab.Screen name="Ev" component={Ev} options={{ headerShown: false }} />
-      {/* <Tab.Screen
-        name="UserProfil"
-        component={UserProfilStack}
-        options={{ headerShown: false }}
-        screenListeners={{
-          tabPress: handleTabPress,
-        }}
-      /> */}
-     
       <Tab.Screen
         name="Səbət"
         component={Sebetim}
         options={{ headerShown: false }}
+        listeners={{
+          tabPress: (e) => {
+            if (!isLoggedIn) {
+              e.preventDefault();
+              showAuthAlert();
+            }
+          }
+        }}
       />
-       <Tab.Screen
+      <Tab.Screen
         name="Əlavə et"
-        component={Esasgiris} 
+        component={Esasgiris}
         options={{
           tabBarButton: (props) => (
             <TouchableOpacity
               {...props}
-              onPress={pickImage} 
+              onPress={pickImage}
               style={{
                 top: -16,
                 justifyContent: "center",
@@ -237,16 +219,15 @@ const TabNavigator = () => {
                 shadowOffset: { width: 0, height: 3 },
               }}
             >
-      <ProductModal
-  visible={modalVisible}
-  onClose={() => {
-    setModalVisible(false);
-    setSelectedMediaUri('');
-    setSelectedMediaFormat('');
-  }}
-  imageUri={selectedMediaUri}
-/>
-
+              <ProductModal
+                visible={modalVisible}
+                onClose={() => {
+                  setModalVisible(false);
+                  setSelectedMediaUri('');
+                  setSelectedMediaFormat('');
+                }}
+                imageUri={selectedMediaUri}
+              />
               <View
                 style={{
                   width: 60,
@@ -270,11 +251,27 @@ const TabNavigator = () => {
         name="Bəyənilər"
         component={FavoriteScreen}
         options={{ headerShown: false }}
+        listeners={{
+          tabPress: (e) => {
+            if (!isLoggedIn) {
+              e.preventDefault();
+              showAuthAlert();
+            }
+          }
+        }}
       />
-       <Tab.Screen
+      <Tab.Screen
         name="Profil"
         component={UserProfil}
         options={{ headerShown: false }}
+        listeners={{
+          tabPress: (e) => {
+            if (!isLoggedIn) {
+              e.preventDefault();
+              showAuthAlert();
+            }
+          }
+        }}
       />
     </Tab.Navigator>
   );
@@ -285,12 +282,13 @@ const Navigation = () => {
   const dispatch = useDispatch();
   const isFirstLaunch = useSelector(selectIsFirstLaunch);
   const isLoggedIn = useSelector(selectIsLoggedIn);
+
   useEffect(() => {
-    // İlk dəfə açıldığında onboarding tamamlansın
     if (isFirstLaunch) {
       dispatch(completeOnboarding());
     }
   }, [isFirstLaunch, dispatch]);
+
   return (
     <Stack.Navigator initialRouteName={isLoggedIn ? 'Ev' : 'Esasgiris'}>
       <Stack.Screen name="Giris" component={Giris} options={{
@@ -301,9 +299,8 @@ const Navigation = () => {
             </TouchableOpacity>
             <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Giriş et</Text>
             <TouchableOpacity style={{ marginRight: 15, opacity: 0 }}>
-  <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
-</TouchableOpacity>
-
+              <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
+            </TouchableOpacity>
           </View>
         ),
       }} />
@@ -327,7 +324,6 @@ const Navigation = () => {
       <Stack.Screen name="Sebetim" component={Sebetim} options={{ headerShown: false }} />
       <Stack.Screen name="UserProfil" component={UserProfil} options={{ headerShown: false }} />
       <Stack.Screen name="Esasgiris" component={Esasgiris} options={{ headerShown: false }} />
-
       <Stack.Screen name="OTPVerification" component={OTPVerification} options={{
         header: () => (
           <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -340,23 +336,20 @@ const Navigation = () => {
             </TouchableOpacity>
           </View>
         ),
-      }}/>
+      }} />
       <Stack.Screen name="MagazaRegister" component={MagazaRegister} options={{
         header: () => (
           <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity style={{ marginLeft: 15, padding: 10 }} onPress={() => navigation.goBack()}>
               <Ionicons name="return-up-back" size={24} color={Platform.OS === 'ios' ? '#000' : '#000'} />
             </TouchableOpacity>
-            <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Mağaza  Qeydiyyat</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Mağaza Qeydiyyat</Text>
             <TouchableOpacity style={{ marginRight: 15, opacity: 0 }}>
               <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
             </TouchableOpacity>
           </View>
         ),
-      }}/>
-
-
-
+      }} />
     </Stack.Navigator>
   );
 };

@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Modal, TouchableOpacity, Dimensions, Text, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, Modal, TouchableOpacity, Dimensions, Text, ScrollView, Image, Alert } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../store/cartSlice';
 import { addToFavorites, removeFromFavorites } from '../store/favoritesSlice';
+import { selectIsLoggedIn } from '../store/authSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const { height, width } = Dimensions.get('window');
 
@@ -14,51 +16,24 @@ const samplePosts = [
   { id: 4, uri: 'https://picsum.photos/300/300?random=4' },
   { id: 5, uri: 'https://picsum.photos/300/300?random=5' },
   { id: 6, uri: 'https://picsum.photos/300/300?random=6' },
-  { id: 7, uri: 'https://picsum.photos/300/300?random=7' },
-  { id: 8, uri: 'https://picsum.photos/300/300?random=8' },
-  { id: 9, uri: 'https://picsum.photos/300/300?random=9' },
-  { id: 10, uri: 'https://picsum.photos/300/300?random=10' },
-  { id: 11, uri: 'https://picsum.photos/300/300?random=1' },
-  { id: 12, uri: 'https://picsum.photos/300/300?random=2' },
-  { id: 13, uri: 'https://picsum.photos/300/300?random=3' },
-  { id: 14, uri: 'https://picsum.photos/300/300?random=4' },
-  { id: 15, uri: 'https://picsum.photos/300/300?random=5' },
-  { id: 16, uri: 'https://picsum.photos/300/300?random=6' },
-  { id: 17, uri: 'https://picsum.photos/300/300?random=7' },
-  { id: 18, uri: 'https://picsum.photos/300/300?random=8' },
-  { id: 19, uri: 'https://picsum.photos/300/300?random=9' },
-  { id: 20, uri: 'https://picsum.photos/300/300?random=10' },
-  { id: 21, uri: 'https://picsum.photos/300/300?random=1' },
-  { id: 22, uri: 'https://picsum.photos/300/300?random=2' },
-  { id: 23, uri: 'https://picsum.photos/300/300?random=3' },
-  { id: 24, uri: 'https://picsum.photos/300/300?random=4' },
-  { id: 25, uri: 'https://picsum.photos/300/300?random=5' },
-  { id: 26, uri: 'https://picsum.photos/300/300?random=6' },
-  { id: 27, uri: 'https://picsum.photos/300/300?random=7' },
-  { id: 28, uri: 'https://picsum.photos/300/300?random=8' },
-  { id: 29, uri: 'https://picsum.photos/300/300?random=9' },
-  { id: 30, uri: 'https://picsum.photos/300/300?random=10' },
-  { id: 31, uri: 'https://picsum.photos/300/300?random=1' },
-  { id: 32, uri: 'https://picsum.photos/300/300?random=2' },
-  { id: 33, uri: 'https://picsum.photos/300/300?random=3' },
-  { id: 34, uri: 'https://picsum.photos/300/300?random=4' },
-  { id: 35, uri: 'https://picsum.photos/300/300?random=5' },
-  { id: 36, uri: 'https://picsum.photos/300/300?random=6' },
-  { id: 37, uri: 'https://picsum.photos/300/300?random=7' },
-  { id: 38, uri: 'https://picsum.photos/300/300?random=8' },
-  { id: 39, uri: 'https://picsum.photos/300/300?random=9' },
-  { id: 40, uri: 'https://picsum.photos/300/300?random=10' },
-  
+  // Diğer örnek postlar...
 ];
 
 const ProfilModal = ({ visible, onClose }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigation = useNavigation();
+
   const truncateText = (text, maxLength) => {
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
   const handleToggleFavorite = (item) => {
+    if (!isLoggedIn) {
+      showAuthAlert();
+      return;
+    }
     const isFavorited = favorites.some((favItem) => favItem.id === item.id);
     if (isFavorited) {
       dispatch(removeFromFavorites(item));
@@ -66,8 +41,24 @@ const ProfilModal = ({ visible, onClose }) => {
       dispatch(addToFavorites(item));
     }
   };
+
   const handleAddToCart = (product) => {
+    if (!isLoggedIn) {
+      showAuthAlert();
+      return;
+    }
     dispatch(addToCart(product));
+  };
+
+  const showAuthAlert = () => {
+    Alert.alert(
+      "Giriş Tələb Olunur",
+      "Bu əməliyyat üçün qeydiyyat olmalısınız.",
+      [
+        { text: "İptal", style: "cancel" },
+        { text: "Qeydiyyat", onPress: () => navigation.navigate("Qeydiyyat") }
+      ]
+    );
   };
 
   return (
@@ -92,22 +83,22 @@ const ProfilModal = ({ visible, onClose }) => {
                 style={styles.profileImage}
               />
 
-<View style={styles.profileStats}>
-  <View style={styles.statItem}>
-    <Text style={styles.statNumber}>1,234</Text>
-    <Text style={styles.statLabel}>Post</Text>
-  </View>
-  <View style={styles.divider} />
-  <View style={styles.statItem}>
-    <Text style={styles.statNumber}>5.6M</Text>
-    <Text style={styles.statLabel}>Reytinq</Text>
-  </View>
-  <View style={styles.divider}></View>
-  <View style={styles.statItem}>
-    <Text style={styles.statNumber}>1,024</Text>
-    <Text style={styles.statLabel}>Satış</Text>
-  </View>
-</View>
+              <View style={styles.profileStats}>
+                <View style={styles.statItem}>
+                  <Text style={styles.statNumber}>1,234</Text>
+                  <Text style={styles.statLabel}>Post</Text>
+                </View>
+                <View style={styles.divider} />
+                <View style={styles.statItem}>
+                  <Text style={styles.statNumber}>5.6M</Text>
+                  <Text style={styles.statLabel}>Reytinq</Text>
+                </View>
+                <View style={styles.divider}></View>
+                <View style={styles.statItem}>
+                  <Text style={styles.statNumber}>1,024</Text>
+                  <Text style={styles.statLabel}>Satış</Text>
+                </View>
+              </View>
             </View>
 
             <View style={styles.profileInfo}>
@@ -120,38 +111,38 @@ const ProfilModal = ({ visible, onClose }) => {
               <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text>
               <View style={styles.postsGrid}>
                 {samplePosts.map((post) => (
-                 <View key={post.id} style={styles.postContainer}>
-                 <TouchableOpacity
-                   style={styles.likeIcon}
-                   onPress={() => handleToggleFavorite(post)}
-                 >
-                   <MaterialCommunityIcons
-                     name={favorites.some((favItem) => favItem.id === post.id) ? 'heart' : 'heart-plus-outline'}
-                     size={24}
-                     color={favorites.some((favItem) => favItem.id === post.id) ? '#fb5607' : 'lightgray'}
-                   />
-                 </TouchableOpacity>
-               
-                 <Image
-                   source={{ uri: post.uri }}
-                   style={styles.postImage}
-                 />
-               
-                 <View style={styles.postInfo}>
-                   <Text style={styles.brandName}>{truncateText("Aclass oğlan geyim", 16)}</Text>
-               
-                   <View style={styles.ratingContainer}>
-                     <Text style={styles.rating}>⭐⭐⭐ 5K {post.stars}</Text>
-                   </View>
-               
-                   <View style={styles.priceCartContainer}>
-                     <Text style={styles.price}>{post.price}100<Text style={styles.miniprice}>.15</Text> ₼</Text>
-                     <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
-                     <Ionicons name="cart-outline" size={24} color="black" />
-                     </TouchableOpacity>
-                   </View>
-                 </View>
-               </View>
+                  <View key={post.id} style={styles.postContainer}>
+                    <TouchableOpacity
+                      style={styles.likeIcon}
+                      onPress={() => handleToggleFavorite(post)}
+                    >
+                      <MaterialCommunityIcons
+                        name={favorites.some((favItem) => favItem.id === post.id) ? 'heart' : 'heart-plus-outline'}
+                        size={24}
+                        color={favorites.some((favItem) => favItem.id === post.id) ? '#fb5607' : 'lightgray'}
+                      />
+                    </TouchableOpacity>
+
+                    <Image
+                      source={{ uri: post.uri }}
+                      style={styles.postImage}
+                    />
+
+                    <View style={styles.postInfo}>
+                      <Text style={styles.brandName}>{truncateText("Aclass oğlan geyim", 16)}</Text>
+
+                      <View style={styles.ratingContainer}>
+                        <Text style={styles.rating}>⭐⭐⭐ 5K {post.stars}</Text>
+                      </View>
+
+                      <View style={styles.priceCartContainer}>
+                        <Text style={styles.price}>{post.price}100<Text style={styles.miniprice}>.15</Text> ₼</Text>
+                        <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
+                          <Ionicons name="cart-outline" size={24} color="black" />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
                 ))}
               </View>
             </View>
@@ -190,11 +181,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  miniprice:{
+  miniprice: {
     fontWeight: 'semibold',
     fontSize: 11,
     color: 'orange',
-
   },
   profileImage: {
     width: 100,
