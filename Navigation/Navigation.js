@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useCallback, useState } from "react";
+import { useRef, useCallback, useState,useEffect } from "react";
 import { View, TouchableOpacity, Platform, Text, Alert  } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -23,7 +23,7 @@ import MagazaRegister from "../sehifeler/MagazaRegister";
 import UserProfil from "../sehifeler/UserProfil";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
+import { selectIsFirstLaunch, selectIsLoggedIn,completeOnboarding, logout } from '../store/authSlice';
 const getIconName = (routeName, focused) => {
   switch (routeName) {
     
@@ -59,10 +59,8 @@ const TabNavigator = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const homeTabPressCount = useRef(0);
   const lastTabPressTime = useRef(0);
-  const [image, setImage] = useState('');
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
-
   const [selectedMediaUri, setSelectedMediaUri] = useState('');
   const [selectedMediaFormat, setSelectedMediaFormat] = useState('');
 
@@ -239,11 +237,16 @@ const TabNavigator = () => {
                 shadowOffset: { width: 0, height: 3 },
               }}
             >
-               <ProductModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        imageUri={image}
-      />
+      <ProductModal
+  visible={modalVisible}
+  onClose={() => {
+    setModalVisible(false);
+    setSelectedMediaUri('');
+    setSelectedMediaFormat('');
+  }}
+  imageUri={selectedMediaUri}
+/>
+
               <View
                 style={{
                   width: 60,
@@ -279,10 +282,17 @@ const TabNavigator = () => {
 
 const Navigation = () => {
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
+  const isFirstLaunch = useSelector(selectIsFirstLaunch);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  useEffect(() => {
+    // İlk dəfə açıldığında onboarding tamamlansın
+    if (isFirstLaunch) {
+      dispatch(completeOnboarding());
+    }
+  }, [isFirstLaunch, dispatch]);
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Esasgiris" component={Esasgiris} options={{ headerShown: false }} />
+    <Stack.Navigator initialRouteName={isLoggedIn ? 'Ev' : 'Esasgiris'}>
       <Stack.Screen name="Giris" component={Giris} options={{
         header: () => (
           <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -291,8 +301,9 @@ const Navigation = () => {
             </TouchableOpacity>
             <Text style={{ fontWeight: 'bold', fontSize: 20, color: Platform.OS === 'ios' ? '#000' : '#000' }}>Giriş et</Text>
             <TouchableOpacity style={{ marginRight: 15, opacity: 0 }}>
-              <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
-            </TouchableOpacity>
+  <Ionicons name="notifications" size={24} color={Platform.OS === 'ios' ? '#000' : '#fff'} />
+</TouchableOpacity>
+
           </View>
         ),
       }} />
@@ -315,6 +326,7 @@ const Navigation = () => {
       <Stack.Screen name="Kataloq" component={SearchScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Sebetim" component={Sebetim} options={{ headerShown: false }} />
       <Stack.Screen name="UserProfil" component={UserProfil} options={{ headerShown: false }} />
+      <Stack.Screen name="Esasgiris" component={Esasgiris} options={{ headerShown: false }} />
 
       <Stack.Screen name="OTPVerification" component={OTPVerification} options={{
         header: () => (

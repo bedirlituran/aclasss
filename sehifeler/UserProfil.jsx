@@ -1,8 +1,13 @@
 import { Ionicons, Fontisto, MaterialIcons, FontAwesome ,FontAwesome5} from "@expo/vector-icons";
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from "react-native";
+import { useDispatch } from 'react-redux';
+import { useNavigation } from "@react-navigation/native";
 
+import { logout } from '../store/authSlice';
 const UserProfil = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation()
   const handlePhoneCall = () => {
     Linking.openURL(`tel:0558080801`);
   };
@@ -14,6 +19,14 @@ const UserProfil = () => {
   const openSocialMedia = (url) => {
     Linking.openURL(url).catch(err => console.error("Bağlantı açılamadı", err));
   };
+
+
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigation.replace('Esasgiris');
+  };
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -146,8 +159,7 @@ const UserProfil = () => {
         </TouchableOpacity>
         </View>
         
-        {/* Çıkış Butonu */}
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutText}>Çıxış</Text>
         </TouchableOpacity>
       </View>
@@ -156,7 +168,6 @@ const UserProfil = () => {
 };
 
 const styles = StyleSheet.create({
-  // ... Önceki stiller aynen kalacak ...
   container: {
     flexGrow: 1,
     backgroundColor: "#f5f5f5",
