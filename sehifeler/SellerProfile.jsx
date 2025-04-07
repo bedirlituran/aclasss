@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Modal, TouchableOpacity, Dimensions, Text, ScrollView, Image, Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions, Text, ScrollView, Image, Alert } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../store/cartSlice';
@@ -19,7 +19,7 @@ const samplePosts = [
   // Diğer örnek postlar...
 ];
 
-const ProfilModal = ({ visible, onClose }) => {
+const SellerProfile = () => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -53,7 +53,7 @@ const ProfilModal = ({ visible, onClose }) => {
   const showAuthAlert = () => {
     Alert.alert(
       "Giriş Tələb Olunur",
-      "Bu əməliyyatı yerinə yetirmək  üçün qeydiyyat olmalısınız.",
+      "Bu əməliyyatı yerinə yetirmək üçün qeydiyyat olmalısınız.",
       [
         { text: "İptal", style: "cancel" },
         { text: "Qeydiyyat", onPress: () => navigation.navigate("Qeydiyyat") }
@@ -62,119 +62,90 @@ const ProfilModal = ({ visible, onClose }) => {
   };
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={onClose}
-    >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color="#333" />
-            </TouchableOpacity>
+    <View style={styles.container}>
+      <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
+        <View style={styles.profileTopSection}>
+          <Image
+            source={{ uri: 'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?a=1&b=1&s=612x612&w=0&k=20&c=u5RPl326UFf1oyrM1iLFJtqdQ3K28TdBdSaSPKeCrdc=' }}
+            style={styles.profileImage}
+          />
+
+          <View style={styles.profileStats}>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>1,234</Text>
+              <Text style={styles.statLabel}>Post</Text>
+            </View>
+            <View style={styles.divider} />
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>5.6M</Text>
+              <Text style={styles.statLabel}>Reytinq</Text>
+            </View>
+            <View style={styles.divider}></View>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>1,024</Text>
+              <Text style={styles.statLabel}>Satış</Text>
+            </View>
           </View>
-
-          <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
-            <View style={styles.profileTopSection}>
-              <Image
-                source={{ uri: 'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?a=1&b=1&s=612x612&w=0&k=20&c=u5RPl326UFf1oyrM1iLFJtqdQ3K28TdBdSaSPKeCrdc=' }}
-                style={styles.profileImage}
-              />
-
-              <View style={styles.profileStats}>
-                <View style={styles.statItem}>
-                  <Text style={styles.statNumber}>1,234</Text>
-                  <Text style={styles.statLabel}>Post</Text>
-                </View>
-                <View style={styles.divider} />
-                <View style={styles.statItem}>
-                  <Text style={styles.statNumber}>5.6M</Text>
-                  <Text style={styles.statLabel}>Reytinq</Text>
-                </View>
-                <View style={styles.divider}></View>
-                <View style={styles.statItem}>
-                  <Text style={styles.statNumber}>1,024</Text>
-                  <Text style={styles.statLabel}>Satış</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>Aclass</Text>
-              <Text style={styles.profileBio}>Digital Content Creator | Photography Enthusiast</Text>
-              <Text style={styles.profileLink}>www.aclass.example.com</Text>
-            </View>
-
-            <View style={styles.postsSection}>
-              <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text>
-              <View style={styles.postsGrid}>
-                {samplePosts.map((post) => (
-                  <View key={post.id} style={styles.postContainer}>
-                    <TouchableOpacity
-                      style={styles.likeIcon}
-                      onPress={() => handleToggleFavorite(post)}
-                    >
-                      <MaterialCommunityIcons
-                        name={favorites.some((favItem) => favItem.id === post.id) ? 'heart' : 'heart-plus-outline'}
-                        size={24}
-                        color={favorites.some((favItem) => favItem.id === post.id) ? '#fb5607' : 'lightgray'}
-                      />
-                    </TouchableOpacity>
-
-                    <Image
-                      source={{ uri: post.uri }}
-                      style={styles.postImage}
-                    />
-
-                    <View style={styles.postInfo}>
-                      <Text style={styles.brandName}>{truncateText("Aclass oğlan geyim", 16)}</Text>
-
-                      <View style={styles.ratingContainer}>
-                        <Text style={styles.rating}>⭐⭐⭐ 5K {post.stars}</Text>
-                      </View>
-
-                      <View style={styles.priceCartContainer}>
-                        <Text style={styles.price}>{post.price}100<Text style={styles.miniprice}>.15</Text> ₼</Text>
-                        <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
-                          <Ionicons name="cart-outline" size={24} color="black" />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-                ))}
-              </View>
-            </View>
-          </ScrollView>
         </View>
-      </View>
-    </Modal>
+
+        <View style={styles.profileInfo}>
+          <Text style={styles.profileName}>Aclass</Text>
+          <Text style={styles.profileBio}>Digital Content Creator | Photography Enthusiast</Text>
+          <Text style={styles.profileLink}>www.aclass.example.com</Text>
+        </View>
+
+        <View style={styles.postsSection}>
+          <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text>
+          <View style={styles.postsGrid}>
+            {samplePosts.map((post) => (
+              <View key={post.id} style={styles.postContainer}>
+                <TouchableOpacity
+                  style={styles.likeIcon}
+                  onPress={() => handleToggleFavorite(post)}
+                >
+                  <MaterialCommunityIcons
+                    name={favorites.some((favItem) => favItem.id === post.id) ? 'heart' : 'heart-plus-outline'}
+                    size={24}
+                    color={favorites.some((favItem) => favItem.id === post.id) ? '#fb5607' : 'lightgray'}
+                  />
+                </TouchableOpacity>
+
+                <Image
+                  source={{ uri: post.uri }}
+                  style={styles.postImage}
+                />
+
+                <View style={styles.postInfo}>
+                  <Text style={styles.brandName}>{truncateText("Aclass oğlan geyim", 16)}</Text>
+
+                  <View style={styles.ratingContainer}>
+                    <Text style={styles.rating}>⭐⭐⭐ 5K {post.stars}</Text>
+                  </View>
+
+                  <View style={styles.priceCartContainer}>
+                    <Text style={styles.price}>{post.price}100<Text style={styles.miniprice}>.15</Text> ₼</Text>
+                    <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
+                      <Ionicons name="cart-outline" size={24} color="black" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  modalOverlay: {
+  container: {
     flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  modalContainer: {
-    height: height * 0.9,
     backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 15,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  closeButton: {
-    padding: 2,
   },
   modalContent: {
     flex: 1,
+    padding: 15,
   },
   profileTopSection: {
     flexDirection: 'row',
@@ -309,4 +280,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfilModal;
+export default SellerProfile;

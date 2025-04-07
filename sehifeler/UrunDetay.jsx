@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addReview } from "../store/reviewActions";
@@ -21,6 +22,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { MaterialIcons } from "@expo/vector-icons";
+import { selectIsLoggedIn } from "../store/authSlice";
 
 const { width, height } = Dimensions.get("window");
 
@@ -31,12 +33,18 @@ const UrunDetay = ({ route }) => {
   const scale = useSharedValue(1);
   const reviews = useSelector((state) => state.reviews.reviews);
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const handleInputChange = (text) => {
     setInputValue(text);
   };
 
   const handleSubmit = () => {
+    if (!isLoggedIn) {
+      showAuthAlert();
+      return;
+    }
+
     if (inputValue.trim()) {
       const newReview = {
         comment: inputValue,
@@ -50,6 +58,11 @@ const UrunDetay = ({ route }) => {
   };
 
   const handleAddToCart = () => {
+    if (!isLoggedIn) {
+      showAuthAlert();
+      return;
+    }
+
     const product = {
       title,
       description,
@@ -57,6 +70,17 @@ const UrunDetay = ({ route }) => {
       image,
     };
     dispatch(addToCart(product));
+  };
+
+  const showAuthAlert = () => {
+    Alert.alert(
+      "Giriş Tələb Olunur",
+      "Bu əməliyyatı yerinə yetirmək  üçün qeydiyyat olmalısınız.",
+      [
+        { text: "İptal", style: "cancel" },
+        { text: "Qeydiyyat", onPress: () => navigation.navigate("Qeydiyyat") }
+      ]
+    );
   };
 
   const onPinchGestureEvent = useAnimatedGestureHandler({
@@ -234,7 +258,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "black", // Full-screen background
+    backgroundColor: "black",
   },
   fullImageContainer: {
     width: width,

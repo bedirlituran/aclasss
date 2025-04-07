@@ -21,7 +21,8 @@ import ProductModal from "../components/ProductModal";
 import OTPVerification from "../sehifeler/OTPVerification";
 import MagazaRegister from "../sehifeler/MagazaRegister";
 import UserProfil from "../sehifeler/UserProfil";
-import { selectIsFirstLaunch, selectIsLoggedIn, completeOnboarding } from '../store/authSlice';
+import SellerProfile from "../sehifeler/SellerProfile";
+import { selectIsFirstLaunch, selectIsLoggedIn, selectUser, completeOnboarding } from '../store/authSlice';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,6 +56,7 @@ const TabNavigator = () => {
   const [selectedMediaUri, setSelectedMediaUri] = useState('');
   const [selectedMediaFormat, setSelectedMediaFormat] = useState('');
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
 
   const pickImage = async () => {
     if (!isLoggedIn) {
@@ -155,12 +157,21 @@ const TabNavigator = () => {
   const showAuthAlert = () => {
     Alert.alert(
       "Giriş Tələb Olunur",
-      "Bu əməliyyatı yerinə yetirmək üçün üçün qeydiyyat olmalısınız.",
+      "Bu əməliyyatı yerinə yetirmək üçün qeydiyyat olmalısınız.",
       [
         { text: "İptal", style: "cancel" },
         { text: "Qeydiyyat", onPress: () => navigation.navigate("Qeydiyyat") }
       ]
     );
+  };
+
+  const profileLog = () => {
+    console.log("Current user:", user); // Debug için
+    if (user?.userType === 'SELLER') {
+      navigation.navigate('SellerProfile');
+    } else {
+      navigation.navigate('UserProfil');
+    }
   };
 
   return (
@@ -261,18 +272,21 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Profil"
-        component={UserProfil}
-        options={{ headerShown: false }}
-        listeners={{
-          tabPress: (e) => {
-            if (!isLoggedIn) {
-              e.preventDefault();
-              showAuthAlert();
-            }
-          }
-        }}
-      />
+  name="Profil"
+  component={UserProfil} // Varsayılan bileşen (önemsiz, çünkü yönlendirmeyi manuel yapıyoruz)
+  options={{ headerShown: false }}
+  listeners={{
+    tabPress: (e) => {
+      if (!isLoggedIn) {
+        e.preventDefault(); // Giriş yapılmamışsa sekme değişmesin
+        showAuthAlert(); // "Giriş yapmalısınız" uyarısı göster
+      } else {
+        e.preventDefault(); // Varsayılan navigasyonu engelle
+        profileLog(); // Kullanıcı tipine göre yönlendir
+      }
+    }
+  }}
+/>
     </Tab.Navigator>
   );
 };
@@ -282,6 +296,7 @@ const Navigation = () => {
   const dispatch = useDispatch();
   const isFirstLaunch = useSelector(selectIsFirstLaunch);
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (isFirstLaunch) {
@@ -323,6 +338,7 @@ const Navigation = () => {
       <Stack.Screen name="Kataloq" component={SearchScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Sebetim" component={Sebetim} options={{ headerShown: false }} />
       <Stack.Screen name="UserProfil" component={UserProfil} options={{ headerShown: false }} />
+      <Stack.Screen name="SellerProfile" component={SellerProfile} options={{ headerShown: false }} />
       <Stack.Screen name="Esasgiris" component={Esasgiris} options={{ headerShown: false }} />
       <Stack.Screen name="OTPVerification" component={OTPVerification} options={{
         header: () => (

@@ -4,7 +4,8 @@ import { Button, Input } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute, useNavigation } from "@react-navigation/native";
 import axios from "axios";
-
+import { useDispatch } from 'react-redux';
+import { setUser } from '../store/authSlice';
 export default function MagazaRegister() {
   const route = useRoute();
   const { magaza } = route.params;
@@ -22,7 +23,7 @@ export default function MagazaRegister() {
     wpNumber: "",
     desc: "",
   });
-
+  const dispatch = useDispatch();
   const register = async () => {
     try {
       let formD = new FormData();
@@ -46,7 +47,10 @@ export default function MagazaRegister() {
           "Content-Type": "multipart/form-data",  // Bu header önemli
         },
       });
-  
+      dispatch(setUser({ 
+        ...response.data.user, 
+        userType: "SELLER" 
+      }));
       console.log("Başarılı:", response.data);
       navigation.navigate("Main");
     } catch (error) {

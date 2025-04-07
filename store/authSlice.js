@@ -1,4 +1,4 @@
-// features/auth/authSlice.js
+// authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -19,6 +19,7 @@ const authSlice = createSlice({
   initialState: {
     token: null,
     user: null,
+    userType: null,
     isLoading: false,
     error: null,
     isLoggedIn: false,
@@ -31,6 +32,8 @@ const authSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload;
+      state.isLoggedIn = true;
+      state.userType = action.payload.userType;
     },
     clearAuth: (state) => {
       state.token = null;
@@ -63,6 +66,7 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.user = action.payload.user;
         state.isLoggedIn = true;
+        state.userType = action.payload.user.userType;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -87,5 +91,6 @@ export const selectAuthLoading = (state) => state.auth.isLoading;
 export const selectAuthError = (state) => state.auth.error;
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 export const selectIsFirstLaunch = (state) => state.auth.isFirstLaunch;
+export const selectUserType = (state) => state.auth.userType;
 
 export default authSlice.reducer;
