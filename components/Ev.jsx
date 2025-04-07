@@ -10,6 +10,7 @@ import {
   Dimensions,
   RefreshControl,
   Platform,
+  Text
 } from "react-native";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import SkeletonLoader from "../components/SkeletonLoader";
@@ -26,56 +27,60 @@ import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from '@expo/vector-icons/Feather';
-import { setLoading } from "../store/authSlice";
+import { selectIsLoggedIn } from "../store/authSlice";
 import Constants from 'expo-constants';
+
 const { height, width } = Dimensions.get("window");
-import { Text } from "react-native-elements";
 
 const Ev = () => {
   const apiUrl = Constants.expoConfig.extra.apiKey;
   const [Data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
   const navigation = useNavigation();
-  const scrollViewRef = useRef(null);
-  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-  const isFocused = useIsFocused();
-  const [hasMoreData, setHasMoreData] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(apiUrl + `/productItem/getAll`);
+      const res = await axios.get(apiUrl + '/productItem/getAll');
       setData(res.data);
-      setLoading(false);
-
     } catch (error) {
       console.log(error);
+      Alert.alert("Xəta", "Məhsullar yüklənərkən xəta baş verdi");
     } finally {
       setIsLoading(false);
-      setRefreshing(false); // Yenileme tamamlandığında refreshing'i false yap
+      setRefreshing(false);
     }
   };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setPage(1);
-    setHasMoreData(true);
     fetchData();
   }, []);
-
-  const loadMore = () => {
-    if (isFetchingMore || !hasMoreData) return;
-    setIsFetchingMore(true);
-    setPage((prevPage) => prevPage + 1);
-    fetchData();
-  };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  const showAuthAlert = (actionName) => {
+    Alert.alert(
+      "Giriş Tələb Olunur",
+      `Bu məhsulu ${actionName} üçün daxil olmalısınız`,
+      [
+        { text: "İmtina", style: "cancel" },
+        { text: "Daxil Ol", onPress: () => navigation.navigate("Login") }
+      ]
+    );
+  };
+
+  const handleAction = (action, actionName) => {
+    if (!isLoggedIn) {
+      showAuthAlert(actionName);
+    } else {
+      action();
+    }
+  };
 
   if (isLoading && !refreshing) {
     return (
@@ -91,56 +96,44 @@ const Ev = () => {
     <View style={styles.container}>
       <Header />
       <FlatList
-        ref={scrollViewRef}
         data={Data}
         renderItem={({ item }) => (
           <Card
             item={item}
-            onDetailPress={() =>
-              navigation.navigate("UrunDetay", {
-                image: item.fileString,
-                title: item.brand,
-                description: item.description,
-                price: item.sellingPrice,
-              })
-            }
-            onAddToCart={() => dispatch(addToCart(item))}
+            isLoggedIn={isLoggedIn}
+            onDetailPress={() => navigation.navigate("UrunDetay", {
+              image: item.fileString,
+              title: item.brand,
+              description: item.description,
+              price: item.sellingPrice,
+            })}
+            onAddToCart={() => handleAction(() => dispatch(addToCart(item)), "səbətə əlavə etmək")}
+            showAuthAlert={showAuthAlert}
           />
         )}
         keyExtractor={(item) => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-        onEndReached={loadMore}
-        onEndReachedThreshold={0.5}
-        initialNumToRender={10}
-        maxToRenderPerBatch={10}
-        windowSize={21}
-        removeClippedSubviews={true}
-        ListHeaderComponent={<Reklam />}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        ListHeaderComponent={<Reklam />}
         ListEmptyComponent={
-          !isLoading && Data.length === 0 ? (
+          !isLoading && (
             <View style={styles.emptyContainer}>
-
+              <Text>Mövcud məhsul tapılmadı</Text>
             </View>
-          ) : null
+          )
         }
-      />
-      <ProfilModal 
-        visible={modalVisible} 
-        onClose={() => setModalVisible(false)} 
       />
     </View>
   );
 };
 
-// Card bileşeni
-const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
+const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAuthAlert }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isFavorited = favorites.some((favItem) => favItem.id === item.id);
   const [modalVisible, setModalVisible] = useState(false);
+
   const handleToggleFavorite = () => {
     if (isFavorited) {
       dispatch(removeFromFavorites(item));
@@ -151,8 +144,30 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
 
   const handleShare = () => {
     Share.share({
-      message: `Ürün: ${item.brand}\nFiyat: ${item.sellingPrice} ₼`,
-    }).catch((error) => Alert.alert("Paylaşım Hatası", error.message));
+      message: `Məhsul: ${item.brand}\nQiymət: ${item.sellingPrice} ₼`,
+    }).catch((error) => Alert.alert("Paylaşım Xətası", error.message));
+  };
+
+  const handleProfilePress = () => {
+    if (!isLoggedIn) {
+      showAuthAlert("profilə baxmaq");
+    } else {
+      setModalVisible(true);
+    }
+  };
+
+  const handleStarPress = () => {
+    if (!isLoggedIn) {
+      showAuthAlert("ulduz vermək");
+    }
+    // Ulduz vermə funksiyası burada çağırılacaq
+  };
+
+  const handleCommentPress = () => {
+    if (!isLoggedIn) {
+      showAuthAlert("şərh yazmaq");
+    }
+    // Şərh yazma funksiyası burada çağırılacaq
   };
 
   const truncateText = (text, maxLength) => {
@@ -161,10 +176,12 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
 
   return (
     <View style={styles.card}>
-      
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerLeft} onPress={() => setModalVisible(true)} >
-          <Image source={{ uri: item.userProfilePicture }} style={styles.avatar} />
+        <TouchableOpacity style={styles.headerLeft} onPress={handleProfilePress}>
+          <Image 
+            source={{ uri: item.userProfilePicture || 'https://via.placeholder.com/40' }} 
+            style={styles.avatar} 
+          />
           <Text style={styles.categoryText}>
             {truncateText(item.subCategory, 50)}
           </Text>
@@ -181,12 +198,17 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <ProfilModal 
-        visible={modalVisible} 
-        onClose={() => setModalVisible(false)} 
+      
+      <ProfilModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
       />
+      
       <TouchableOpacity onPress={onDetailPress}>
-        <Image source={{ uri: item.fileString }} style={styles.image} />
+        <Image 
+          source={{ uri: item.fileString || 'https://via.placeholder.com/300' }} 
+          style={styles.image} 
+        />
       </TouchableOpacity>
 
       <View style={styles.infoContainer}>
@@ -200,7 +222,7 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
             style={styles.ByButton}
             onPress={onAddToCart}
           >
-            <Text style={styles.addToCartText}>Indi Al</Text>
+            <Text style={styles.addToCartText}>İndi Al</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.addToCartButton}
@@ -213,57 +235,71 @@ const Card = React.memo(({ item, onDetailPress, onAddToCart }) => {
       </View>
 
       <View style={styles.animations}>
-        <TouchableOpacity onPress={handleToggleFavorite}>
+        <TouchableOpacity onPress={() => isLoggedIn ? handleToggleFavorite() : showAuthAlert("bəyənmək")}>
           <MaterialCommunityIcons
-            name={isFavorited ? "heart" : "heart-plus-outline"}
+            name={isFavorited ? "heart" : "heart-outline"}
             size={24}
             color={isFavorited ? "#fb5607" : "black"}
           />
         </TouchableOpacity>
-        <StarAnmimation size={item.likeCount} productId={item.id}/>
-        <YorumAnimation />
+        
+        <TouchableOpacity onPress={handleStarPress}>
+          <StarAnmimation 
+            size={item.likeCount} 
+            productId={item.id}
+            disabled={!isLoggedIn}
+          />
+        </TouchableOpacity>
+        
+        <TouchableOpacity onPress={handleCommentPress}>
+          <YorumAnimation 
+            disabled={!isLoggedIn}
+          />
+        </TouchableOpacity>
+        
         <TouchableOpacity onPress={handleShare}>
-          <Ionicons name="share-social-outline" size={30} color="black" />
+          <Ionicons name="share-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
     </View>
   );
 });
 
-// Stil tanımlamaları
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    justifyContent: "center", // Vertically center content
-    alignItems: "center", // Horizontally center content
   },
   skeletonContainer: {
     width: width,
     alignItems: "center",
     paddingVertical: 20,
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: height * 0.7
+  },
   card: {
     width: width * 0.92,
-    maxWidth: width * 0.95,
     marginBottom: 20,
     borderRadius: 15,
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: Platform.OS === 'ios' ? 0.2 : 0, // iOS'ta gölge opaklığını ekler
-    shadowRadius: Platform.OS === 'ios' ? 6 : 0,    // iOS'ta gölge yarıçapını ekler
-    elevation: Platform.OS === 'android' ? 5 : 0,   // Android'de elevation kullanılır
+    shadowOpacity: Platform.OS === 'ios' ? 0.2 : 0,
+    shadowRadius: Platform.OS === 'ios' ? 6 : 0,
+    elevation: Platform.OS === 'android' ? 5 : 0,
     overflow: "hidden",
-    marginTop: 50,
-    alignSelf: "center", 
+    marginTop: 20,
+    alignSelf: "center",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 10,
+    padding: 10,
     backgroundColor: "#f8f9f9",
-    paddingVertical: 10,
   },
   headerLeft: {
     flexDirection: "row",
@@ -282,35 +318,17 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 14,
     color: "#555",
-    fontFamily:'Poppins_400Regular_Italic'
+    fontFamily: 'Poppins_400Regular_Italic'
   },
   iconButton: {
     marginRight: 10,
-    backgroundColor: "#f8f9f9",
-
     padding: 3,
   },
-  followButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-    marginLeft: 8,
-    borderColor: "lightgray",
-    borderWidth: 0.4,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 2,
-    overflow: "hidden",
-    backgroundColor: "white",
-  },
-
   image: {
     width: "100%",
     height: height * 0.3,
     resizeMode: "contain",
-    marginTop: 20,
+    marginTop: 10,
   },
   infoContainer: {
     padding: 10,
@@ -318,15 +336,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
-    fontFamily:'Poppins_400Regular_Italic'
-
+    fontFamily: 'Poppins_400Regular_Italic'
   },
   description: {
     marginTop: 10,
     fontSize: 14,
     color: "#555",
-    fontFamily:'Poppins_400Regular_Italic'
-
+    fontFamily: 'Poppins_400Regular_Italic'
   },
   footer: {
     flexDirection: "row",
@@ -338,44 +354,39 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "green",
-    fontFamily:'Poppins_400Regular_Italic'
-
+    fontFamily: 'Poppins_400Regular_Italic'
   },
   addToCartButton: {
     backgroundColor: "green",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
     borderRadius: 5,
   },
-  ByButton:{
+  ByButton: {
     backgroundColor: "red",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
     borderRadius: 5,
-    marginLeft:60,
+    marginLeft: 10,
   },
   addToCartText: {
     color: "#fff",
     fontWeight: "bold",
-    fontFamily:'Poppins_400Regular_Italic'
-
+    fontFamily: 'Poppins_400Regular_Italic'
   },
   stock: {
     marginTop: 10,
     fontSize: 14,
     color: "blue",
-    fontFamily:'Poppins_400Regular_Italic'
-
+    fontFamily: 'Poppins_400Regular_Italic'
   },
   animations: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    paddingHorizontal: 10,
-    marginTop: 10,
-  },
-  shareButton: {
-    padding: 5,
+    padding: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#f0f0f0",
   },
 });
 

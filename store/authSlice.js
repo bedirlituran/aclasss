@@ -1,4 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+// features/auth/authSlice.js
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const loginUser = createAsyncThunk(
+  'auth/login',
+  async ({ username, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/auth/login', { username, password });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -38,9 +52,35 @@ const authSlice = createSlice({
       state.isFirstLaunch = false;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.token = action.payload.token;
+        state.user = action.payload.user;
+        state.isLoggedIn = true;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
-// Selector'lar
+export const {
+  setToken,
+  setUser,
+  clearAuth,
+  setLoading,
+  setError,
+  logout,
+  completeOnboarding,
+} = authSlice.actions;
+
 export const selectToken = (state) => state.auth.token;
 export const selectUser = (state) => state.auth.user;
 export const selectAuthLoading = (state) => state.auth.isLoading;
@@ -48,6 +88,4 @@ export const selectAuthError = (state) => state.auth.error;
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 export const selectIsFirstLaunch = (state) => state.auth.isFirstLaunch;
 
-// Action'lar
-export const { setToken, setUser, clearAuth, setLoading, setError, logout, completeOnboarding } = authSlice.actions;
 export default authSlice.reducer;
