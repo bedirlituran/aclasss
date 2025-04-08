@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"; // AsyncSt
 import { selectToken, selectUser } from "../store/authSlice";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Constants from 'expo-constants';
 const { height, width } = Dimensions.get('window')
 const ProfileDetails = () => {
@@ -16,25 +17,22 @@ const ProfileDetails = () => {
   const user = useSelector(selectUser);
   const token = useSelector(selectToken);
   const apiUrl = Constants.expoConfig.extra.apiKey;
+  const [imageUri, setImageUri] = React.useState(null);
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+    };
 
-    if (!result.canceled) {
-      const selectedImageUri = result.assets[0].uri;
-      setImage(selectedImageUri);
-      
-      // Seçilen resmi AsyncStorage'a kaydediyoruz.
-      try {
-        await AsyncStorage.setItem("profileImage", selectedImageUri);
-      } catch (error) {
-        Alert.alert("Hata", "Resim kaydedilirken bir hata oluştu.");
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('Kullanıcı resmi seçmeyi iptal etti');
+      } else if (response.error) {
+        console.log('Hata:', response.error);
+      } else {
+        setImageUri(response.assets[0].uri);
       }
-    }
+    });
   };
 
   useEffect(() => {
@@ -57,6 +55,7 @@ const ProfileDetails = () => {
             shadowColor: 'rgba(0, 0, 0, 0.2)',
             shadowRadius: 4,
             shadowOpacity: 0.7,
+            onPress: pickImage,
             elevation: 4
           }}
           resizeMode="contain" />

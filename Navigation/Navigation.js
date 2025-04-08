@@ -79,7 +79,7 @@ const TabNavigator = () => {
 
             const result = await ImagePicker.launchImageLibraryAsync({
               mediaTypes: ImagePicker.MediaType.All,
-              allowsEditing: true,
+              allowsEditing: false,
               aspect: [4, 3],
               quality: 1,
             });
@@ -98,7 +98,7 @@ const TabNavigator = () => {
 
             const result = await ImagePicker.launchCameraAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.All,
-              allowsEditing: true,
+              allowsEditing: false,
               aspect: [4, 3],
               quality: 1,
             });
