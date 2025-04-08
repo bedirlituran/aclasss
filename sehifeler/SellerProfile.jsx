@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -15,6 +15,7 @@ import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import { selectIsLoggedIn } from "../store/authSlice";
 import { useNavigation } from "@react-navigation/native";
+import * as ImagePicker from 'expo-image-picker';
 
 const { height, width } = Dimensions.get("window");
 
@@ -32,6 +33,7 @@ const SellerProfile = () => {
   const favorites = useSelector((state) => state.favorites.items);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
+  const [imageUri, setImageUri] = useState(null);
 
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
@@ -71,6 +73,26 @@ const SellerProfile = () => {
     );
   };
 
+  const pickImage = async () => {
+    // Galeriden resim seçme
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert('Fotoğraflara erişim izni vermeniz gerekiyor!');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
+      console.log(result.assets[0].uri);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -78,12 +100,12 @@ const SellerProfile = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.profileTopSection}>
-          <Image
-            source={{
-              uri: "https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?a=1&b=1&s=612x612&w=0&k=20&c=u5RPl326UFf1oyrM1iLFJtqdQ3K28TdBdSaSPKeCrdc=",
-            }}
-            style={styles.profileImage}
-          />
+          <TouchableOpacity onPress={pickImage}>
+            <Image
+              source={{ uri: imageUri || 'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?a=1&b=1&s=612x612&w=0&k=20&c=u5RPl326UFf1oyrM1iLFJtqdQ3K28TdBdSaSPKeCrdc=' }}
+              style={styles.profileImage}
+            />
+          </TouchableOpacity>
 
           <View style={styles.profileStats}>
             <View style={styles.statItem}>
@@ -141,7 +163,7 @@ const SellerProfile = () => {
 
                   <View style={styles.postAlti}>
                     <View style={styles.ratingContainer}>
-                      <Text style={styles.rating}>5K {post.stars}</Text>
+                      <Text style={styles.rating}>5K</Text>
                     </View>
 
                     <View>

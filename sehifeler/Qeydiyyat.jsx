@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import { Button,Input } from 'react-native-elements';
+import { Button, Input } from 'react-native-elements';
+import Constants from 'expo-constants';
 
 const logo = require("../assets/3.png");
 
@@ -23,23 +24,11 @@ export default function LoginForm() {
   const [otpSent, setOtpSent] = useState(false);
   const navigation = useNavigation();
   const [selected, setSelected] = useState("istifadeci");
+  const apiUrl = Constants.expoConfig.extra.apiKey;
 
   // OTP göndərmək funksiyası
-  const handleSendOTP =  () => {
-    // if (!magaza || magaza.length < 10) {
-    //   Alert.alert("Hata", "Lütfen doğru telefon numarası girin!");
-    //   return;
-    // }
-
-    // try {
-    //   const res = await axios.post("http://192.168.1.69:8080/web/login/send-otp", { magaza });
-    //   console.log(res.data);
-    //   Alert.alert("Başarılı", "OTP kodu gönderildi!");
-      navigation.navigate("OTPVerification", { magaza });
-    // } catch (error) {
-    //   console.log(error);
-    //   Alert.alert("Hata", "OTP gönderilemedi, lütfen tekrar deneyin!");
-    // }
+  const handleSendOTP = () => {
+    navigation.navigate("OTPVerification", { magaza });
   };
 
   // OTP təsdiqləmə funksiyası
@@ -66,13 +55,19 @@ export default function LoginForm() {
     }
 
     try {
-      const res = await axios.post("http://35.159.64.205:8081/web/login/registration", {
+      let formD = new FormData();
+
+      formD.append("user", JSON.stringify({
         username: username,
         password: password,
-        repeatPassword: confirmPassword,
-        magaza: magaza
+      }));
+      formD.append('profilePic', null)
+      const res = await axios.post(apiUrl + "/auth/register", formD, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
       });
-      console.log(res.data);
+      navigation.navigate("Main");
       Alert.alert("Uğur", "Qeydiyyat tamamlandı!");
     } catch (error) {
       console.log(error);
@@ -109,7 +104,7 @@ export default function LoginForm() {
             <Input
               style={styles.input}
               placeholder="İstifadəçi adı"
-              
+
               value={username}
               onChangeText={setUsername}
               autoCorrect={false}
@@ -219,13 +214,13 @@ const styles = StyleSheet.create({
   },
   input: {
     // height: 50,
-  
+
   },
   image: {
     height: 160,
     width: 160,
     borderRadius: 80,
-    marginBottom:40
+    marginBottom: 40
   },
   buttonView: {
     width: "100%",
