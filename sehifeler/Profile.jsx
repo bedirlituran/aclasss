@@ -45,7 +45,7 @@ const Profile = () => {
   };
   const getUserProducts = async () => {
     try {
-      console.log(apiUrl + "/productItem/getUserProducts/" + user.username,);
+      console.log(apiUrl + "/productItem/getUserProducts/" + user.username);
       
       const response = await axios.get(
         apiUrl + "/productItem/getUserProducts/" + user.username,

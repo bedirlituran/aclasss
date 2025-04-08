@@ -35,6 +35,12 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
       state.userType = action.payload.userType;
     },
+    updateUser: (state, action) => {
+      state.user = {
+        ...state.user,
+        ...action.payload, 
+     };
+    },
     clearAuth: (state) => {
       state.token = null;
       state.user = null;
@@ -77,6 +83,7 @@ const authSlice = createSlice({
 
 export const {
   setToken,
+  updateUser,
   setUser,
   clearAuth,
   setLoading,

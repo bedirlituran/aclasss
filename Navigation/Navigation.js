@@ -167,7 +167,6 @@ const TabNavigator = () => {
   };
 
   const profileLog = () => {
-    console.log("Current user:", user); // Debug için
     if (user?.userType === 'SELLER') {
       navigation.navigate('SellerProfile');
     } else {

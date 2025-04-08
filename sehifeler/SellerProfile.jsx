@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -13,10 +13,13 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
-import { selectIsLoggedIn } from "../store/authSlice";
+import { selectIsLoggedIn, selectToken, selectUser, setUser, updateUser } from "../store/authSlice";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
-
+import Constants from 'expo-constants';
+import axios from "axios";
+import LottieView from "lottie-react-native";
+import { BlurView } from "expo-blur";
 const { height, width } = Dimensions.get("window");
 
 const samplePosts = [
@@ -34,6 +37,11 @@ const SellerProfile = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
   const [imageUri, setImageUri] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const apiUrl = Constants.expoConfig.extra.apiKey;
+  const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
+  const [products, setProducts] = useState([]);
 
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
@@ -73,6 +81,70 @@ const SellerProfile = () => {
     );
   };
 
+  useEffect(() => {
+    getUserProducts();
+  }, []);
+
+  const getUserProducts = async () => {
+    try {
+
+      const response = await axios.get(
+        apiUrl + "/productItem/getUserProducts",
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      if (response.status == 200) {
+        setProducts(response.data);
+        setLoading(false);
+        //setRefreshing(false);
+      }
+    } catch (error) {
+      console.error("Hata:", error.response?.data || error.message);
+      alert("Error: " + (error.response?.data?.message || error.message));
+    }
+  };
+ 
+
+  const postProfilePicture = async (image) => {   
+    setLoading(true); 
+    let localUri = image;
+    let filename = localUri.split('/').pop();
+    let type = 'image/jpeg'; 
+
+    let formData = new FormData();
+
+    formData.append("image", {
+      uri: localUri,
+      name: filename,
+      type: type,
+    });
+  
+    try {
+      console.log(apiUrl + "/user/postProfilePicture");
+      
+      const response = await axios.post(
+        apiUrl + "/user/postProfilePicture", 
+        formData, 
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`
+          },
+        }
+      );
+      
+      dispatch(updateUser({userProfilePicture: response.data}));
+      console.log(user);
+      
+    } catch (error) {
+      console.error("Upload Error:", error);
+      alert("Məhsul yüklənərkən xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.");
+    }
+    finally {
+      setLoading(false); 
+    }
+  };
+
   const pickImage = async () => {
     // Galeriden resim seçme
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -89,12 +161,25 @@ const SellerProfile = () => {
 
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
-      console.log(result.assets[0].uri);
+      postProfilePicture(result.assets[0].uri, result.assets[0].uri);
     }
   };
 
   return (
     <View style={styles.container}>
+      {/* Loading varsa blur + Lottie animasyon göster */}
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <BlurView intensity={30} style={styles.blurContainer} tint="light" />
+          <LottieView
+            source={require('../assets/animation.json')}
+            autoPlay
+            loop
+            style={styles.lottie}
+          />
+        </View>
+      )}
+  
       <ScrollView
         style={styles.modalContent}
         showsVerticalScrollIndicator={false}
@@ -102,14 +187,18 @@ const SellerProfile = () => {
         <View style={styles.profileTopSection}>
           <TouchableOpacity onPress={pickImage}>
             <Image
-              source={{ uri: imageUri || 'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?a=1&b=1&s=612x612&w=0&k=20&c=u5RPl326UFf1oyrM1iLFJtqdQ3K28TdBdSaSPKeCrdc=' }}
+              source={{
+                uri:
+                  user.userProfilePicture ||
+                  'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?a=1&b=1&s=612x612&w=0&k=20&c=u5RPl326UFf1oyrM1iLFJtqdQ3K28TdBdSaSPKeCrdc=',
+              }}
               style={styles.profileImage}
             />
           </TouchableOpacity>
-
+  
           <View style={styles.profileStats}>
             <View style={styles.statItem}>
-              <Text style={styles.statNumber}>{samplePosts.length}</Text>
+              <Text style={styles.statNumber}>{products.length}</Text>
               <Text style={styles.statLabel}>Post</Text>
             </View>
             <View style={styles.divider} />
@@ -117,7 +206,7 @@ const SellerProfile = () => {
               <Text style={styles.statNumber}>
                 {(5.6 * samplePosts.length)
                   .toFixed(1)
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 K
               </Text>
               <Text style={styles.statLabel}>Reytinq</Text>
@@ -129,51 +218,59 @@ const SellerProfile = () => {
             </View>
           </View>
         </View>
-
+  
         <View style={styles.profileInfo}>
-          <Text style={styles.profileName}>Aclass</Text>
+          <Text style={styles.profileName}>{user.name}</Text>
           <Text style={styles.profileBio}>
-            Digital Content Creator | Photography Enthusiast
+            {user.desc}
           </Text>
-          <Text style={styles.profileLink}>www.aclass.example.com</Text>
+          <Text style={styles.profileLink}>{user.email}</Text>
         </View>
-
+  
         <View style={styles.postsSection}>
           <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text>
           <View style={styles.postsGrid}>
-            {samplePosts.map((post) => (
+            {products.map((post) => (
               <View key={post.id} style={styles.postContainer}>
                 {/* <TouchableOpacity
                   style={styles.likeIcon}
                   onPress={() => handleToggleFavorite(post)}
                 >
                   <MaterialCommunityIcons
-                    name={favorites.some((favItem) => favItem.id === post.id) ? 'heart' : 'heart-plus-outline'}
+                    name={
+                      favorites.some((favItem) => favItem.id === post.id)
+                        ? 'heart'
+                        : 'heart-plus-outline'
+                    }
                     size={24}
-                    color={favorites.some((favItem) => favItem.id === post.id) ? '#fb5607' : 'lightgray'}
+                    color={
+                      favorites.some((favItem) => favItem.id === post.id)
+                        ? '#fb5607'
+                        : 'lightgray'
+                    }
                   />
                 </TouchableOpacity> */}
-
-                <Image source={{ uri: post.uri }} style={styles.postImage} />
-
+  
+                <Image source={{ uri: post.fileString }} style={styles.postImage} />
+  
                 <View style={styles.postInfo}>
                   <Text style={styles.brandName}>
-                    {truncateText("Aclass oğlan geyim", 16)}
+                    {truncateText('Aclass oğlan geyim', 16)}
                   </Text>
-
+  
                   <View style={styles.postAlti}>
                     <View style={styles.ratingContainer}>
                       <Text style={styles.rating}>5K</Text>
                     </View>
-
+  
                     <View>
                       <Text style={styles.price}>
-                        {post.price}100<Text style={styles.miniprice}>.15</Text>{" "}
-                        ₼
+                        {post.sellingPrice}100
+                        <Text style={styles.miniprice}>.15</Text> ₼
                       </Text>
                       {/* <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
-                      <Ionicons name="cart-outline" size={24} color="black" />
-                    </TouchableOpacity> */}
+                        <Ionicons name="cart-outline" size={24} color="black" />
+                      </TouchableOpacity> */}
                     </View>
                   </View>
                 </View>
@@ -184,9 +281,25 @@ const SellerProfile = () => {
       </ScrollView>
     </View>
   );
+  
 };
 
 const styles = StyleSheet.create({
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  
+  blurContainer: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  
+  lottie: {
+    width: 150,
+    height: 150,
+  },
   container: {
     flex: 1,
     backgroundColor: "white",
