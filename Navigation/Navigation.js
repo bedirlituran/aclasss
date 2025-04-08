@@ -120,15 +120,16 @@ const TabNavigator = () => {
       const mediaUri = selectedAsset.uri;
       const mediaType = selectedAsset.type;
       const mediaFormat = mediaType === 'video' ? 'video/mp4' : 'image/jpeg';
-
+  
       setSelectedMediaUri(mediaUri);
       setSelectedMediaFormat(mediaFormat);
       dispatch(addImage(mediaUri));
       setModalVisible(true);
     } else {
-      console.log('Hata', 'Geçersiz medya seçimi');
+      Alert.alert('Hata', 'Geçersiz medya seçimi. Lütfen tekrar deneyin.');
     }
   };
+  
 
   const handleTabPress = useCallback((e) => {
     const currentTime = Date.now();
