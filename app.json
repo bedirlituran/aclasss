@@ -35,7 +35,7 @@
       "bundler": "metro"
     },
     "extra": {
-      "apiKey": "http://192.168.1.66:8081/api",
+      "apiKey": "http://35.159.64.205:8081/api",
       "eas": {
         "projectId": "6296b4a9-0cc4-4ab0-ad4c-47c73dd76092"
       }

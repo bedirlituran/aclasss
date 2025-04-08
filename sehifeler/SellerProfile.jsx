@@ -9,11 +9,8 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../store/cartSlice";
-import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
-import { selectIsLoggedIn } from "../store/authSlice";
+import { selectIsLoggedIn,selectUser } from "../store/authSlice";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 
@@ -26,41 +23,50 @@ const samplePosts = [
   { id: 4, uri: "https://picsum.photos/300/300?random=4" },
   { id: 5, uri: "https://picsum.photos/300/300?random=5" },
   { id: 6, uri: "https://picsum.photos/300/300?random=6" },
+  { id: 7, uri: "https://picsum.photos/300/300?random=7" },
+  { id: 8, uri: "https://picsum.photos/300/300?random=8" },
+  { id: 9, uri: "https://picsum.photos/300/300?random=9" },
+  { id: 10, uri: "https://picsum.photos/300/300?random=10" },
+  { id: 11, uri: "https://picsum.photos/300/300?random=11" },
+  { id: 12, uri: "https://picsum.photos/300/300?random=12" },
+  { id: 13, uri: "https://picsum.photos/300/300?random=13" },
+  { id: 14, uri: "https://picsum.photos/300/300?random=14" },
+  { id: 15, uri: "https://picsum.photos/300/300?random=15" },
+  { id: 16, uri: "https://picsum.photos/300/300?random=16" },
+  { id: 17, uri: "https://picsum.photos/300/300?random=17" },
+  { id: 18, uri: "https://picsum.photos/300/300?random=18" },
+  { id: 19, uri: "https://picsum.photos/300/300?random=19" },
+  { id: 20, uri: "https://picsum.photos/300/300?random=20" },
+  { id: 21, uri: "https://picsum.photos/300/300?random=21" },
+  { id: 22, uri: "https://picsum.photos/300/300?random=22" },
+  { id: 23, uri: "https://picsum.photos/300/300?random=23" },
+  { id: 24, uri: "https://picsum.photos/300/300?random=24" },
+  { id: 25, uri: "https://picsum.photos/300/300?random=25" },
+  { id: 26, uri: "https://picsum.photos/300/300?random=26" },
+  { id: 27, uri: "https://picsum.photos/300/300?random=27" },
+  { id: 28, uri: "https://picsum.photos/300/300?random=28" },
+  { id: 29, uri: "https://picsum.photos/300/300?random=29" },
+  { id: 30, uri: "https://picsum.photos/300/300?random=30" },
+  { id: 31, uri: "https://picsum.photos/300/300?random=31" },
+  { id: 32, uri: "https://picsum.photos/300/300?random=32" },
+  { id: 33, uri: "https://picsum.photos/300/300?random=33" },
+  { id: 34, uri: "https://picsum.photos/300/300?random=34" },
+  { id: 35, uri: "https://picsum.photos/300/300?random=35" },
 ];
 
 const SellerProfile = () => {
+  const userData = useSelector(selectUser);
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.items);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
   const [imageUri, setImageUri] = useState(null);
-
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
       : text;
   };
 
-  const handleToggleFavorite = (item) => {
-    if (!isLoggedIn) {
-      showAuthAlert();
-      return;
-    }
-    const isFavorited = favorites.some((favItem) => favItem.id === item.id);
-    if (isFavorited) {
-      dispatch(removeFromFavorites(item));
-    } else {
-      dispatch(addToFavorites(item));
-    }
-  };
-
-  const handleAddToCart = (product) => {
-    if (!isLoggedIn) {
-      showAuthAlert();
-      return;
-    }
-    dispatch(addToCart(product));
-  };
 
   const showAuthAlert = () => {
     Alert.alert(
@@ -92,6 +98,9 @@ const SellerProfile = () => {
       console.log(result.assets[0].uri);
     }
   };
+
+   
+
 
   return (
     <View style={styles.container}>
@@ -131,7 +140,7 @@ const SellerProfile = () => {
         </View>
 
         <View style={styles.profileInfo}>
-          <Text style={styles.profileName}>Aclass</Text>
+          <Text style={styles.profileName}>{userData.username}</Text>
           <Text style={styles.profileBio}>
             Digital Content Creator | Photography Enthusiast
           </Text>
@@ -163,13 +172,12 @@ const SellerProfile = () => {
 
                   <View style={styles.postAlti}>
                     <View style={styles.ratingContainer}>
-                      <Text style={styles.rating}>5K</Text>
+                      <Text style={styles.rating}>🌠 5K</Text>
                     </View>
 
                     <View>
-                      <Text style={styles.price}>
-                        {post.price}100<Text style={styles.miniprice}>.15</Text>{" "}
-                        ₼
+                      <Text style={styles.price}> ₼ {post.price}100<Text style={styles.miniprice}>.15</Text>{" "}
+                       
                       </Text>
                       {/* <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
                       <Ionicons name="cart-outline" size={24} color="black" />
@@ -255,6 +263,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 8,
     paddingHorizontal: 8,
+    gap:20
   },
   sectionTitle: {
     fontWeight: "600",
@@ -339,4 +348,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SellerProfile;
+export default SellerProfile; 

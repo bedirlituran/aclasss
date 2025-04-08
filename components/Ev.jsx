@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -12,7 +12,7 @@ import {
   Platform,
   Text
 } from "react-native";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useNavigation} from "@react-navigation/native";
 import SkeletonLoader from "../components/SkeletonLoader";
 import StarAnmimation from "./StarAnmimation";
 import WhatsAppButton from "./WhatsAppButton";
@@ -25,10 +25,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from '@expo/vector-icons/Feather';
-import { selectIsLoggedIn } from "../store/authSlice";
-import { selectToken, setLoading } from "../store/authSlice";
+import { selectToken ,selectIsLoggedIn} from "../store/authSlice";
 import Constants from 'expo-constants';
 import HeartAnimation from "./HeartAnimation";
 const { height, width } = Dimensions.get("window");

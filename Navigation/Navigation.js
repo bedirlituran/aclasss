@@ -308,7 +308,7 @@ const Navigation = () => {
   }, [isFirstLaunch, dispatch]);
 
   return (
-    <Stack.Navigator initialRouteName={isLoggedIn ? 'Ev' : 'Esasgiris'}>
+    <Stack.Navigator initialRouteName={isLoggedIn ? 'Main' : 'Esasgiris'}>
       <Stack.Screen name="Giris" component={Giris} options={{
         header: () => (
           <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

@@ -37,11 +37,11 @@ export default function Giris() {
           password: password,
         },
       );
-
-      
+  
       if (response.status == 200) {
         dispatch(setToken(response.data.token));
         dispatch(setUser(response.data));
+        // Sadece Main komponentine yönlendir
         navigation.navigate("Main");
       }
     } catch (error) {
@@ -49,6 +49,7 @@ export default function Giris() {
       alert("Giriş hatası: " + (error.response?.data?.message || error.message));
     }
   };
+  
 
   return (
     <SafeAreaView style={styles.container}>
