@@ -4,20 +4,37 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useSelector } from 'react-redux';
 import { selectToken } from '../store/authSlice';
 import axios from "axios";
+import Constants from 'expo-constants';
 
-const StarAnimation = ({ size, productId, disabled }) => {
+
+const StarAnimation = ({ size, productId, disabled, initialIsLiked, favCount }) => {
   const [isFav, setIsFav] = useState(false);
-  const [count, setCount] = useState(size);
+  const [isLiked, setIsLiked] = useState(false);
+  const [count, setCount] = useState(favCount);
   const [animation] = useState(new Animated.Value(1));
   const token = useSelector(selectToken);
+  const apiUrl = Constants.expoConfig.extra.apiKey;
+
+  const debouncedFavToggle = async (newIsLiked) => {
+    try {
+      const endpoint = newIsLiked ? `${apiUrl}/ratings/addRating?productId=${productId}` : `${apiUrl}/ratings/deleteRating?productId=${productId}`;
+      const response = await axios.get(endpoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (response.status !== 200) {
+        setIsLiked(!newIsLiked); 
+      }
+    } catch (error) {
+      console.error("Error with liking/unliking", error);
+      setIsLiked(!newIsLiked);
+    }
+  }; 
 
   const toggleFav = () => {
-    if (disabled) return; // Eğer disabled true ise işlem yapma
-
-    setIsFav(!isFav);
-    setCount((prevCount) => (isFav ? prevCount - 1 : prevCount + 1));
-    handleSubmit();
-
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
+    setCount(prevCount => newIsLiked ? prevCount + 1 : prevCount - 1);
     Animated.sequence([
       Animated.timing(animation, {
         toValue: 2,
@@ -32,37 +49,26 @@ const StarAnimation = ({ size, productId, disabled }) => {
         useNativeDriver: true,
       }),
     ]).start();
+    debouncedFavToggle(newIsLiked);
   };
+
+  useEffect(() => {
+    if (isLiked !== initialIsLiked) {
+      setIsLiked(initialIsLiked);
+    }
+  }, [initialIsLiked]);
 
   const animatedStyle = {
     transform: [{ scale: animation }],
   };
 
-  const handleSubmit = async () => {
-    try {
-      console.log(productId);
-
-      const response = await axios.post(
-        "http://35.159.64.205:8081/api/likes/like?productId=" + productId,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-    } catch (error) {
-      console.error("Hata:", error.response?.data || error.message);
-    }
-  };
-
-  useEffect(() => {
-    // İlk yüklemede veya bağımlılıklar değiştiğinde yapılacak işlemler
-  }, []);
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={toggleFav} disabled={disabled} style={styles.button}>
+      <Pressable key={isLiked} onPress={toggleFav} disabled={disabled} style={styles.button}>
         <Animated.View style={animatedStyle}>
           <FontAwesome
-            name={isFav ? "star" : "star-o"}
+            name={isLiked ? "star" : "star-o"}
             size={24}
             color={isFav ? "gold" : disabled ? "black" : "black"}
           />

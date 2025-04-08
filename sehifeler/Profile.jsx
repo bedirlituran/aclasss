@@ -68,6 +68,7 @@ const Profile = () => {
   useEffect(() => {
     getUserProducts(); 
   }, []);
+  
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     getUserProducts();

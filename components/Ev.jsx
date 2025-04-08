@@ -28,8 +28,9 @@ import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from '@expo/vector-icons/Feather';
 import { selectIsLoggedIn } from "../store/authSlice";
+import { selectToken, setLoading } from "../store/authSlice";
 import Constants from 'expo-constants';
-
+import HeartAnimation from "./HeartAnimation";
 const { height, width } = Dimensions.get("window");
 
 const Ev = () => {
@@ -40,10 +41,14 @@ const Ev = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const isLoggedIn = useSelector(selectIsLoggedIn);
-
+ const token = useSelector(selectToken);
   const fetchData = async () => {
     try {
-      const res = await axios.get(apiUrl + '/productItem/getAll');
+      const res = await axios.get(apiUrl + '/productItem/getAll', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
       setData(res.data);
     } catch (error) {
       console.log(error);
@@ -232,18 +237,15 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
 
       <View style={styles.animations}>
         <TouchableOpacity onPress={() => isLoggedIn ? handleToggleFavorite() : showAuthAlert("bəyənmək")}>
-          <MaterialCommunityIcons
-            name={isFavorited ? "heart" : "heart-outline"}
-            size={24}
-            color={isFavorited ? "#fb5607" : "black"}
-          />
+          <HeartAnimation productId={item.id} initialIsLiked={item.likedByUser}/>
         </TouchableOpacity>
         
         <TouchableOpacity onPress={handleStarPress}>
           <StarAnmimation 
-            size={item.likeCount} 
+            favCount={item.favCount} 
             productId={item.id}
             disabled={!isLoggedIn}
+            initialIsLiked={item.likedByUser}
           />
         </TouchableOpacity>
         
