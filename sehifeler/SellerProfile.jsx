@@ -16,7 +16,6 @@ const samplePosts = [
   { id: 4, uri: 'https://picsum.photos/300/300?random=4' },
   { id: 5, uri: 'https://picsum.photos/300/300?random=5' },
   { id: 6, uri: 'https://picsum.photos/300/300?random=6' },
-  // Diğer örnek postlar...
 ];
 
 const SellerProfile = () => {
@@ -72,12 +71,14 @@ const SellerProfile = () => {
 
           <View style={styles.profileStats}>
             <View style={styles.statItem}>
-              <Text style={styles.statNumber}>1,234</Text>
+              <Text style={styles.statNumber}>{samplePosts.length}</Text>
               <Text style={styles.statLabel}>Post</Text>
             </View>
             <View style={styles.divider} />
             <View style={styles.statItem}>
-              <Text style={styles.statNumber}>5.6M</Text>
+            <Text style={styles.statNumber}>
+  {(5.6 * samplePosts.length).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+</Text>
               <Text style={styles.statLabel}>Reytinq</Text>
             </View>
             <View style={styles.divider}></View>

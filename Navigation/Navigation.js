@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import SearchScreen from "../sehifeler/SearchScreen";
 import { addImage } from "../store/imageSlice";
-import ProductModal from "../components/ProductModal";
+import ProductAddPage from "../components/ProductAddPage";
 import OTPVerification from "../sehifeler/OTPVerification";
 import MagazaRegister from "../sehifeler/MagazaRegister";
 import UserProfil from "../sehifeler/UserProfil";
@@ -230,7 +230,7 @@ const TabNavigator = () => {
                 shadowOffset: { width: 0, height: 3 },
               }}
             >
-              <ProductModal
+              <ProductAddPage
                 visible={modalVisible}
                 onClose={() => {
                   setModalVisible(false);
@@ -250,6 +250,8 @@ const TabNavigator = () => {
                   shadowColor: "#000",
                   shadowOpacity: 0.2,
                   shadowOffset: { width: 0, height: 2 },
+                borderWidth:0.3
+
                 }}
               >
                 <Ionicons name="add-circle-outline" size={48} color="#fb5607" />
@@ -340,6 +342,8 @@ const Navigation = () => {
       <Stack.Screen name="UserProfil" component={UserProfil} options={{ headerShown: false }} />
       <Stack.Screen name="SellerProfile" component={SellerProfile} options={{ headerShown: false }} />
       <Stack.Screen name="Esasgiris" component={Esasgiris} options={{ headerShown: false }} />
+      <Stack.Screen name="ProductAddPage" component={ProductAddPage} options={{ headerShown: false }} />
+
       <Stack.Screen name="OTPVerification" component={OTPVerification} options={{
         header: () => (
           <View style={{ height: 60, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
