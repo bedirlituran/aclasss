@@ -172,7 +172,7 @@ const SellerProfile = () => {
 
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
-      postProfilePicture(result.assets[0].uri, result.assets[0].uri);
+      postProfilePicture(result.assets[0].uri);
     }
   };
 
