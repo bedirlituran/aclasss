@@ -91,6 +91,8 @@ const SellerProfile = () => {
   };
 
   useEffect(() => {
+    console.log(user);
+    
     getUserProducts();
   }, []);
 

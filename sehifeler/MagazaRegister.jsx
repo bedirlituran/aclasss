@@ -6,13 +6,17 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/authSlice';
+import Constants from 'expo-constants';
+
 export default function MagazaRegister() {
+  const apiUrl = Constants.expoConfig.extra.apiKey;
   const route = useRoute();
   const { magaza } = route.params;
   const navigation = useNavigation();
   const [imageUri, setImageUri] = useState(null);
   const [formData, setFormData] = useState({
     firstName: "",
+    name: "",
     surname: "",
     email: "",
     password: "",
@@ -42,7 +46,7 @@ export default function MagazaRegister() {
         });
       }
   
-      const response = await axios.post('http://35.159.64.205:8081/api/auth/register', formD, {
+      const response = await axios.post(apiUrl + '/auth/register', formD, {
         headers: {
           "Content-Type": "multipart/form-data",  // Bu header önemli
         },
@@ -105,6 +109,11 @@ export default function MagazaRegister() {
           <Image source={{ uri: imageUri }} style={styles.profileImage} />
         )}
         <Input
+          placeholder="İstifadəçi Adı"
+          value={formData.username}
+          onChangeText={(value) => handleChange("username", value)}
+        />
+        <Input
           placeholder="Ad"
           value={formData.firstName}
           onChangeText={(value) => handleChange("firstName", value)}
@@ -121,35 +130,35 @@ export default function MagazaRegister() {
           onChangeText={(value) => handleChange("email", value)}
         />
         <Input
-          placeholder="Şifre"
+          placeholder="Şifrə"
           secureTextEntry
           value={formData.password}
           onChangeText={(value) => handleChange("password", value)}
         />
       
         <Input
-          placeholder="Voen"
+          placeholder="Vöen"
           value={formData.voen}
           onChangeText={(value) => handleChange("voen", value)}
         />
         <Input
-          placeholder="Etraflı Ünvan"
+          placeholder="Ətraflı ünvan"
           value={formData.address}
           onChangeText={(value) => handleChange("address", value)}
         />
         <Input
-          placeholder="Mağaza Adı"
-          value={formData.username}
-          onChangeText={(value) => handleChange("username", value)}
+          placeholder="Mağaza adı"
+          value={formData.name}
+          onChangeText={(value) => handleChange("name", value)}
         />
         <Input
-          placeholder="Elaqe Nomresi"
+          placeholder="Əlaqə nömrəsi"
           keyboardType="phone-pad"
           value={formData.phoneNumber}
           onChangeText={(value) => handleChange("phoneNumber", value)}
         />
         <Input
-          placeholder="Whatsapp Nomresi"
+          placeholder="Whatsapp nömrəsi"
           keyboardType="phone-pad"
           value={formData.wpNumber}
           onChangeText={(value) => handleChange("wpNumber", value)}
