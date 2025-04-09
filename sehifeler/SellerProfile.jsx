@@ -318,10 +318,13 @@ const styles = StyleSheet.create({
   },
   profileStats: {
     flexDirection: "row",
+    justifyContent: "center",
+    width: '60%',
     alignItems: "center",
   },
   statItem: {
     alignItems: "center",
+    flexBasis: '30%',
   },
   statNumber: {
     fontSize: 18,
