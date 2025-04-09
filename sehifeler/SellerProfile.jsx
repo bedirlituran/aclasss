@@ -10,16 +10,14 @@ import {
   Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../store/cartSlice";
-import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
-import { selectIsLoggedIn, selectToken, selectUser, setUser, updateUser } from "../store/authSlice";
+import { selectToken, selectUser, updateUser } from "../store/authSlice";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import axios from "axios";
 import LottieView from "lottie-react-native";
 import { BlurView } from "expo-blur";
-const { height, width } = Dimensions.get("window");
+const {width } = Dimensions.get("window");
 
 const samplePosts = [
   { id: 1, uri: "https://picsum.photos/300/300?random=1" },
@@ -60,10 +58,7 @@ const samplePosts = [
 ];
 
 const SellerProfile = () => {
-  const userData = useSelector(selectUser);
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites.items);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
   const [imageUri, setImageUri] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -84,7 +79,7 @@ const SellerProfile = () => {
       "Giriş Tələb Olunur",
       "Bu əməliyyatı yerinə yetirmək üçün qeydiyyat olmalısınız.",
       [
-        { text: "İptal", style: "cancel" },
+        { text: "Bağla", style: "cancel" },
         { text: "Qeydiyyat", onPress: () => navigation.navigate("Qeydiyyat") },
       ]
     );
@@ -246,24 +241,7 @@ const SellerProfile = () => {
           <View style={styles.postsGrid}>
             {products.map((post) => (
               <View key={post.id} style={styles.postContainer}>
-                {/* <TouchableOpacity
-                  style={styles.likeIcon}
-                  onPress={() => handleToggleFavorite(post)}
-                >
-                  <MaterialCommunityIcons
-                    name={
-                      favorites.some((favItem) => favItem.id === post.id)
-                        ? 'heart'
-                        : 'heart-plus-outline'
-                    }
-                    size={24}
-                    color={
-                      favorites.some((favItem) => favItem.id === post.id)
-                        ? '#fb5607'
-                        : 'lightgray'
-                    }
-                  />
-                </TouchableOpacity> */}
+                
   
                 <Image source={{ uri: post.fileString }} style={styles.postImage} />
   

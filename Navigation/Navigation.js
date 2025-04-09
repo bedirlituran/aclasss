@@ -63,27 +63,27 @@ const TabNavigator = () => {
       showAuthAlert();
       return;
     }
-
+  
     Alert.alert(
-      "Şəkil vəya Video Seç",
-      "Qalereya vəya Kameradan şəkil və video seçə bilərsiniz.",
+      "Şekil veya Video Seç",
+      "Galeriden veya kameradan şekil veya video seçebilirsiniz.",
       [
         {
-          text: "Qalereya",
+          text: "Galeri",
           onPress: async () => {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
-              Alert.alert('Giriş rədd edildi', 'Şəkilləri və videoları seçə bilmek üçün icazə verməlisiniz.');
+              Alert.alert('İzin Reddedildi', 'Şekilleri ve videoları seçebilmek için izin vermeniz gerekiyor.');
               return;
             }
-
+  
             const result = await ImagePicker.launchImageLibraryAsync({
-              mediaTypes: ImagePicker.MediaType.All,
+              mediaTypes: ImagePicker.MediaTypeOptions.All,
               allowsEditing: false,
               aspect: [4, 3],
               quality: 1,
             });
-
+  
             handleMediaSelection(result);
           }
         },
@@ -92,27 +92,28 @@ const TabNavigator = () => {
           onPress: async () => {
             const { status } = await ImagePicker.requestCameraPermissionsAsync();
             if (status !== 'granted') {
-              Alert.alert('Kameraya giriş rədd edildi', 'Kamera giriş üçün izacə verməlisiniz.');
+              Alert.alert('Kamera İzni Reddedildi', 'Kamera için izin vermeniz gerekiyor.');
               return;
             }
-
+  
             const result = await ImagePicker.launchCameraAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.All,
               allowsEditing: false,
               aspect: [4, 3],
               quality: 1,
             });
-
+  
             handleMediaSelection(result);
           }
         },
         {
-          text: "Bağla",
+          text: "İptal",
           style: "cancel"
         }
       ]
     );
   };
+  
 
   const handleMediaSelection = (result) => {
     if (!result.canceled && result.assets && result.assets.length > 0) {
@@ -124,13 +125,15 @@ const TabNavigator = () => {
       setSelectedMediaUri(mediaUri);
       setSelectedMediaFormat(mediaFormat);
       dispatch(addImage(mediaUri));
-      setModalVisible(true);
+  
+      // Navigate to ProductAddPage
+      navigation.navigate('ProductAddPage', { imageUri: mediaUri });
     } else {
       Alert.alert('Hata', 'Geçersiz medya seçimi. Lütfen tekrar deneyin.');
     }
   };
-  
 
+  
   const handleTabPress = useCallback((e) => {
     const currentTime = Date.now();
     if (e.target === 'Ev') {
