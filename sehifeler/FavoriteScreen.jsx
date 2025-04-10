@@ -92,37 +92,19 @@ const FavoriteScreen = () => {
       <Text style={styles.emptyText}>Hələki bəyəndiyiniz məhsul yoxdur.</Text>
     ) :
     (
-    <View style={styles.postsSection}>
-           {/* <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text> */}
-           <View style={styles.postsGrid}>
-    
-               <View key={item.id} style={styles.postContainer}>
-                 <Image source={{ uri: item.fileString }} style={styles.postImage} />
-   
-                 <View style={styles.postInfo}>
-                   <Text style={styles.brandName}>
-                     {truncateText(item.brand, 16)}
-                   </Text>
-   
-                   <View style={styles.postAlti}>
-                     <View style={styles.ratingContainer}>
-                       <Text style={styles.rating}>🌠 5K</Text>
-                     </View>
-   
-                     <View>
-                       <Text style={styles.price}>
-                         {item.sellingPrice} ₼
-                         {/* <Text style={styles.miniprice}>.15</Text> ₼ */}
-                       </Text>
-                       {/* <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
-                         <Ionicons name="cart-outline" size={24} color="black" />
-                       </TouchableOpacity> */}
-                     </View>
-                   </View>
-                 </View>
-               </View>
-          
-           </View>
+      <View style={styles.postContainer}>
+      <TouchableOpacity onPress={() => onDetailPress(item)}>
+        <Image source={{ uri: item.fileString }} style={styles.postImage} />
+        <View style={styles.postInfo}>
+          <Text style={styles.brandName}>{truncateText(item.brand, 16)}</Text>
+          <View style={styles.postAlti}>
+            <View style={styles.ratingContainer}>
+              <Text style={styles.rating}>🌠 5K</Text>
+            </View>
+            <Text style={styles.price}>{item.sellingPrice} ₼</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
     </View>
     )
   );
@@ -139,6 +121,7 @@ const FavoriteScreen = () => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          numColumns={2}
         />
       )
     </View>
@@ -178,7 +161,8 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   postContainer: {
-    width: (width - 40) / 2, // 2 sütunlu grid
+    width: (width - 48) / 2,
+    margin: 4,
     marginBottom: 16,
     backgroundColor: "#fff",
     borderRadius: 8,
