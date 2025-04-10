@@ -233,7 +233,7 @@ const TabNavigator = () => {
                 shadowOffset: { width: 0, height: 3 },
               }}
             >
-              <ProductAddPage
+              {/* <ProductAddPage
                 visible={modalVisible}
                 onClose={() => {
                   setModalVisible(false);
@@ -241,7 +241,7 @@ const TabNavigator = () => {
                   setSelectedMediaFormat('');
                 }}
                 imageUri={selectedMediaUri}
-              />
+              /> */}
               <View
                 style={{
                   width: 60,

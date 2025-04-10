@@ -39,7 +39,7 @@ const Ev = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const isLoggedIn = useSelector(selectIsLoggedIn);
- const token = useSelector(selectToken);
+  const token = useSelector(selectToken);
   const fetchData = async () => {
     try {
       const res = await axios.get(apiUrl + '/productItem/getAll', {
@@ -170,7 +170,7 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
   };
 
   const truncateText = (text, maxLength) => {
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    return text != null && text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
   return (
@@ -182,7 +182,7 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
             style={styles.avatar} 
           />
           <Text style={styles.categoryText}>
-            {truncateText(item.subCategory, 50)}
+            {truncateText(item.sellerName, 50)}
           </Text>
         </TouchableOpacity>
         <View style={styles.headerRight}>
@@ -243,7 +243,7 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
             favCount={item.favCount} 
             productId={item.id}
             disabled={!isLoggedIn}
-            initialIsLiked={item.likedByUser}
+            initialIsLiked={item.ratingByUser}
           />
         </TouchableOpacity>
         
@@ -322,9 +322,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: height * 0.3,
-    resizeMode: "contain",
-    marginTop: 10,
+    height: undefined,
+    aspectRatio: 1,
+    resizeMode: "stretch",
   },
   infoContainer: {
     padding: 10,

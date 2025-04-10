@@ -237,7 +237,7 @@ const SellerProfile = () => {
         </View>
   
         <View style={styles.postsSection}>
-          <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text>
+          {/* <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text> */}
           <View style={styles.postsGrid}>
             {products.map((post) => (
               <View key={post.id} style={styles.postContainer}>
@@ -247,7 +247,7 @@ const SellerProfile = () => {
   
                 <View style={styles.postInfo}>
                   <Text style={styles.brandName}>
-                    {truncateText('Aclass oğlan geyim', 16)}
+                    {truncateText(post.brand, 16)}
                   </Text>
   
                   <View style={styles.postAlti}>
@@ -257,8 +257,8 @@ const SellerProfile = () => {
   
                     <View>
                       <Text style={styles.price}>
-                        {post.sellingPrice}100
-                        <Text style={styles.miniprice}>.15</Text> ₼
+                        {post.sellingPrice} ₼
+                        {/* <Text style={styles.miniprice}>.15</Text> ₼ */}
                       </Text>
                       {/* <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
                         <Ionicons name="cart-outline" size={24} color="black" />

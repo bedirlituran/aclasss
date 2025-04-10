@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import axios from 'axios';
 import { selectToken } from '../store/authSlice';
 import { Ionicons } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 
 const ProductAddPage = ({ navigation }) => {
   const [price, setPrice] = useState('');
@@ -33,11 +34,12 @@ const ProductAddPage = ({ navigation }) => {
   const token = useSelector(selectToken);
   const images = useSelector((state) => state.images.images);
   const imageUri = images.length > 0 ? images[0] : null;
+  const apiUrl = Constants.expoConfig.extra.apiKey;
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://35.159.64.205:8081/api/categories/getAll");
+        const response = await axios.get(apiUrl + "/categories/getAll");
         const formattedCategories = response.data.map(item => ({
           label: item.title,
           value: item.id,
@@ -77,19 +79,20 @@ const ProductAddPage = ({ navigation }) => {
     }
 
     try {
-      const productData = {
-        brand,
-        description,
-        price: parseFloat(price),
-        stock: parseInt(stock) || 0,
-        categoryId: selectedCategoryId,
-        subCategory: selectedSubCategory,
-      };
-
+  
       let localUri = imageUri;
       let filename = localUri.split('/').pop();
       let match = /\.(\w+)$/.exec(filename);
-      let type = match ? `image/${match[1]}` : 'image/jpeg';
+      let type = 'image/jpeg';
+      const productData = {
+        brand,
+        description,
+        sellingPrice: parseFloat(price),
+        quantity: parseInt(stock) || 0,
+        categoryId: selectedCategoryId,
+        subCategory: selectedSubCategory,
+        fileType: type
+      };
 
       let formData = new FormData();
       formData.append("product", JSON.stringify(productData));
@@ -100,7 +103,7 @@ const ProductAddPage = ({ navigation }) => {
       });
 
       const response = await axios.post(
-        "http://35.159.64.205:8081/api/productItem/save",
+        apiUrl + "/productItem/save",
         formData,
         {
           headers: {
@@ -110,8 +113,10 @@ const ProductAddPage = ({ navigation }) => {
         }
       );
 
-      Alert.alert("Başarılı", "Ürün başarıyla kaydedildi");
-      navigation.goBack();
+      if(response.status == 200) {
+        Alert.alert("Başarılı", "Ürün başarıyla kaydedildi");
+        navigation.goBack();
+      }
     } catch (error) {
       console.error("Upload Error:", error);
       Alert.alert("Hata", "Ürün kaydedilirken bir hata oluştu");

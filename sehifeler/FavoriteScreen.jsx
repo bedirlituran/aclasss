@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,19 +7,30 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Platform,Dimensions
+  Platform, Dimensions,
+  RefreshControl
 } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart, removeFromCart } from "../store/cartSlice";
-import {removeFromFavorites } from "../store/favoritesSlice"; // Beğeni slice'tan fonksiyonlar
+import { removeFromFavorites } from "../store/favoritesSlice"; // Beğeni slice'tan fonksiyonlar
+import { selectToken, selectUser } from "../store/authSlice";
+import Constants from 'expo-constants';
+import axios from "axios";
+import SkeletonLoader from "../components/SkeletonLoader";
 
 const { width } = Dimensions.get("window");
 const FavoriteScreen = () => {
   const favorites = useSelector((state) => state.favorites.items);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
+  const apiUrl = Constants.expoConfig.extra.apiKey;
+  const [Data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const onDetailPress = (item) => {
     navigation.navigate("UrunDetay", {
@@ -29,6 +40,36 @@ const FavoriteScreen = () => {
       price: item.price,
     });
   };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchLikedData();
+  }, []);
+
+
+
+  const fetchLikedData = async () => {
+    try {
+      const res = await axios.get(apiUrl + '/likes/userLikedProducts', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      console.log(res.data);
+      
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Xəta", "Məhsullar yüklənərkən xəta baş verdi");
+    } finally {
+      setIsLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLikedData();
+  }, []);
 
   const handleToggleFavorite = (product) => {
     dispatch(removeFromFavorites(product));
@@ -42,38 +83,64 @@ const FavoriteScreen = () => {
     dispatch(removeFromCart(product)); // Sepetten ürün çıkarma
   };
 
+  const truncateText = (text, maxLength) => {
+    return text != null && text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
+
   const renderFavoriteItem = ({ item }) => (
-    <View style={styles.card}>
-      <TouchableWithoutFeedback onPress={() => { onDetailPress(item) }}>
-        <Image source={{ uri: item.image }} style={styles.image} />
-      </TouchableWithoutFeedback>
-      <View style={styles.info}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.price}>{item.price} ₼</Text>
-        <TouchableOpacity
-          onPress={() => handleToggleFavorite(item)}
-          style={styles.removeButton}
-        >
-          <Ionicons name="trash" size={22} color="#fff" />
-          <Text style={styles.removeText}>Sil</Text>
-        </TouchableOpacity>
-      </View>
+    Data.length == 0 ? (
+      <Text style={styles.emptyText}>Hələki bəyəndiyiniz məhsul yoxdur.</Text>
+    ) :
+    (
+    <View style={styles.postsSection}>
+           {/* <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text> */}
+           <View style={styles.postsGrid}>
+    
+               <View key={item.id} style={styles.postContainer}>
+                 <Image source={{ uri: item.fileString }} style={styles.postImage} />
+   
+                 <View style={styles.postInfo}>
+                   <Text style={styles.brandName}>
+                     {truncateText(item.brand, 16)}
+                   </Text>
+   
+                   <View style={styles.postAlti}>
+                     <View style={styles.ratingContainer}>
+                       <Text style={styles.rating}>🌠 5K</Text>
+                     </View>
+   
+                     <View>
+                       <Text style={styles.price}>
+                         {item.sellingPrice} ₼
+                         {/* <Text style={styles.miniprice}>.15</Text> ₼ */}
+                       </Text>
+                       {/* <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
+                         <Ionicons name="cart-outline" size={24} color="black" />
+                       </TouchableOpacity> */}
+                     </View>
+                   </View>
+                 </View>
+               </View>
+          
+           </View>
     </View>
+    )
   );
 
   return (
     <View style={styles.container}>
-      {favorites.length === 0 ? (
-        <Text style={styles.emptyText}>Hələki bəyəndiyiniz məhsul yoxdur.</Text>
-      ) : (
+       (
         <FlatList
-          data={favorites}
+          data={Data}
           renderItem={renderFavoriteItem}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
-      )}
+      )
     </View>
   );
 };
@@ -84,8 +151,64 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "#f4f4f4",
   },
+  postsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  postAlti: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+    paddingHorizontal: 8,
+    gap:20
+  },
+  postsSection: {
+ 
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rating: {
+    color: '#FFD700',
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginRight: 4,
+  },
+  postContainer: {
+    width: (width - 40) / 2, // 2 sütunlu grid
+    marginBottom: 16,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  postImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
+  },
+  postInfo: {
+    marginTop: 8,
+    paddingHorizontal: 8,
+    display: "flex",
+    flexDirection: "col",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   list: {
     paddingBottom: 20,
+  },
+  skeletonContainer: {
+    width: width,
+    alignItems: "center",
+    paddingVertical: 20,
   },
   card: {
     flexDirection: "row",
