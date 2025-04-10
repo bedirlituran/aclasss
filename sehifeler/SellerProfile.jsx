@@ -213,16 +213,16 @@ const SellerProfile = () => {
             <View style={styles.divider} />
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>
-                {(5.6 * samplePosts.length)
-                  .toFixed(1)
+                {(samplePosts.length)
+                  .toFixed()
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 K
               </Text>
-              <Text style={styles.statLabel}>Reytinq</Text>
+              <Text style={styles.statLabel}>Star</Text>
             </View>
             <View style={styles.divider}></View>
             <View style={styles.statItem}>
-              <Text style={styles.statNumber}>1,024</Text>
+              <Text style={styles.statNumber}>102</Text>
               <Text style={styles.statLabel}>Satış</Text>
             </View>
           </View>
@@ -311,9 +311,9 @@ const styles = StyleSheet.create({
     color: "orange",
   },
   profileImage: {
-    width: 100,
+    width: 130,
     height: 100,
-    borderRadius: 50,
+    borderRadius: 30,
     marginRight: 20,
   },
   profileStats: {
@@ -324,14 +324,14 @@ const styles = StyleSheet.create({
   },
   statItem: {
     alignItems: "center",
-    flexBasis: '30%',
+    flexBasis: '20%',
   },
   statNumber: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "bold",
   },
   statLabel: {
-    fontSize: 14,
+    fontSize: 13,
     color: "gray",
   },
   profileInfo: {

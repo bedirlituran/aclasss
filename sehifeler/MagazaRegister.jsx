@@ -204,9 +204,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 200,
+    height: 120,
+    borderRadius: 20,
     marginTop: 10,
     alignSelf: "center",
   },
