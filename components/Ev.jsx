@@ -40,6 +40,9 @@ const Ev = () => {
   const [refreshing, setRefreshing] = useState(false);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const token = useSelector(selectToken);
+
+
+  
   const fetchData = async () => {
     try {
       const res = await axios.get(apiUrl + '/productItem/getAll', {
@@ -306,6 +309,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 20,
     marginRight: 10,
+    resizeMode:'cover'
   },
   headerRight: {
     flexDirection: "row",
@@ -324,7 +328,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: undefined,
     aspectRatio: 1,
-    resizeMode: "stretch",
+    resizeMode: "contain",
   },
   infoContainer: {
     padding: 10,

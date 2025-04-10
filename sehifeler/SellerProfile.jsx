@@ -282,6 +282,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
+    
   },
   
   blurContainer: {
@@ -311,10 +312,13 @@ const styles = StyleSheet.create({
     color: "orange",
   },
   profileImage: {
-    width: 130,
+    width: 100,
     height: 100,
-    borderRadius: 30,
+    borderRadius: 50,
     marginRight: 20,
+    resizeMode:'contain',
+    borderWidth:1,
+    borderColor:'gray',
   },
   profileStats: {
     flexDirection: "row",
@@ -397,6 +401,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     borderRadius: 8,
+    resizeMode:'contain',
+   
   },
   postInfo: {
     marginTop: 8,
