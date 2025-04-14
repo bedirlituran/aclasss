@@ -1,105 +1,62 @@
-import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from "react-native";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux"; // Redux state yönetimi için hook'lar
-import { removeFromCart, decrementQuantity, incrementQuantity } from "../store/cartSlice";
-import { Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { removeFromCart, decrementQuantity, incrementQuantity } from '../store/cartSlice';
+import { Ionicons } from '@expo/vector-icons';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
-const CardItem = ({ item ,id}) => {
-  const cartItems = useSelector((state) => state.cart.items);
+const CardItem = ({ item }) => {
   const dispatch = useDispatch();
 
-  const handleRemoveFromCart = (product) => {
-    dispatch(removeFromCart(product)); // Sepetten ürün çıkarma
+  const handleRemoveFromCart = () => {
+    dispatch(removeFromCart(item));
   };
 
-  const handleIncrement = (id) => {
-    dispatch(incrementQuantity({id})); // Miktarı artırma
+  const handleIncrement = () => {
+    dispatch(incrementQuantity(item.id));
   };
 
-  const handleDecrement = (id) => {
-    dispatch(decrementQuantity({id})); // Miktarı azaltma
+  const handleDecrement = () => {
+    dispatch(decrementQuantity(item.id));
+  };
+
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
 
   return (
-    <View style={{ width: '100%' }}> 
-      <View
-        style={{
-          width: '100%', // Kartın genişliğini tam ekran yapıyoruz
-          height: height * 0.13,
-          justifyContent: "space-around",
-          backgroundColor: "white",
-          flexDirection: "row",
-          alignItems: "center",
-          borderBottomColor: "lightgray",
-          borderBottomWidth: 0.6,
-          shadowOpacity: 0.4,
-          shadowColor: "gray",
-          shadowRadius: 5,
-          shadowOffset: { width: 0, height: 2 },
-          paddingVertical: 16,
-          paddingHorizontal: 10,
-          borderRadius: 10,
-          elevation: 2,
-          marginBottom: 10,
-          overflow: "hidden",
-        }}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View style={{ borderWidth: 0.6, borderColor: 'lightgray', borderRadius: 8,  }}>
-            <Image
-              source={{ uri: item.image }}
-              style={{ width: height * 0.09, height: height * 0.09 }}
-              resizeMode="cover"
-              borderRadius={8}
-            />
-          </View>
+    <View style={styles.card}>
+      <Image source={{ uri: item.fileString }} style={styles.image} />
 
-          <View style={{ marginLeft: 10 }}>
-            <Text style={{ fontSize: 14, fontWeight: '600', maxWidth: width * 0.35 }}>{item.title} </Text>
-            <Text style={{ color: 'blue', fontWeight: 'bold', marginTop: 5, fontSize: 16 }}>
-              {item.price}₼
-            </Text>
-          </View>
-        </View>
+      <View style={styles.info}>
+        <Text style={styles.title}>{truncateText(item.brand, 22)}</Text>
+        <Text style={styles.description}>{truncateText(item.description, 50)}</Text>
+        <Text style={styles.price}>{item.sellingPrice} ₼</Text>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: "space-around",
-            width: width * 0.28,
-            height: height * 0.10,
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-            borderRadius: 10,
-            
-          }}
-        >
-          <TouchableOpacity
-            style={{ flex: 1, alignItems: "center", borderWidth: 0.5, borderColor: 'lightgray' }}
-            onPress={() => handleDecrement(item.id) } title="Decrease"
-          >
-            <Text style={{ fontWeight: '600', fontSize: 20 }}>-</Text>
+        <View style={styles.controls}>
+          <TouchableOpacity onPress={handleDecrement} style={styles.quantityButton}>
+            <Text style={styles.buttonText}>-</Text>
           </TouchableOpacity>
 
-          <Text style={{ color: 'black', fontSize: 18, fontWeight: 'bold' }}>
-            {item.quantity}
-          </Text>
+          <Text style={styles.quantityText}>{item.quantity}</Text>
 
-          <TouchableOpacity
-            style={{ flex: 1, alignItems: "center", borderWidth: 0.5, borderColor: 'lightgray' }}
-            onPress={() => handleIncrement(item.id)} title="Increase"
-          >
-            <Text style={{ fontWeight: '600', fontSize: 20 }}>+</Text>
+          <TouchableOpacity onPress={handleIncrement} style={styles.quantityButton}>
+            <Text style={styles.buttonText}>+</Text>
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity onPress={() => handleRemoveFromCart(item)} title="Remove">
-          <Ionicons name="trash" size={23} color="#54342b" />
-        </TouchableOpacity>
       </View>
+
+      <TouchableOpacity onPress={handleRemoveFromCart} style={styles.removeButton}>
+        <Ionicons name="trash-bin" size={22} color="#ff4d4d" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -107,15 +64,69 @@ const CardItem = ({ item ,id}) => {
 export default CardItem;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  card: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 12,
+    marginHorizontal: 10,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 5,
+    alignItems: 'center',
+    position: 'relative',
   },
-
-  view: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: "4%",
-    height: height * 0.12,
-    backgroundColor: "#fefefe",
+  image: {
+    width: height * 0.1,
+    height: height * 0.1,
+    borderRadius: 12,
+    borderWidth: 0.5,
+    borderColor: '#ddd',
+  },
+  info: {
+    flex: 1,
+    paddingHorizontal: 12,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  description: {
+    fontSize: 13,
+    color: '#777',
+    marginTop: 3,
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2ecc71',
+    marginTop: 6,
+  },
+  controls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  quantityButton: {
+    backgroundColor: '#f1f1f1',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  quantityText: {
+    fontSize: 15,
+    fontWeight: '600',
+    marginHorizontal: 10,
+  },
+  removeButton: {
+    padding: 6,
   },
 });

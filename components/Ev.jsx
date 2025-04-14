@@ -108,10 +108,11 @@ const Ev = () => {
             item={item}
             isLoggedIn={isLoggedIn}
             onDetailPress={() => navigation.navigate("UrunDetay", {
-              image: item.fileString,
+              id: item.id,
               title: item.brand,
               description: item.description,
               price: item.sellingPrice,
+              image: item.fileString,
             })}
             onAddToCart={() => handleAction(() => dispatch(addToCart(item)), "səbətə əlavə etmək")}
             showAuthAlert={showAuthAlert}
@@ -249,6 +250,8 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
             initialIsLiked={item.ratingByUser}
           />
         </TouchableOpacity>
+        
+
         
         <TouchableOpacity onPress={handleCommentPress}>
           <YorumAnimation 

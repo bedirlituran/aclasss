@@ -1,154 +1,203 @@
 import {
-  StyleSheet, 
-  Text, 
-  View, 
-  FlatList, 
-  TouchableOpacity, 
-  Dimensions, 
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
   Platform,
+  Alert,
 } from "react-native";
-import CardItem from "../components/CardItem"; 
+import CardItem from "../components/CardItem";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-const { height } = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
-const Sebetim = ({ removeFromCart, incrementQuantity, decrementQuantity,product }) => {
+const Sebetim = ({ removeFromCart, incrementQuantity, decrementQuantity }) => {
   const cartItems = useSelector((state) => state.cart.items);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
+  const calculateTotal = () => {
+    return cartItems.reduce(
+      (acc, item) => acc + item.sellingPrice * item.quantity,
+      0
+    ).toFixed(2);
+  };
+
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      Alert.alert("Səbət Boşdur", "Səbətinizə əlavə etmək üçün məhsul seçin");
+      return;
+    }
+    Alert.alert(
+      "Sifarişi Tamamla",
+      `Ümumi məbləğ: ${calculateTotal()}₼\nSifarişi tamamlamaq istəyirsiniz?`,
+      [
+        { text: "Ləğv et", style: "cancel" },
+        { text: "Təsdiqlə", onPress: () => navigation.navigate("Checkout") },
+      ]
+    );
+  };
+
+ 
+
   return (
     <View style={styles.container}>
-      <FlatList
-        data={cartItems} 
-        keyExtractor={(item) => `${item.id}-${item.price}`} 
-        style={styles.flat}
-        renderItem={({ item }) => (
-          <TouchableOpacity  
-          onPress={() =>
-            navigation.navigate("UrunDetay", {
-              title: item.title,
-              description: item.description,
-              price: item.price,
-              image: item.image,
-            })
-          }
-          
-          >
-              <CardItem 
-            item={item}
-            removeFromCart={removeFromCart} 
-            incrementQuantity={incrementQuantity} 
-            decrementQuantity={decrementQuantity}
-          />
-          </TouchableOpacity>
-        
-        )}
-      />
-      <View style={styles.view}>
-        {cartItems.length === 0 ? (
+      {cartItems.length === 0 ? (
+        <View style={styles.emptyContainer}>
           <Text style={styles.emptyCart}>Səbətiniz Boşdur</Text>
-        ) : (
-          <View style={styles.actionRow}>
-            <TouchableOpacity
-              style={styles.buttons}
-              onPress={() => alert("Proceed to checkout")}
-            >
-              <Text style={styles.buttonText}>Davam Et</Text>
-            </TouchableOpacity>
-            <View style={styles.priceContainer}>
-              <Text style={styles.totalText}>Cəm: </Text>
+          <TouchableOpacity
+            style={styles.continueShopping}
+            onPress={() => navigation.navigate("Ev")}
+          >
+            <Text style={styles.continueShoppingText}>Alış-verişə davam et</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <>
+          <FlatList
+            data={cartItems}
+            keyExtractor={(item) => `${item.id}-${item.sellingPrice}`}
+            contentContainerStyle={styles.flatListContent}
+            style={styles.flatList}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("UrunDetay", {
+                    id: item.id,
+                    title: item.brand,
+                    description: item.description,
+                    price: item.sellingPrice,
+                    image: item.fileString,
+                  })
+                }
+                activeOpacity={0.7}
+              >
+                <CardItem
+                  item={item}
+                  removeFromCart={removeFromCart}
+                  incrementQuantity={incrementQuantity}
+                  decrementQuantity={decrementQuantity}
+                />
+              </TouchableOpacity>
+            )}
+            ListFooterComponent={<View style={styles.footer} />}
+          />
+          <View style={styles.bottomBar}>
+            <View style={styles.totalContainer}>
+              <Text style={styles.totalText}>Ümumi:</Text>
               <Text style={styles.priceText}>
-                {cartItems.reduce(
-                  (acc, item) => acc + item.price * item.quantity,
-                  0
-                ).toFixed(2)}
-                <Text>₼</Text>
+                {calculateTotal()}
+                <Text style={styles.currency}>₼</Text>
               </Text>
             </View>
+            <TouchableOpacity
+              style={styles.checkoutButton}
+              onPress={handleCheckout}
+              disabled={cartItems.length === 0}
+            >
+              <Text style={styles.checkoutButtonText}>Sifarişi tamamla</Text>
+            </TouchableOpacity>
           </View>
-        )}
-      </View>
+        </>
+      )}
     </View>
   );
 };
 
-export default Sebetim; 
+export default Sebetim;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f4f4f4",
-    
+    backgroundColor: "#f8f8f8",
   },
-  removeText: {
-    color: "white",
-    fontSize: 16,
-  },
-  totalText: {
-    fontSize: Platform.OS === "ios" ? 18 : 16, 
-    fontWeight: "bold", 
-  },
-  priceText: {
-    fontSize: Platform.OS === "ios" ? 20 : 18, 
-    fontWeight: "bold",
-    color: "#27ae60", 
-  },
-  priceContainer: {
-    flex: 1, 
-    flexDirection: "column", 
-    justifyContent: "flex-end", 
-    alignItems: "center", 
-  },
-  buttonText: {
-    color: "#fff", 
-    fontSize: 16, 
-    fontWeight: "bold", 
-  },
-  buttons: {
+  emptyContainer: {
     flex: 1,
-    backgroundColor: "#5d3ebd", 
-    justifyContent: "center", 
+    justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 12,
-    borderRadius: Platform.OS === "ios" ? 12 : 8, 
-    marginHorizontal: Platform.OS === "ios" ? 5 : 10,
-  },
-  view: {
-    flexDirection: "row", 
-    alignItems: "center", 
-    paddingHorizontal: "2%",
-    height: height * 0.12, 
-    backgroundColor: "#fefefe", 
-    shadowColor: Platform.OS === "ios" ? "#000" : "#000000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
+    paddingBottom: height * 0.2,
   },
   emptyCart: {
     fontSize: 18,
-    color: "#888",
-    textAlign: "center",
-    marginTop: 30,
-    fontStyle: "italic",
-    paddingHorizontal: 10,
+    color: "#666",
+    marginBottom: 20,
+    fontFamily: Platform.OS === "ios" ? "Helvetica Neue" : "sans-serif",
   },
-  removeButton: {
-    backgroundColor: "#f53d3d", 
-    padding: Platform.OS === "ios" ? 12 : 10, 
-    borderRadius: 10, 
-    marginLeft: 10,
-    marginTop: 10, 
-    width: "40%", 
+  continueShopping: {
+    backgroundColor: "#5d3ebd",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
   },
-  actionRow: {
+  continueShoppingText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  flatList: {
+    flex: 1,
+  },
+  flatListContent: {
+    paddingHorizontal: width * 0.04,
+    paddingTop: 12,
+    paddingBottom: height * 0.14,
+  },
+  footer: {
+    height: height * 0.1,
+  },
+  bottomBar: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingHorizontal: width * 0.04,
+    height: height * 0.12,
+    backgroundColor: "#fff",
+    borderTopWidth: 1,
+    borderTopColor: "#eee",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  flat:{
-    marginBottom: 10,
-    paddingHorizontal: "2%",
-    paddingVertical: 10,
-
-  }
+  totalContainer: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
+  totalText: {
+    fontSize: Platform.OS === "ios" ? 17 : 16,
+    fontWeight: "600",
+    color: "#333",
+    marginRight: 6,
+  },
+  priceText: {
+    fontSize: Platform.OS === "ios" ? 20 : 18,
+    fontWeight: "700",
+    color: "#27ae60",
+  },
+  currency: {
+    fontSize: Platform.OS === "ios" ? 18 : 16,
+  },
+  checkoutButton: {
+    backgroundColor: "#5d3ebd",
+    borderRadius: 8,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    minWidth: width * 0.4,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkoutButtonText: {
+    color: "#fff",
+    fontSize: Platform.OS === "ios" ? 16 : 15,
+    fontWeight: "600",
+  },
 });
