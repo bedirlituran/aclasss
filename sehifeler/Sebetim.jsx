@@ -14,7 +14,8 @@ import { useNavigation } from "@react-navigation/native";
 const { height, width } = Dimensions.get("window");
 
 const Sebetim = ({ removeFromCart, incrementQuantity, decrementQuantity }) => {
-  const cartItems = useSelector((state) => state.cart.items);
+  const cartItems = useSelector((state) => state.cart?.items || []);
+
   const navigation = useNavigation();
 
   const calculateTotal = () => {

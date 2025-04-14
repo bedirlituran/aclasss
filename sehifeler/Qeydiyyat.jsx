@@ -35,12 +35,10 @@ export default function LoginForm() {
   const handleVerifyOTP = async () => {
     try {
       const res = await axios.post("http://35.159.64.205:8080/web/login/verify-otp", { magaza, otp });
-      console.log(res.data);
       Alert.alert("Uğur", "OTP təsdiqləndi!");
       // OTP təsdiqləndikdən sonra qeydiyyat edək
       handleRegister();
     } catch (error) {
-      console.log(error);
       Alert.alert("Xəta", "OTP doğrulanmadı!");
     }
   };

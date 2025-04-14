@@ -55,7 +55,6 @@ const FavoriteScreen = () => {
           Authorization: `Bearer ${token}`,
         }
       });
-      console.log(res.data);
       
       setData(res.data);
     } catch (error) {

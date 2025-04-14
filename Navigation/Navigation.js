@@ -48,7 +48,9 @@ const getIconName = (routeName, focused) => {
 
 const TabNavigator = () => {
   const navigation = useNavigation();
-  const cartItems = useSelector((state) => state.cart.items);
+  const cartItems = useSelector((state) => state.cart?.items || []);
+
+
   const homeTabPressCount = useRef(0);
   const lastTabPressTime = useRef(0);
   const dispatch = useDispatch();

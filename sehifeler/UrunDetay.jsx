@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addReview } from "../store/reviewActions";
 import { addToCart } from "../store/cartSlice";
+
 import Modal from "react-native-modal";
 import { PinchGestureHandler } from "react-native-gesture-handler";
 import Animated, {
@@ -26,7 +27,7 @@ import { selectIsLoggedIn } from "../store/authSlice";
 
 const { width, height } = Dimensions.get("window");
 
-const UrunDetay = ({ route }) => {
+const UrunDetay = ({ route, navigation }) => {
   const { title, description, price, image } = route.params;
   const [inputValue, setInputValue] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
@@ -62,26 +63,33 @@ const UrunDetay = ({ route }) => {
       showAuthAlert();
       return;
     }
-
+  
     const product = {
-      title,
-      description,
-      price,
-      image,
+      id: route.params.id, // Əgər id parametri varsa
+      title: route.params.title,
+      description: route.params.description,
+      price: route.params.price,
+      image: route.params.image,
+      fileString: route.params.image, // Əgər CardItem-də fileString istifadə olunursa
+      brand: route.params.title, // Əgər brand istifadə olunursa
+      sellingPrice: route.params.price // Əgər sellingPrice istifadə olunursa
     };
+  
     dispatch(addToCart(product));
+    Alert.alert("Əlavə edildi", "Məhsul səbətə əlavə olundu.");
   };
-
+  
   const showAuthAlert = () => {
     Alert.alert(
-      "Giriş Tələb Olunur",
-      "Bu əməliyyatı yerinə yetirmək  üçün qeydiyyat olmalısınız.",
+      "Giriş tələb olunur",
+      "Bu əməliyyatı yerinə yetirmək üçün qeydiyyatdan keçməlisiniz.",
       [
-        { text: "İptal", style: "cancel" },
-        { text: "Qeydiyyat", onPress: () => navigation.navigate("Qeydiyyat") }
+        { text: "İmtina", style: "cancel" },
+        { text: "Qeydiyyat", onPress: () => navigation.navigate("Qeydiyyat") },
       ]
     );
   };
+  
 
   const onPinchGestureEvent = useAnimatedGestureHandler({
     onActive: (event) => {
@@ -170,95 +178,113 @@ const UrunDetay = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-    width: width,
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    backgroundColor: "#fefefe",
+  },
+  image: {
+    width: width * 0.9,
+    height: 250,
+    borderRadius: 12,
+    alignSelf: "center",
+    resizeMode: "contain",
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "600",
+    textAlign: "center",
+    color: "#222",
+    marginBottom: 8,
+  },
+  text: {
+    fontSize: 15,
+    textAlign: "center",
+    color: "#555",
+    lineHeight: 22,
+    marginBottom: 16,
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#27ae60",
+  },
+  addToCartButton: {
+    backgroundColor: "#ff6f00",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    alignItems: "center",
+    justifyContent: "center",
   },
   addToCartText: {
     color: "#fff",
     fontWeight: "bold",
-  },
-  addToCartButton: {
-    backgroundColor: "#fb5607",
-    borderRadius: 5,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  image: {
-    width: "80%",
-    height: 250,
-    borderRadius: 10,
-    alignSelf: "center",
-    resizeMode: "contain",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginVertical: 10,
-    textAlign: "center",
-  },
-  text: {
-    fontSize: 14,
-    marginVertical: 10,
-    textAlign: "center",
-    color: "#333",
-  },
-  price: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "green",
-    marginVertical: 10,
+    fontSize: 16,
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
+    backgroundColor: "#fafafa",
     borderRadius: 10,
     padding: 12,
     marginVertical: 10,
-  },
-  reviewsContainer: {
-    marginTop: 20,
-    paddingBottom: 30,
-  },
-  review: {
-    backgroundColor: "#f9f9f9",
-    padding: 10,
-    borderRadius: 10,
-    marginVertical: 5,
-  },
-  reviewText: {
-    fontSize: 14,
-    marginVertical: 2,
-  },
-  reviewDate: {
-    fontSize: 12,
-    color: "#888",
-    marginVertical: 2,
-  },
-  noReview: {
-    fontStyle: "italic",
-    textAlign: "center",
-    marginTop: 10,
-    color: "#888",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
   },
   button: {
-    backgroundColor: "#4CAF50",
-    padding: 10,
+    backgroundColor: "#388e3c",
+    paddingVertical: 12,
     borderRadius: 10,
-    marginVertical: 10,
     alignItems: "center",
+    marginBottom: 10,
   },
   buttonText: {
     color: "#fff",
     fontSize: 16,
+    fontWeight: "500",
+  },
+  reviewsContainer: {
+    marginTop: 20,
+    paddingBottom: 40,
+  },
+  review: {
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 12,
+    marginVertical: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+    borderLeftWidth: 4,
+    borderLeftColor: "#4CAF50",
+  },
+  reviewText: {
+    fontSize: 14,
+    fontWeight: "500",
+    marginBottom: 5,
+  },
+  reviewDate: {
+    fontSize: 12,
+    color: "#888",
+    fontStyle: "italic",
+  },
+  noReview: {
+    fontStyle: "italic",
+    textAlign: "center",
+    color: "#888",
+    marginTop: 10,
   },
   modalContent: {
     flex: 1,
+    backgroundColor: "black",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "black",
   },
   fullImageContainer: {
     width: width,
@@ -276,7 +302,13 @@ const styles = StyleSheet.create({
     top: 40,
     right: 20,
     zIndex: 1,
+    backgroundColor: "#222",
+    padding: 8,
+    borderRadius: 20,
+    opacity: 0.8,
   },
+  
 });
+
 
 export default UrunDetay;

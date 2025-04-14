@@ -86,8 +86,6 @@ const SellerProfile = () => {
   };
 
   useEffect(() => {
-    console.log(user);
-    
     getUserProducts();
   }, []);
 
@@ -126,7 +124,6 @@ const SellerProfile = () => {
     });
   
     try {
-      console.log(apiUrl + "/user/postProfilePicture");
       
       const response = await axios.post(
         apiUrl + "/user/postProfilePicture", 

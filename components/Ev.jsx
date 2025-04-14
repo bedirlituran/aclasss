@@ -53,7 +53,6 @@ const Ev = () => {
       setData(res.data);
     } catch (error) {
       console.log(error);
-      Alert.alert("Xəta", "Məhsullar yüklənərkən xəta baş verdi");
     } finally {
       setIsLoading(false);
       setRefreshing(false);
@@ -103,6 +102,7 @@ const Ev = () => {
       <Header />
       <FlatList
         data={Data}
+        initialNumToRender={5}
         renderItem={({ item }) => (
           <Card
             item={item}
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: width * 0.92,
-    marginBottom: 20,
+    marginBottom: 80,
     borderRadius: 15,
     backgroundColor: "#fff",
     shadowColor: "#000",
@@ -355,42 +355,43 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 16,
+    color: "#000",
     fontWeight: "bold",
-    color: "green",
-    fontFamily: 'Poppins_400Regular_Italic'
-  },
-  addToCartButton: {
-    backgroundColor: "green",
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 5,
+    fontFamily: 'Poppins_600SemiBold'
   },
   ByButton: {
-    backgroundColor: "red",
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    marginLeft: 10,
+    backgroundColor: "#ff6e40",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  addToCartButton: {
+    backgroundColor: "#00b894",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 10,
   },
   addToCartText: {
     color: "#fff",
     fontWeight: "bold",
-    fontFamily: 'Poppins_400Regular_Italic'
+    fontSize: 12,
+    fontFamily: 'Poppins_500Medium'
   },
   stock: {
     marginTop: 10,
-    fontSize: 14,
-    color: "blue",
-    fontFamily: 'Poppins_400Regular_Italic'
+    color: "#333",
+    fontSize: 13,
+    fontStyle: "italic",
   },
   animations: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    padding: 10,
+    paddingVertical: 10,
+    backgroundColor: "#f1f2f6",
     borderTopWidth: 1,
-    borderTopColor: "#f0f0f0",
-  },
+    borderTopColor: "#ddd",
+  }
 });
 
 export default Ev;

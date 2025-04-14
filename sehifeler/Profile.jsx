@@ -45,7 +45,6 @@ const Profile = () => {
   };
   const getUserProducts = async () => {
     try {
-      console.log(apiUrl + "/productItem/getUserProducts/" + user.username);
       
       const response = await axios.get(
         apiUrl + "/productItem/getUserProducts/" + user.username,
@@ -56,7 +55,6 @@ const Profile = () => {
         setProducts(response.data);
         setLoading(false);
         setRefreshing(false);
-        console.log(response.data);    
       }
     } catch (error) {
       console.error("Hata:", error.response?.data || error.message);

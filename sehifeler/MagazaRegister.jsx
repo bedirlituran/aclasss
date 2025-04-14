@@ -55,7 +55,6 @@ export default function MagazaRegister() {
         ...response.data.user, 
         userType: "SELLER" 
       }));
-      console.log("Başarılı:", response.data);
       navigation.navigate("Main");
     } catch (error) {
       console.error("Hata:", error.response?.data || error.message);
