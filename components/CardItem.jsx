@@ -10,10 +10,12 @@ import {
 import { useDispatch } from 'react-redux';
 import { removeFromCart, decrementQuantity, incrementQuantity } from '../store/cartSlice';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
 const CardItem = ({ item }) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const handleRemoveFromCart = () => {
@@ -34,7 +36,20 @@ const CardItem = ({ item }) => {
 
   return (
     <View style={styles.card}>
+      <TouchableOpacity onPress={() =>
+                        navigation.navigate("UrunDetay", {
+                          id: item.id,
+                          title: item.brand,
+                          description: item.description,
+                          price: item.sellingPrice,
+                          image: item.fileString,
+                        })
+                      }
+                      activeOpacity={0.7}>
+
       <Image source={{ uri: item.fileString }} style={styles.image} />
+
+                      </TouchableOpacity>
 
       <View style={styles.info}>
         <Text style={styles.title}>{truncateText(item.brand, 22)}</Text>

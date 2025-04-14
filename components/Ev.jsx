@@ -113,7 +113,10 @@ const Ev = () => {
       <Header />
       <FlatList
         data={Data}
-        initialNumToRender={5}
+        showsVerticalScrollIndicator={false}
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
+        windowSize={5}
         renderItem={({ item }) => (
           <Card
             item={item}
@@ -194,26 +197,31 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerLeft} onPress={handleProfilePress}>
-          <Image 
-            source={{ uri: item.userProfilePicture}} 
-            style={styles.avatar} 
-          />
-          <Text style={styles.categoryText}>
-            {truncateText(item.sellerName, 50)}
-          </Text>
+        <TouchableOpacity style={styles.profileContainer} onPress={handleProfilePress}>
+          <View style={styles.avatarContainer}>
+            <Image 
+              source={{ uri: item.userProfilePicture || 'https://via.placeholder.com/300' }} 
+              style={styles.avatar} 
+            />
+            {item.isVerified && (
+              <View style={styles.verifiedBadge}>
+                <Ionicons name="checkmark-circle" size={16} color="#3897f0" />
+              </View>
+            )}
+          </View>
+          <View style={styles.profileTextContainer}>
+            <Text style={styles.companyName} numberOfLines={1}>
+              {item.sellerName || 'Company Name'}
+            </Text>
+            {/* <Text style={styles.productCategory} numberOfLines={1}>
+              {item.category || 'Product Category'}
+            </Text> */}
+          </View>
         </TouchableOpacity>
-        <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="navigate-circle-outline" size={23} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <WhatsAppButton />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Feather name="phone-call" size={20} color="black" />
-          </TouchableOpacity>
-        </View>
+        
+        <TouchableOpacity style={styles.moreOptionsButton}>
+          <Ionicons name="ellipsis-horizontal" size={20} color="black" />
+        </TouchableOpacity>
       </View>
       
       <ProfilModal
@@ -316,7 +324,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10,
+    alignItems: "center",
+    padding: 12,
     backgroundColor: "#f8f9f9",
   },
   headerLeft: {
@@ -325,19 +334,32 @@ const styles = StyleSheet.create({
   },
   avatar: {
     width: 70,
-    height: 60,
-    borderRadius: 20,
+    height: 70,
+    borderRadius: 35, // Dairəvi forma üçün width/2
     marginRight: 10,
-    resizeMode:'cover'
+    resizeMode: 'cover',
+    borderWidth: 2, // Xəttin qalınlığı
+    borderColor: '#ff5a5f', // İnstagramda üst-üstə düşən gradient rənglər
+    // Shadow əlavə edək (iOS üçün)
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    // Android üçün
+    elevation: 5,
   },
   headerRight: {
     flexDirection: "row",
     alignItems: "center",
   },
   categoryText: {
-    fontSize: 14,
-    color: "#555",
-    fontFamily: 'Poppins_400Regular_Italic'
+    fontSize: 16,
+    color: "#262626", // Daha qara rəng daha yaxşı oxunaqlılıq üçün
+    fontFamily: 'Poppins_600SemiBold', // Qalın font daha professional görünüş üçün
+    marginLeft: 8, // Avatar ilə arasında boşluq
+    alignSelf: 'center', // Şaquli mərkəzləşdirmə
+    maxWidth: width * 0.5, // Çox uzun adlar üçün məhdudiyyət
+    fontWeight:'bold'
   },
   iconButton: {
     marginRight: 10,
@@ -347,7 +369,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: undefined,
     aspectRatio: 1,
-    resizeMode: "contain",
+    resizeMode: "cover",
   },
   infoContainer: {
     padding: 10,
@@ -412,7 +434,40 @@ const styles = StyleSheet.create({
   buttonGroup:{
     flexDirection: "row",
   gap: 8,
-  }
+  },
+  profileContainer:{
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  avatarContainer: {
+    position: 'relative',
+  },
+  verifiedBadge: {
+    position: 'absolute',
+    bottom: 0,
+    right: 8,
+    backgroundColor: 'white',
+    borderRadius: 10,
+  },
+  profileTextContainer: {
+    flex: 1,
+  },
+  companyName: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: "#262626",
+    fontFamily: 'Poppins_600SemiBold',
+  },
+  productCategory: {
+    fontSize: 13,
+    color: "#8e8e8e",
+    fontFamily: 'Poppins_400Regular',
+    marginTop: 2,
+  },
+  moreOptionsButton: {
+    padding: 4,
+  },
 });
 
 export default Ev;

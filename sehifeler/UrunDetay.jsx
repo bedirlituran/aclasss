@@ -126,6 +126,7 @@ const UrunDetay = ({ route, navigation }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           paddingVertical: 10,
+          alignItems: "center",
         }}
       >
         <Text style={styles.price}>{price} {"\u20BC"}</Text>
@@ -217,12 +218,10 @@ const styles = StyleSheet.create({
     color: "#27ae60",
   },
   addToCartButton: {
-    backgroundColor: "#ff6f00",
+    backgroundColor: "#00b894",
+    paddingVertical: 6,
+    paddingHorizontal: 12,
     borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    alignItems: "center",
-    justifyContent: "center",
   },
   addToCartText: {
     color: "#fff",

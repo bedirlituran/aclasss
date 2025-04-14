@@ -62,25 +62,14 @@ const Sebetim = ({ removeFromCart, incrementQuantity, decrementQuantity }) => {
             contentContainerStyle={styles.flatListContent}
             style={styles.flatList}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("UrunDetay", {
-                    id: item.id,
-                    title: item.brand,
-                    description: item.description,
-                    price: item.sellingPrice,
-                    image: item.fileString,
-                  })
-                }
-                activeOpacity={0.7}
-              >
+            
                 <CardItem
                   item={item}
                   removeFromCart={removeFromCart}
                   incrementQuantity={incrementQuantity}
                   decrementQuantity={decrementQuantity}
                 />
-              </TouchableOpacity>
+             
             )}
             ListFooterComponent={<View style={styles.footer} />}
           />

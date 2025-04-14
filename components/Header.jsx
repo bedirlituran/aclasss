@@ -39,7 +39,7 @@ const Header = () => {
   <Ionicons name="basket-sharp" size={22} color="#fb5607" />
   <Text style={styles.iconWrapperBasketText}>
     {cartItems.reduce(
-      (acc, item) => acc + item.price * item.quantity,
+      (acc, item) => acc + item.sellingPrice * item.quantity,
       0
     ).toFixed(2)} {'\u20BC'}
   </Text>

@@ -23,26 +23,22 @@ const cartSlice = createSlice({
  
     removeFromCart: (state, action) => {
       state.items = state.items.filter((item) => item.id !== action.payload.id);
-
-      // Sepetteki toplam ürün sayısını güncelle
       state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
     },
+    
     incrementQuantity: (state, action) => {
-      const itemIndex = state.items.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.items.findIndex((item) => item.id === action.payload);
       if (itemIndex >= 0) {
         state.items[itemIndex].quantity += 1;
       }
-
-      // Sepetteki toplam ürün sayısını güncelle
       state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
     },
+    
     decrementQuantity: (state, action) => {
-      const itemIndex = state.items.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.items.findIndex((item) => item.id === action.payload);
       if (itemIndex >= 0 && state.items[itemIndex].quantity > 1) {
         state.items[itemIndex].quantity -= 1;
       }
-
-      // Sepetteki toplam ürün sayısını güncelle
       state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
     },
   },
