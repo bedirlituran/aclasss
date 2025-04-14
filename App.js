@@ -5,9 +5,9 @@ import { StatusBar, StyleSheet ,Button,Platform} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Provider } from "react-redux";
 import Store from "./store/index";
+import Toast from 'react-native-toast-message';
 
 export default function App(){
- 
   return (
     <Provider store={Store}>
       <SafeAreaProvider>
@@ -20,7 +20,9 @@ export default function App(){
           <NavigationContainer>
             <Navigation />
           </NavigationContainer>
-    
+
+          {/* Toast burada əlavə olunur */}
+          <Toast />
         </SafeAreaView>
       </SafeAreaProvider>
     </Provider>

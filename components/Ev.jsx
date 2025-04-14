@@ -29,6 +29,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { selectToken ,selectIsLoggedIn} from "../store/authSlice";
 import Constants from 'expo-constants';
 import HeartAnimation from "./HeartAnimation";
+import Toast from "react-native-toast-message";
 const { height, width } = Dimensions.get("window");
 
 const Ev = () => {
@@ -97,6 +98,16 @@ const Ev = () => {
     );
   }
 
+  const toast = ()=>{
+    Toast.show({
+      type: 'success',
+      text1: 'Əlavə edildi',
+      text2: 'Məhsul səbətə əlavə olundu ✅',
+      position: 'bottom',
+      visibilityTime: 2000,
+    });
+  }
+
   return (
     <View style={styles.container}>
       <Header />
@@ -114,7 +125,10 @@ const Ev = () => {
               price: item.sellingPrice,
               image: item.fileString,
             })}
-            onAddToCart={() => handleAction(() => dispatch(addToCart(item)), "səbətə əlavə etmək")}
+            onAddToCart={() => {
+              handleAction(() => dispatch(addToCart(item)), "səbətə əlavə etmək");
+              toast(); 
+            }}
             showAuthAlert={showAuthAlert}
           />
         )}
@@ -215,27 +229,29 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
       </TouchableOpacity>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.title}>{item.brand}</Text>
-        <Text style={styles.description}>
-          {truncateText(item.description, 100)}
-        </Text>
-        <View style={styles.footer}>
-          <Text style={styles.price}>{item.sellingPrice} ₼</Text>
-          <TouchableOpacity
-            style={styles.ByButton}
-            onPress={onAddToCart}
-          >
-            <Text style={styles.addToCartText}>İndi Al</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.addToCartButton}
-            onPress={onAddToCart}
-          >
-            <Text style={styles.addToCartText}>Səbətə yüklə</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.stock}>Stokda: Var</Text>
-      </View>
+  <Text style={styles.title}>{item.brand}</Text>
+  <Text style={styles.description}>
+    {truncateText(item.description, 100)}
+  </Text>
+  <View style={styles.footer}>
+    <Text style={styles.price}>{item.sellingPrice} ₼</Text>
+    <View style={styles.buttonGroup}>
+      <TouchableOpacity
+        style={styles.ByButton}
+        onPress={onAddToCart}
+      >
+        <Text style={styles.addToCartText}>İndi Al</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.addToCartButton}
+        onPress={onAddToCart}
+      >
+        <Text style={styles.addToCartText}>Səbətə yüklə</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+  <Text style={styles.stock}>Stokda: Var</Text>
+</View>
 
       <View style={styles.animations}>
         <TouchableOpacity onPress={() => isLoggedIn ? handleToggleFavorite() : showAuthAlert("bəyənmək")}>
@@ -352,6 +368,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 15,
+    gap: 8,
   },
   price: {
     fontSize: 16,
@@ -362,13 +379,13 @@ const styles = StyleSheet.create({
   ByButton: {
     backgroundColor: "#ff6e40",
     paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     borderRadius: 10,
   },
   addToCartButton: {
     backgroundColor: "#00b894",
     paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     borderRadius: 10,
   },
   addToCartText: {
@@ -391,6 +408,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#f1f2f6",
     borderTopWidth: 1,
     borderTopColor: "#ddd",
+  },
+  buttonGroup:{
+    flexDirection: "row",
+  gap: 8,
   }
 });
 

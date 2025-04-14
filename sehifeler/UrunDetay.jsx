@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addReview } from "../store/reviewActions";
 import { addToCart } from "../store/cartSlice";
+import Toast from "react-native-toast-message";
 
 import Modal from "react-native-modal";
 import { PinchGestureHandler } from "react-native-gesture-handler";
@@ -76,7 +77,13 @@ const UrunDetay = ({ route, navigation }) => {
     };
   
     dispatch(addToCart(product));
-    Alert.alert("Əlavə edildi", "Məhsul səbətə əlavə olundu.");
+    Toast.show({
+      type: 'success',
+      text1: 'Əlavə edildi',
+      text2: 'Məhsul səbətə əlavə olundu ✅',
+      position: 'bottom',
+      visibilityTime: 2000,
+    });
   };
   
   const showAuthAlert = () => {

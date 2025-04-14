@@ -43,6 +43,7 @@
     "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "^5.3.0",
     "react-native-screens": "^4.9.1",
+    "react-native-toast-message": "^2.2.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-zoomable-view": "^0.3.1",
     "react-redux": "^9.1.2",
