@@ -12,10 +12,8 @@ import {
   Platform,
   Text
 } from "react-native";
-import { useNavigation} from "@react-navigation/native";
-import SkeletonLoader from "../components/SkeletonLoader";
+import { useNavigation } from "@react-navigation/native";
 import StarAnmimation from "./StarAnmimation";
-import WhatsAppButton from "./WhatsAppButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Reklam from "../components/Reklam";
 import Header from "../components/Header";
@@ -25,16 +23,18 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/cartSlice";
 import { addToFavorites, removeFromFavorites } from "../store/favoritesSlice";
-import Feather from '@expo/vector-icons/Feather';
-import { selectToken ,selectIsLoggedIn} from "../store/authSlice";
+import { selectToken, selectIsLoggedIn } from "../store/authSlice";
 import Constants from 'expo-constants';
 import HeartAnimation from "./HeartAnimation";
 import Toast from "react-native-toast-message";
+import LottieView from "lottie-react-native";
+import { BlurView } from "expo-blur";
+
 const { height, width } = Dimensions.get("window");
 
 const Ev = () => {
   const apiUrl = Constants.expoConfig.extra.apiKey;
-  const [Data, setData] = useState([]);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -42,9 +42,7 @@ const Ev = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const token = useSelector(selectToken);
 
-
-  
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const res = await axios.get(apiUrl + '/productItem/getAll', {
         headers: {
@@ -53,21 +51,22 @@ const Ev = () => {
       });
       setData(res.data);
     } catch (error) {
-      console.log(error);
+      console.error("Fetch error:", error);
+      Alert.alert("Error", "Failed to fetch data");
     } finally {
       setIsLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [apiUrl, token]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const showAuthAlert = (actionName) => {
     Alert.alert(
@@ -88,17 +87,7 @@ const Ev = () => {
     }
   };
 
-  if (isLoading && !refreshing) {
-    return (
-      <View style={styles.skeletonContainer}>
-        {[...Array(3)].map((_, index) => (
-          <SkeletonLoader key={index} />
-        ))}
-      </View>
-    );
-  }
-
-  const toast = ()=>{
+  const showToast = () => {
     Toast.show({
       type: 'success',
       text1: 'Əlavə edildi',
@@ -106,48 +95,77 @@ const Ev = () => {
       position: 'bottom',
       visibilityTime: 2000,
     });
-  }
+  };
+
+  const renderItem = useCallback(({ item }) => (
+    <Card
+      item={item}
+      isLoggedIn={isLoggedIn}
+      onDetailPress={() => navigation.navigate("UrunDetay", {
+        id: item.id,
+        title: item.brand,
+        description: item.description,
+        price: item.sellingPrice,
+        image: item.fileString,
+      })}
+      onAddToCart={() => {
+        handleAction(() => dispatch(addToCart(item)), "səbətə əlavə etmək");
+        showToast();
+      }}
+      showAuthAlert={showAuthAlert}
+    />
+  ), [isLoggedIn, navigation, dispatch]);
+
+  const keyExtractor = useCallback((item) => item.id.toString(), []);
 
   return (
     <View style={styles.container}>
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <BlurView 
+            intensity={30} 
+            style={styles.blurContainer} 
+            tint="light" 
+          />
+          <LottieView
+            source={require("../assets/animation.json")}
+            autoPlay
+            loop
+            style={styles.lottie}
+          />
+        </View>
+      )}
+      
       <Header />
+      
       <FlatList
-        data={Data}
+        data={data}
         showsVerticalScrollIndicator={false}
         initialNumToRender={10}
         maxToRenderPerBatch={10}
         windowSize={5}
-        renderItem={({ item }) => (
-          <Card
-            item={item}
-            isLoggedIn={isLoggedIn}
-            onDetailPress={() => navigation.navigate("UrunDetay", {
-              id: item.id,
-              title: item.brand,
-              description: item.description,
-              price: item.sellingPrice,
-              image: item.fileString,
-            })}
-            onAddToCart={() => {
-              handleAction(() => dispatch(addToCart(item)), "səbətə əlavə etmək");
-              toast(); 
-            }}
-            showAuthAlert={showAuthAlert}
-          />
-        )}
-        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl 
+            refreshing={refreshing} 
+            onRefresh={onRefresh} 
+            colors={['#ff6e40']}
+            tintColor="#ff6e40"
+          />
         }
         ListHeaderComponent={<Reklam />}
         ListEmptyComponent={
           !isLoading && (
             <View style={styles.emptyContainer}>
-              <Text>Mövcud məhsul tapılmadı</Text>
+              <Text style={styles.emptyText}>Mövcud məhsul tapılmadı</Text>
             </View>
           )
         }
+        contentContainerStyle={data.length === 0 && styles.emptyListContainer}
       />
+      
+      <Toast />
     </View>
   );
 };
@@ -158,41 +176,39 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
   const isFavorited = favorites.some((favItem) => favItem.id === item.id);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleToggleFavorite = () => {
+  const handleToggleFavorite = useCallback(() => {
     if (isFavorited) {
       dispatch(removeFromFavorites(item));
     } else {
       dispatch(addToFavorites(item));
     }
-  };
+  }, [dispatch, isFavorited, item]);
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     Share.share({
       message: `Məhsul: ${item.brand}\nQiymət: ${item.sellingPrice} ₼`,
     }).catch((error) => Alert.alert("Paylaşım Xətası", error.message));
-  };
+  }, [item]);
 
-  const handleProfilePress = () => {
+  const handleProfilePress = useCallback(() => {
     setModalVisible(true);
-  };
+  }, []);
 
-  const handleStarPress = () => {
+  const handleStarPress = useCallback(() => {
     if (!isLoggedIn) {
       showAuthAlert("ulduz vermək");
     }
-    // Ulduz vermə funksiyası burada çağırılacaq
-  };
+  }, [isLoggedIn, showAuthAlert]);
 
-  const handleCommentPress = () => {
+  const handleCommentPress = useCallback(() => {
     if (!isLoggedIn) {
       showAuthAlert("şərh yazmaq");
     }
-    // Şərh yazma funksiyası burada çağırılacaq
-  };
+  }, [isLoggedIn, showAuthAlert]);
 
-  const truncateText = (text, maxLength) => {
+  const truncateText = useCallback((text, maxLength) => {
     return text != null && text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-  };
+  }, []);
 
   return (
     <View style={styles.card}>
@@ -213,9 +229,6 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
             <Text style={styles.companyName} numberOfLines={1}>
               {item.sellerName || 'Company Name'}
             </Text>
-            {/* <Text style={styles.productCategory} numberOfLines={1}>
-              {item.category || 'Product Category'}
-            </Text> */}
           </View>
         </TouchableOpacity>
         
@@ -233,33 +246,34 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
         <Image 
           source={{ uri: item.fileString || 'https://via.placeholder.com/300' }} 
           style={styles.image} 
+          resizeMode="cover"
         />
       </TouchableOpacity>
 
       <View style={styles.infoContainer}>
-  <Text style={styles.title}>{item.brand}</Text>
-  <Text style={styles.description}>
-    {truncateText(item.description, 100)}
-  </Text>
-  <View style={styles.footer}>
-    <Text style={styles.price}>{item.sellingPrice} ₼</Text>
-    <View style={styles.buttonGroup}>
-      <TouchableOpacity
-        style={styles.ByButton}
-        onPress={onAddToCart}
-      >
-        <Text style={styles.addToCartText}>İndi Al</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.addToCartButton}
-        onPress={onAddToCart}
-      >
-        <Text style={styles.addToCartText}>Səbətə yüklə</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-  <Text style={styles.stock}>Stokda: Var</Text>
-</View>
+        <Text style={styles.title}>{item.brand}</Text>
+        <Text style={styles.description}>
+          {truncateText(item.description, 100)}
+        </Text>
+        <View style={styles.footer}>
+          <Text style={styles.price}>{item.sellingPrice} ₼</Text>
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              style={styles.ByButton}
+              onPress={onAddToCart}
+            >
+              <Text style={styles.addToCartText}>İndi Al</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.addToCartButton}
+              onPress={onAddToCart}
+            >
+              <Text style={styles.addToCartText}>Səbətə yüklə</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Text style={styles.stock}>Stokda: Var</Text>
+      </View>
 
       <View style={styles.animations}>
         <TouchableOpacity onPress={() => isLoggedIn ? handleToggleFavorite() : showAuthAlert("bəyənmək")}>
@@ -275,12 +289,8 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
           />
         </TouchableOpacity>
         
-
-        
         <TouchableOpacity onPress={handleCommentPress}>
-          <YorumAnimation 
-            disabled={!isLoggedIn}
-          />
+          <YorumAnimation disabled={!isLoggedIn} />
         </TouchableOpacity>
         
         <TouchableOpacity onPress={handleShare}>
@@ -296,20 +306,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  skeletonContainer: {
-    width: width,
-    alignItems: "center",
-    paddingVertical: 20,
-  },
   emptyContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: height * 0.7
+    padding: 20,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: "#555",
+    fontFamily: 'Poppins_500Medium'
+  },
+  emptyListContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: height * 0.7
   },
   card: {
     width: width * 0.92,
-    marginBottom: 80,
+    marginBottom: 20,
     borderRadius: 15,
     backgroundColor: "#fff",
     shadowColor: "#000",
@@ -328,62 +344,42 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: "#f8f9f9",
   },
-  headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
   avatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35, // Dairəvi forma üçün width/2
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     marginRight: 10,
     resizeMode: 'cover',
-    borderWidth: 2, // Xəttin qalınlığı
-    borderColor: '#ff5a5f', // İnstagramda üst-üstə düşən gradient rənglər
-    // Shadow əlavə edək (iOS üçün)
+    borderWidth: 2,
+    borderColor: '#ff5a5f',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3,
-    // Android üçün
     elevation: 5,
   },
   headerRight: {
     flexDirection: "row",
     alignItems: "center",
   },
-  categoryText: {
-    fontSize: 16,
-    color: "#262626", // Daha qara rəng daha yaxşı oxunaqlılıq üçün
-    fontFamily: 'Poppins_600SemiBold', // Qalın font daha professional görünüş üçün
-    marginLeft: 8, // Avatar ilə arasında boşluq
-    alignSelf: 'center', // Şaquli mərkəzləşdirmə
-    maxWidth: width * 0.5, // Çox uzun adlar üçün məhdudiyyət
-    fontWeight:'bold'
-  },
-  iconButton: {
-    marginRight: 10,
-    padding: 3,
-  },
   image: {
     width: "100%",
     height: undefined,
     aspectRatio: 1,
-    resizeMode: "cover",
   },
   infoContainer: {
-    padding: 10,
+    padding: 15,
   },
   title: {
     fontSize: 16,
     fontWeight: "bold",
-    fontFamily: 'Poppins_400Regular_Italic'
+    fontFamily: 'Poppins_600SemiBold'
   },
   description: {
-    marginTop: 10,
+    marginTop: 8,
     fontSize: 14,
     color: "#555",
-    fontFamily: 'Poppins_400Regular_Italic'
+    fontFamily: 'Poppins_400Regular'
   },
   footer: {
     flexDirection: "row",
@@ -400,14 +396,14 @@ const styles = StyleSheet.create({
   },
   ByButton: {
     backgroundColor: "#ff6e40",
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
     borderRadius: 10,
   },
   addToCartButton: {
     backgroundColor: "#00b894",
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
     borderRadius: 10,
   },
   addToCartText: {
@@ -426,16 +422,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 12,
     backgroundColor: "#f1f2f6",
     borderTopWidth: 1,
     borderTopColor: "#ddd",
   },
-  buttonGroup:{
+  buttonGroup: {
     flexDirection: "row",
-  gap: 8,
+    gap: 8,
   },
-  profileContainer:{
+  profileContainer: {
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
@@ -459,14 +455,21 @@ const styles = StyleSheet.create({
     color: "#262626",
     fontFamily: 'Poppins_600SemiBold',
   },
-  productCategory: {
-    fontSize: 13,
-    color: "#8e8e8e",
-    fontFamily: 'Poppins_400Regular',
-    marginTop: 2,
-  },
   moreOptionsButton: {
     padding: 4,
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  blurContainer: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  lottie: {
+    width: 80,
+    height: 80,
   },
 });
 

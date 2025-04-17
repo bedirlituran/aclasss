@@ -12,12 +12,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken, selectUser, updateUser } from "../store/authSlice";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from 'expo-image-picker';
-import Constants from 'expo-constants';
+import * as ImagePicker from "expo-image-picker";
+import Constants from "expo-constants";
 import axios from "axios";
 import LottieView from "lottie-react-native";
 import { BlurView } from "expo-blur";
-const {width } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const samplePosts = [
   { id: 1, uri: "https://picsum.photos/300/300?random=1" },
@@ -73,7 +73,6 @@ const SellerProfile = () => {
       : text;
   };
 
-
   const showAuthAlert = () => {
     Alert.alert(
       "Giriş Tələb Olunur",
@@ -91,10 +90,9 @@ const SellerProfile = () => {
 
   const getUserProducts = async () => {
     try {
-
       const response = await axios.get(
         apiUrl + "/productItem/getUserProducts",
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.status == 200) {
@@ -107,13 +105,12 @@ const SellerProfile = () => {
       alert("Error: " + (error.response?.data?.message || error.message));
     }
   };
- 
 
-  const postProfilePicture = async (image) => {   
-    setLoading(true); 
+  const postProfilePicture = async (image) => {
+    setLoading(true);
     let localUri = image;
-    let filename = localUri.split('/').pop();
-    let type = 'image/jpeg'; 
+    let filename = localUri.split("/").pop();
+    let type = "image/jpeg";
 
     let formData = new FormData();
 
@@ -122,37 +119,37 @@ const SellerProfile = () => {
       name: filename,
       type: type,
     });
-  
+
     try {
-      
       const response = await axios.post(
-        apiUrl + "/user/postProfilePicture", 
-        formData, 
+        apiUrl + "/user/postProfilePicture",
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      
-      dispatch(updateUser({userProfilePicture: response.data}));
+
+      dispatch(updateUser({ userProfilePicture: response.data }));
       console.log(user);
-      
     } catch (error) {
       console.error("Upload Error:", error);
-      alert("Məhsul yüklənərkən xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.");
-    }
-    finally {
-      setLoading(false); 
+      alert(
+        "Məhsul yüklənərkən xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   const pickImage = async () => {
     // Galeriden resim seçme
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
-      alert('Fotoğraflara erişim izni vermeniz gerekiyor!');
+      alert("Fotoğraflara erişim izni vermeniz gerekiyor!");
       return;
     }
 
@@ -168,9 +165,6 @@ const SellerProfile = () => {
     }
   };
 
-   
-
-
   return (
     <View style={styles.container}>
       {/* Loading varsa blur + Lottie animasyon göster */}
@@ -178,14 +172,14 @@ const SellerProfile = () => {
         <View style={styles.loadingOverlay}>
           <BlurView intensity={30} style={styles.blurContainer} tint="light" />
           <LottieView
-            source={require('../assets/animation.json')}
+            source={require("../assets/animation.json")}
             autoPlay
             loop
             style={styles.lottie}
           />
         </View>
       )}
-  
+
       <ScrollView
         style={styles.modalContent}
         showsVerticalScrollIndicator={false}
@@ -196,12 +190,12 @@ const SellerProfile = () => {
               source={{
                 uri:
                   user.userProfilePicture ||
-                  'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?a=1&b=1&s=612x612&w=0&k=20&c=u5RPl326UFf1oyrM1iLFJtqdQ3K28TdBdSaSPKeCrdc=',
+                  "https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?a=1&b=1&s=612x612&w=0&k=20&c=u5RPl326UFf1oyrM1iLFJtqdQ3K28TdBdSaSPKeCrdc=",
               }}
               style={styles.profileImage}
             />
           </TouchableOpacity>
-  
+
           <View style={styles.profileStats}>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>{products.length}</Text>
@@ -210,9 +204,9 @@ const SellerProfile = () => {
             <View style={styles.divider} />
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>
-                {(samplePosts.length)
+                {samplePosts.length
                   .toFixed()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 K
               </Text>
               <Text style={styles.statLabel}>Star</Text>
@@ -224,42 +218,34 @@ const SellerProfile = () => {
             </View>
           </View>
         </View>
-  
+
         <View style={styles.profileInfo}>
           <Text style={styles.profileName}>{user.name}</Text>
-          <Text style={styles.profileBio}>
-            {user.desc}
-          </Text>
+          <Text style={styles.profileBio}>{user.desc}</Text>
           <Text style={styles.profileLink}>{user.email}</Text>
         </View>
-  
+
         <View style={styles.postsSection}>
-          {/* <Text style={styles.sectionTitle}>Satıcıın Paylaşımları</Text> */}
           <View style={styles.postsGrid}>
             {products.map((post) => (
               <View key={post.id} style={styles.postContainer}>
-                
-  
-                <Image source={{ uri: post.fileString }} style={styles.postImage} />
-  
+                <Image
+                  source={{ uri: post.fileString }}
+                  style={styles.postImage}
+                />
+
                 <View style={styles.postInfo}>
                   <Text style={styles.brandName}>
                     {truncateText(post.brand, 16)}
                   </Text>
-  
+
                   <View style={styles.postAlti}>
                     <View style={styles.ratingContainer}>
                       <Text style={styles.rating}>🌠 5K</Text>
                     </View>
-  
+
                     <View>
-                      <Text style={styles.price}>
-                        {post.sellingPrice} ₼
-                        {/* <Text style={styles.miniprice}>.15</Text> ₼ */}
-                      </Text>
-                      {/* <TouchableOpacity style={styles.cartIcon} onPress={() => handleAddToCart(post)}>
-                        <Ionicons name="cart-outline" size={24} color="black" />
-                      </TouchableOpacity> */}
+                      <Text style={styles.price}>{post.sellingPrice} ₼</Text>
                     </View>
                   </View>
                 </View>
@@ -270,106 +256,85 @@ const SellerProfile = () => {
       </ScrollView>
     </View>
   );
-  
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  modalContent: {
+    paddingHorizontal: 16,
+  },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-    
+    zIndex: 100,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  
   blurContainer: {
     ...StyleSheet.absoluteFillObject,
   },
-  
   lottie: {
-    width: 150,
-    height: 150,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  modalContent: {
-    flex: 1,
-    padding: 15,
-  },
-  profileTopSection: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  miniprice: {
-    fontWeight: "semibold",
-    fontSize: 11,
-    color: "orange",
-  },
-  profileImage: {
     width: 100,
     height: 100,
-    borderRadius: 50,
-    marginRight: 20,
-    resizeMode:'contain',
-    borderWidth:1,
-    borderColor:'gray',
+  },
+  profileTopSection: {
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  profileImage: {
+    width: 120,
+    height: 80,
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: "#ccc",
+    objectFit: "cover",
   },
   profileStats: {
     flexDirection: "row",
-    justifyContent: "center",
-    width: '60%',
-    alignItems: "center",
+    justifyContent: "space-around",
+    width: "100%",
+    marginTop: 10,
   },
   statItem: {
     alignItems: "center",
-    flexBasis: '20%',
+    flex: 1,
   },
   statNumber: {
-    fontSize: 15,
     fontWeight: "bold",
+    fontSize: 16,
   },
   statLabel: {
-    fontSize: 13,
-    color: "gray",
+    fontSize: 14,
+    color: "#555",
+  },
+  divider: {
+    width: 1,
+    backgroundColor: "#ddd",
   },
   profileInfo: {
-    marginBottom: 25,
+    alignItems: "center",
+    marginVertical: 3,
   },
   profileName: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 5,
   },
   profileBio: {
     fontSize: 14,
-    marginBottom: 5,
-    color: "#333",
+    color: "#777",
+    marginTop: 4,
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
   profileLink: {
     fontSize: 14,
-    color: "#00376B",
-    fontWeight: "500",
+    color: "#1e90ff",
+    marginTop: 4,
   },
   postsSection: {
-    borderTopWidth: 1,
-    borderTopColor: "#dbdbdb",
-    paddingTop: 15,
-  },
-  postAlti: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 8,
-    paddingHorizontal: 8,
-    gap:20
-  },
-  sectionTitle: {
-    fontWeight: "600",
-    fontSize: 16,
-    marginBottom: 15,
+    marginTop: 20,
   },
   postsGrid: {
     flexDirection: "row",
@@ -377,78 +342,48 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   postContainer: {
-    width: (width - 40) / 2, // 2 sütunlu grid
+    width: (width - 48) / 2, // padding 16 * 2 + gap 16
     marginBottom: 16,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    padding: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  likeIcon: {
-    position: "absolute",
-    top: 12,
-    right: 12,
-    zIndex: 1,
+    borderRadius: 10,
+    overflow: "hidden",
+    backgroundColor: "#f9f9f9",
+    elevation: 2,
   },
   postImage: {
     width: "100%",
-    height: 200,
-    borderRadius: 8,
-    resizeMode:'contain',
-   
+    height: 140,
+    resizeMode: "cover",
   },
   postInfo: {
-    marginTop: 8,
-    paddingHorizontal: 8,
-    display: "flex",
-    flexDirection: "col",
-    alignItems: "center",
-    justifyContent: "center",
+    padding: 8,
   },
   brandName: {
+    fontSize: 14,
     fontWeight: "bold",
-    fontSize: 14,
   },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  rating: {
-    color: '#FFD700',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginRight: 4,
-  },
-  soldCount: {
-    fontSize: 12,
-    color: "#666",
-  },
-  priceCartContainer: {
+  postAlti: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 8,
+    marginTop: 6,
+  },
+  ratingContainer: {
+    backgroundColor: "#ffeaa7",
+    paddingHorizontal: 6,
+    borderRadius: 4,
+  },
+  rating: {
+    fontSize: 12,
+    color: "#2d3436",
   },
   price: {
-    fontWeight: "bold",
     fontSize: 14,
-    color: "orange",
+    fontWeight: "bold",
+    color: "#0984e3",
   },
-  cartIcon: {
-    backgroundColor: "lightgray",
-    padding: 4,
-    borderRadius: 6,
-  },
-  divider: {
-    height: "80%",
-    width: 1,
-    backgroundColor: "black",
-    marginHorizontal: 10,
+  miniprice: {
+    fontSize: 10,
+    color: "#636e72",
   },
 });
 
-export default SellerProfile; 
+export default SellerProfile;
