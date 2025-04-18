@@ -162,7 +162,7 @@ const Ev = () => {
     <View style={styles.container}>
             <View 
         ref={cartIconRef} 
-        style={{ position: 'absolute', left: 75, bottom: -40 ,zIndex:6000}}
+        style={{ position: 'absolute', left: 65, bottom: -25 ,zIndex:6000}}
         onLayout={() => {}}
       >
         <Ionicons name="cart" size={24} color="black" />
@@ -322,6 +322,7 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
               <Text style={styles.addToCartText}>İndi Al</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              activeOpacity={0.7}
               style={styles.addToCartButton}
               onPress={(e) => {
                 e.persist(); // Event objesini koru
