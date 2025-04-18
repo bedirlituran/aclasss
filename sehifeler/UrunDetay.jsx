@@ -81,7 +81,7 @@ const UrunDetay = ({ route, navigation }) => {
       type: 'success',
       text1: 'Əlavə edildi',
       text2: 'Məhsul səbətə əlavə olundu ✅',
-      position: 'bottom',
+      position: 'top',
       visibilityTime: 2000,
     });
   };

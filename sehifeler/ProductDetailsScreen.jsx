@@ -84,15 +84,15 @@ const ProductDetailsScreen = ({ route }) => {
 
   if (loading) {
     return (
-        <View style={styles.loadingOverlay}>
-                <BlurView intensity={30} style={styles.blurContainer} tint="light" />
-                <LottieView
-                  source={require("../assets/animation.json")}
-                  autoPlay
-                  loop
-                  style={styles.lottie}
-                />
-              </View>
+      <View style={styles.loadingOverlay}>
+        <BlurView intensity={30} style={styles.blurContainer} tint="light" />
+        <LottieView
+          source={require("../assets/animation.json")}
+          autoPlay
+          loop
+          style={styles.lottie}
+        />
+      </View>
     );
   }
 
@@ -130,7 +130,8 @@ const ProductDetailsScreen = ({ route }) => {
                 style={styles.card}
                 onPress={() =>
                   navigation.navigate("UrunDetay", {
-                    title: item.title || item.brand,
+                    id: item.id,
+                    title: item.brand,
                     description: item.description,
                     price: item.sellingPrice,
                     image: item.fileString,

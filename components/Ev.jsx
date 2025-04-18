@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback,useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -29,6 +29,7 @@ import HeartAnimation from "./HeartAnimation";
 import Toast from "react-native-toast-message";
 import LottieView from "lottie-react-native";
 import { BlurView } from "expo-blur";
+import FlyingItem from "./FlyingItem";
 
 const { height, width } = Dimensions.get("window");
 
@@ -41,7 +42,9 @@ const Ev = () => {
   const [refreshing, setRefreshing] = useState(false);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const token = useSelector(selectToken);
-
+  const [flyingItems, setFlyingItems] = useState([]);
+  const cartIconRef = useRef(null);
+  const [cartPosition, setCartPosition] = useState({ x: 0, y: 0 });
   const fetchData = useCallback(async () => {
     try {
       const res = await axios.get(apiUrl + '/productItem/getAll', {
@@ -67,6 +70,45 @@ const Ev = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+
+  const handleAddToCartWithAnimation = (item, event) => {
+    if (!isLoggedIn) {
+      showAuthAlert("səbətə əlavə etmək");
+      return;
+    }
+
+    // Sepet ikonunun konumunu al
+    cartIconRef.current.measure((x, y, width, height, pageX, pageY) => {
+      const cartPos = { x: pageX + width / 2, y: pageY + height / 2 };
+      setCartPosition(cartPos);
+
+      // Tıklanan konumu al
+      const startPos = {
+        x: event.nativeEvent.pageX,
+        y: event.nativeEvent.pageY,
+      };
+
+      // Yeni animasyonlu öğe ekle
+      setFlyingItems(prev => [
+        ...prev,
+        {
+          id: Date.now(),
+          startPos,
+          endPos: cartPos,
+        },
+      ]);
+
+      // Sepete ekleme işlemi
+      dispatch(addToCart(item));
+      showToast();
+    });
+  };
+
+  const removeFlyingItem = (id) => {
+    setFlyingItems(prev => prev.filter(item => item.id !== id));
+  };
+
 
   const showAuthAlert = (actionName) => {
     Alert.alert(
@@ -108,11 +150,9 @@ const Ev = () => {
         price: item.sellingPrice,
         image: item.fileString,
       })}
-      onAddToCart={() => {
-        handleAction(() => dispatch(addToCart(item)), "səbətə əlavə etmək");
-        showToast();
-      }}
+        onAddToCart={(e) => handleAddToCartWithAnimation(item, e)}
       showAuthAlert={showAuthAlert}
+      
     />
   ), [isLoggedIn, navigation, dispatch]);
 
@@ -120,6 +160,23 @@ const Ev = () => {
 
   return (
     <View style={styles.container}>
+            <View 
+        ref={cartIconRef} 
+        style={{ position: 'absolute', left: 75, bottom: -40 ,zIndex:6000}}
+        onLayout={() => {}}
+      >
+        <Ionicons name="cart" size={24} color="black" />
+      </View>
+
+      {/* Uçan öğeler */}
+      {flyingItems.map((item) => (
+        <FlyingItem
+          key={item.id}
+          startPos={item.startPos}
+          endPos={item.endPos}
+          onComplete={() => removeFlyingItem(item.id)}
+        />
+      ))}
       {isLoading && (
         <View style={styles.loadingOverlay}>
           <BlurView 
@@ -260,13 +317,16 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
           <View style={styles.buttonGroup}>
             <TouchableOpacity
               style={styles.ByButton}
-              onPress={onAddToCart}
+            
             >
               <Text style={styles.addToCartText}>İndi Al</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.addToCartButton}
-              onPress={onAddToCart}
+              onPress={(e) => {
+                e.persist(); // Event objesini koru
+                onAddToCart(e);
+              }}
             >
               <Text style={styles.addToCartText}>Səbətə yüklə</Text>
             </TouchableOpacity>

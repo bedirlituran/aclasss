@@ -46,7 +46,7 @@ const getIconName = (routeName, focused) => {
   }
 };
 
-const TabNavigator = () => {
+const TabNavigator = ({cartIconRef}) => {
   const navigation = useNavigation();
   const cartItems = useSelector((state) => state.cart?.items || []);
 
@@ -217,6 +217,7 @@ const TabNavigator = () => {
             }
           }
         }}
+        ref={cartIconRef}
       />
       <Tab.Screen
         name="Əlavə et"
@@ -235,15 +236,7 @@ const TabNavigator = () => {
                 shadowOffset: { width: 0, height: 3 },
               }}
             >
-              {/* <ProductAddPage
-                visible={modalVisible}
-                onClose={() => {
-                  setModalVisible(false);
-                  setSelectedMediaUri('');
-                  setSelectedMediaFormat('');
-                }}
-                imageUri={selectedMediaUri}
-              /> */}
+           
               <View
                 style={{
                   width: 60,

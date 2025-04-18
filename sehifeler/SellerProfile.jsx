@@ -185,7 +185,7 @@ const SellerProfile = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.profileTopSection}>
-          <TouchableOpacity onPress={pickImage}>
+          <TouchableOpacity onPress={pickImage} >
             <Image
               source={{
                 uri:
@@ -228,11 +228,22 @@ const SellerProfile = () => {
         <View style={styles.postsSection}>
           <View style={styles.postsGrid}>
             {products.map((post) => (
-              <View key={post.id} style={styles.postContainer}>
-                <Image
-                  source={{ uri: post.fileString }}
-                  style={styles.postImage}
-                />
+              <View key={post.id}  style={styles.postContainer}>
+          <TouchableOpacity onPress={() =>
+    navigation.navigate("UrunDetay", {
+        id: post.id,
+        title: post.brand,
+        description: post.description,
+        price: post.sellingPrice,
+        image: post.fileString,
+    })
+}>
+    <Image
+        source={{ uri: post.fileString }}
+        style={styles.postImage}
+    />
+</TouchableOpacity>
+              
 
                 <View style={styles.postInfo}>
                   <Text style={styles.brandName}>

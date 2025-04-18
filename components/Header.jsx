@@ -16,7 +16,7 @@ import { Text } from 'react-native-paper';
 
 const { width } = Dimensions.get("window");
 
-const Header = () => {
+const Header = ({cartIconRef}) => {
 
   const navigation = useNavigation()
   const cartItems = useSelector((state) => state.cart.items);
@@ -25,7 +25,7 @@ const Header = () => {
       <View style={styles.logoContainer}>
         <Text style={styles.logoText}>Aclass</Text>
       </View>
-      <TouchableOpacity onPress={()=>navigation.navigate("Kataloq")}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Kataloq")} >
       <Ionicons name="search-outline" size={24} color="gray" />
 
       </TouchableOpacity>
@@ -35,7 +35,9 @@ const Header = () => {
         </TouchableOpacity> 
 
 
-      <TouchableOpacity style={styles.iconWrapperBasket} onPress={() => navigation.navigate("Sebetim")}>
+      <TouchableOpacity style={styles.iconWrapperBasket} 
+  ref={cartIconRef}
+  onPress={() => navigation.navigate('Sebetim')}>
   <Ionicons name="basket-sharp" size={22} color="#fb5607" />
   <Text style={styles.iconWrapperBasketText}>
     {cartItems.reduce(
