@@ -8,6 +8,76 @@ const SearchScreen = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [categories, setCategories] = useState([]);
 
+  const categoryTitleMap = {
+    "Men": "Kişi",
+    "Women": "Qadın",
+    "Boys' Clothing": "Oğlan uşaq geyimləri",
+    "Girls' Clothing": "Qız uşaq geyimləri"
+  };
+
+  const subCategoryMap = {
+    "Shirts": "Köynəklər",
+    "Polo T-shirts": "Polo futbolkalar",
+    "Pants": "Şalvarlar",
+    "Jeans": "Cins şalvarlar",
+    "Classic Shoes": "Ayaqqabılar",
+    "Sneakers": "İdman ayaqqabıları",
+    "Sandals": "Səndəllər",
+    "Jackets": "Jaketlər",
+    "Jacket": "Jaketlər",
+    "Coat": "Paltolar",
+    "Sweaters": "Svitərlər",
+    "Hoodies": "Hudilər",
+    "Shorts": "Şortlar",
+    "Suit": "Kostyumlar",
+    "Dresses": "Donlar",
+    "Skirts": "Ətəklər",
+    "Blouses": "Bluzlar",
+    "Blouses and Shirts": "Bluz və Köynəklər",
+    "Blazers and Suits": "Blazer və Kostyumlar",
+    "Underwear and Swimwear": "Alt geyimlər və Çimərlik geyimləri",
+    "Underwear and Home Clothing": "Alt geyimlər və Ev geyimləri",
+
+    "Hats": "Papaqlar",
+    "Gloves": "Əlcəklər",
+    "Pants and Jumpsuits": "Şalvarlar və kombinezonlar",
+    "Shirts and Polos":"Futbolka və Polo",
+    "Socks and Tights": "Corab və taytlar",
+    "Tops": "Üst geyimlər",
+    "Heels": "Topuqlu ayaqqabılar",
+    "Boots": "Çəkmələr",
+    "Sleepwear": "Yuxu geyimləri",
+    "Underwear": "Alt geyimlər",
+    "Bags": "Çantalar",
+    "Caps": "Papaqlar",
+    "Belts": "Kəmərlər",
+    "Swimwear": "Çimərlik geyimləri",
+    "Raincoats": "Yağmurluqlar",
+    "Vests": "Jiletlər",
+    "Polos": "Polo köynəklər",
+    "Sportswear": "İdman geyimləri",
+    "Classic Shirts":"Klassik köynəklər",
+    "Fabric Pants":"Parça şalvarlar",
+    "Leather Jackets":"Dəri gödəkçələr",
+    "Sports Shoes":"İdman ayaqqabıları",
+    "T-shirts":"Futbolkalar",
+    "Classic Jackets":"Klassik gödəkçələr",
+    "Belts, Glasses, and Watches":"Kəmər, Eynek və Saatlar",	
+    "Headwear":"Papaq",
+    "Gloves and Scarves":"Əlcək və Şərflər",	
+    "Ties and Bow Ties":"Qalstuk və Bantik",	
+    "Sports Sets":"İdman dəstləri",
+    "Skirts and Shorts":"Ətək və Şortlar",	
+    "T-shirts and Polos":"Futbolka və Polo",
+    "Bodysuits":"Vestlər",
+    "Tights and Socks":"Kalqotka və Corablar",
+    "High Heels":"Topuqlu ayaqqabılar",
+    "Home Clothing":"Ev geyimləri",
+    "Wedding Dresses":"Şənlik geyimləri",	
+    "Hats and Hijabs":"Papaq və Hicablar",
+  };
+  
+
   const categoryIdMap = {
     "Men": "67ceeddf7b031af1efa10499",
     "Women": "67ceeddf7b031af1efa10498",
@@ -61,7 +131,9 @@ const SearchScreen = () => {
               ]}
               onPress={() => handlePress(item)}
             >
-              <Text style={styles.titles}>{item.title}</Text>
+              <Text style={styles.titles}>
+  {categoryTitleMap[item.title] || item.title}
+</Text>
             </TouchableOpacity>
           )}
         />
@@ -73,6 +145,8 @@ const SearchScreen = () => {
             keyExtractor={(item, index) => index.toString()}
             numColumns={3}
             contentContainerStyle={styles.imagesContainer}
+          showsVerticalScrollIndicator={false}
+
             renderItem={({ item, index }) => (
               <TouchableOpacity
                 style={styles.imageTextContainer}
@@ -84,7 +158,9 @@ const SearchScreen = () => {
                   }}
                   style={styles.image}
                 />
-                <Text style={styles.title}>{item}</Text>
+                <Text style={styles.title}>
+  {subCategoryMap[item] || item}
+</Text>
               </TouchableOpacity>
             )}
           />
