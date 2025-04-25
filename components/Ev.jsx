@@ -10,7 +10,8 @@ import {
   Dimensions,
   RefreshControl,
   Platform,
-  Text
+  Text,
+  Vibration
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import StarAnmimation from "./StarAnmimation";
@@ -162,7 +163,7 @@ const Ev = () => {
     <View style={styles.container}>
             <View 
         ref={cartIconRef} 
-        style={{ position: 'absolute', left: 65, bottom: -25 ,zIndex:6000}}
+        style={{ position: 'absolute', left: 95, bottom: 0 ,zIndex:6000,opacity: 0}}
         onLayout={() => {}}
       >
         <Ionicons name="cart" size={24} color="black" />
@@ -327,6 +328,7 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
               onPress={(e) => {
                 e.persist(); // Event objesini koru
                 onAddToCart(e);
+                Vibration.vibrate(100);
               }}
             >
               <Text style={styles.addToCartText}>Səbətə yüklə</Text>

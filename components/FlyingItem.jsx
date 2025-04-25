@@ -7,7 +7,7 @@ const FlyingItem = ({ startPos, endPos, onComplete }) => {
   useEffect(() => {
     Animated.timing(position, {
       toValue: endPos,
-      duration: 800,
+      duration: 700,
 easing: Easing.inOut(Easing.ease),
 
       useNativeDriver: true,
