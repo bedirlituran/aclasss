@@ -49,8 +49,11 @@ const getIconName = (routeName, focused) => {
 const TabNavigator = ({cartIconRef}) => {
   const navigation = useNavigation();
   const cartItems = useSelector((state) => state.cart?.items || []);
-
-
+  const scrollRef = useRef(null);
+  const scrollToTop = () => {
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+  
   const homeTabPressCount = useRef(0);
   const lastTabPressTime = useRef(0);
   const dispatch = useDispatch();
@@ -157,8 +160,9 @@ const TabNavigator = ({cartIconRef}) => {
         homeTabPressCount.current = 1;
       }
       lastTabPressTime.current = currentTime;
+      scrollToTop();
     }
-  }, [navigation]);
+  }, [navigation,scrollToTop]);
 
   const showAuthAlert = () => {
     Alert.alert(
@@ -204,7 +208,7 @@ const TabNavigator = ({cartIconRef}) => {
         tabPress: handleTabPress,
       }}
     >
-      <Tab.Screen name="Ev" component={Ev} options={{ headerShown: false }} />
+        <Tab.Screen name="Ev" component={Ev} options={{ headerShown: false }}  initialParams={{ scrollRef }} />
       <Tab.Screen
         name="Səbət"
         component={Sebetim}

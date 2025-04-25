@@ -34,7 +34,7 @@ import FlyingItem from "./FlyingItem";
 
 const { height, width } = Dimensions.get("window");
 
-const Ev = () => {
+const Ev = ({scrollRef }) => {
   const apiUrl = Constants.expoConfig.extra.apiKey;
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -199,6 +199,7 @@ const Ev = () => {
       <FlatList
         data={data}
         showsVerticalScrollIndicator={false}
+        ref={scrollRef}
         initialNumToRender={10}
         maxToRenderPerBatch={10}
         windowSize={5}
@@ -304,7 +305,7 @@ const Card = React.memo(({ item, isLoggedIn, onDetailPress, onAddToCart, showAut
         <Image 
           source={{ uri: item.fileString || 'https://via.placeholder.com/300' }} 
           style={styles.image} 
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </TouchableOpacity>
 
